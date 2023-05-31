@@ -1,0 +1,2 @@
+json.extract! bufkit, :id, :modelType, :lowTemp, :lowDew, :lowHumidity, :lowWindDirection, :lowWindSpeed, :lowHeight, :medTemp, :medDew, :medHumidity, :medWindDirection, :medWindSpeed, :medHeight, :highTemp, :highDew, :highHumidity, :highWindDirection, :highWindSpeed, :highHeight, :modelCape, :lakeEffectCape, :lakeEffectNCape, :lakeEffectEQL, :tenMeterWindDirection, :tenMeterWindSpeed, :lakeEffectSnowEvent_id, :created_at, :updated_at
+json.url bufkit_url(bufkit, format: :json)

@@ -1,0 +1,37 @@
+<div id="<%= dom_id lake_effect_snow_event %>">
+  <h2 class="text-center">
+    <strong><%= lake_effect_snow_event.eventName %></strong>
+  </h2>
+
+  <table class="table table-striped table-hover table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Event Name</th>
+      <th scope="col">Start Date</th>
+      <th scope="col">End Date</th>
+      <th scope="col">Start Time Zulu</th>
+      <th scope="col">End Time Zulu</th>
+      <th scope="col">Start Peak Time Zulu</th>
+      <th scope="col">End Peak Time Zulu</th>
+      <th scope="col">Average Lake Surface Temperature</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    <tr>
+      <td scope="row"><%= lake_effect_snow_event.id %></th>
+      <td><%= lake_effect_snow_event.eventName=%></td>
+      <td><%= lake_effect_snow_event.startDate %></td>
+      <td><%= lake_effect_snow_event.endDate %></td>
+      <td><%= lake_effect_snow_event.startTime %></td>
+      <td><%= lake_effect_snow_event.endTime %></td>
+      <td><%= lake_effect_snow_event.peakStartTime %></td>
+      <td><%= lake_effect_snow_event.peakEndTime %></td>
+      <td><%= lake_effect_snow_event.averageLakeSurfaceTemperature %></td>
+    </tr>
+  </tbody>
+    
+</table>
+</div>
+
+

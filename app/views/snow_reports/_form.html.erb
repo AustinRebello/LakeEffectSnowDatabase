@@ -1,0 +1,47 @@
+<%= form_with(model: snow_report) do |form| %>
+  <% if snow_report.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(snow_report.errors.count, "error") %> prohibited this snow_report from being saved:</h2>
+
+      <ul>
+        <% snow_report.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :lastName, style: "display: block" %>
+    <%= form.text_field :lastName %>
+  </div>
+
+  <div>
+    <%= form.label :city, style: "display: block" %>
+    <%= form.text_field :city %>
+  </div>
+
+  <div>
+    <%= form.label :latitude, style: "display: block" %>
+    <%= form.text_field :latitude %>
+  </div>
+
+  <div>
+    <%= form.label :longitude, style: "display: block" %>
+    <%= form.text_field :longitude %>
+  </div>
+
+  <div>
+    <%= form.label :stormTotal, style: "display: block" %>
+    <%= form.text_field :stormTotal %>
+  </div>
+
+  <div>
+    <%= form.label :lakeEffectSnowEvent_id, style: "display: block" %>
+    <%= form.text_field :lakeEffectSnowEvent_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

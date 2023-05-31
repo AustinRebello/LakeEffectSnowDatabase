@@ -1,0 +1,92 @@
+<%= form_with(model: metar) do |form| %>
+  <% if metar.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(metar.errors.count, "error") %> prohibited this metar from being saved:</h2>
+
+      <ul>
+        <% metar.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :site, style: "display: block" %>
+    <%= form.text_field :site %>
+  </div>
+
+  <div>
+    <%= form.label :observationTime, style: "display: block" %>
+    <%= form.text_field :observationTime %>
+  </div>
+
+  <div>
+    <%= form.label :temperature, style: "display: block" %>
+    <%= form.text_field :temperature %>
+  </div>
+
+  <div>
+    <%= form.label :dewPoint, style: "display: block" %>
+    <%= form.text_field :dewPoint %>
+  </div>
+
+  <div>
+    <%= form.label :humidity, style: "display: block" %>
+    <%= form.text_field :humidity %>
+  </div>
+
+  <div>
+    <%= form.label :windDirection, style: "display: block" %>
+    <%= form.number_field :windDirection %>
+  </div>
+
+  <div>
+    <%= form.label :windSpeed, style: "display: block" %>
+    <%= form.number_field :windSpeed %>
+  </div>
+
+  <div>
+    <%= form.label :meanLevelSeaPressure, style: "display: block" %>
+    <%= form.text_field :meanLevelSeaPressure %>
+  </div>
+
+  <div>
+    <%= form.label :visibility, style: "display: block" %>
+    <%= form.text_field :visibility %>
+  </div>
+
+  <div>
+    <%= form.label :windGust, style: "display: block" %>
+    <%= form.number_field :windGust %>
+  </div>
+
+  <div>
+    <%= form.label :presentWX, style: "display: block" %>
+    <%= form.text_field :presentWX %>
+  </div>
+
+  <div>
+    <%= form.label :peakWindGust, style: "display: block" %>
+    <%= form.number_field :peakWindGust %>
+  </div>
+
+  <div>
+    <%= form.label :peakWindDirection, style: "display: block" %>
+    <%= form.number_field :peakWindDirection %>
+  </div>
+
+  <div>
+    <%= form.label :peakWindTime, style: "display: block" %>
+    <%= form.text_field :peakWindTime %>
+  </div>
+
+  <div>
+    <%= form.label :lakeEffectSnowEvent_id, style: "display: block" %>
+    <%= form.text_field :lakeEffectSnowEvent_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

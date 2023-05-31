@@ -1,0 +1,35 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  site: MyString
+  observationTime: MyString
+  temperature: 1.5
+  dewPoint: 1.5
+  humidity: 1.5
+  windDirection: 1
+  windSpeed: 1
+  meanLevelSeaPressure: 1.5
+  visibility: 1.5
+  windGust: 1
+  presentWX: MyString
+  peakWindGust: 1
+  peakWindDirection: 1
+  peakWindTime: MyString
+  lakeEffectSnowEvent: one
+
+two:
+  site: MyString
+  observationTime: MyString
+  temperature: 1.5
+  dewPoint: 1.5
+  humidity: 1.5
+  windDirection: 1
+  windSpeed: 1
+  meanLevelSeaPressure: 1.5
+  visibility: 1.5
+  windGust: 1
+  presentWX: MyString
+  peakWindGust: 1
+  peakWindDirection: 1
+  peakWindTime: MyString
+  lakeEffectSnowEvent: two

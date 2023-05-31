@@ -1,0 +1,57 @@
+<%= form_with(model: lake_effect_snow_event) do |form| %>
+  <% if lake_effect_snow_event.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(lake_effect_snow_event.errors.count, "error") %> prohibited this lake_effect_snow_event from being saved:</h2>
+
+      <ul>
+        <% lake_effect_snow_event.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label "Event Name", style: "display: block" %>
+    <%= form.text_field :eventName %>
+  </div>
+
+  <div>
+    <%= form.label "Start Date", style: "display: block" %>
+    <%= form.date_field :startDate %>
+  </div>
+
+  <div>
+    <%= form.label "End Date", style: "display: block" %>
+    <%= form.date_field :endDate %>
+  </div>
+
+  <div>
+    <%= form.label "Start Time (Zulu)", style: "display: block" %>
+    <%= form.number_field :startTime %>
+  </div>
+
+  <div>
+    <%= form.label "End Time (Zulu)", style: "display: block" %>
+    <%= form.number_field :endTime %>
+  </div>
+
+  <div>
+    <%= form.label "Peak Start Time (Zulu)", style: "display: block" %>
+    <%= form.number_field :peakStartTime %>
+  </div>
+
+  <div>
+    <%= form.label "Peak End Time (Zulu)", style: "display: block" %>
+    <%= form.number_field :peakEndTime %>
+  </div>
+
+  <div>
+    <%= form.label "Average Lake Surface Temperature", style: "display: block" %>
+    <%= form.number_field :averageLakeSurfaceTemperature %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

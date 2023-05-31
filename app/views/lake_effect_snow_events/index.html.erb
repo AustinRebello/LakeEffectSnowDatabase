@@ -1,0 +1,40 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Lake effect snow events</h1>
+
+<div id="lake_effect_snow_events">
+  <table class="table table-striped table-hover table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Event Name</th>
+      <th scope="col">Start Date</th>
+      <th scope="col">End Date</th>
+      <th scope="col">Start Time Zulu</th>
+      <th scope="col">End Time Zulu</th>
+      <th scope="col">Start Peak Time Zulu</th>
+      <th scope="col">End Peak Time Zulu</th>
+      <th scope="col">Average Lake Surface Temperature</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+   <% @lake_effect_snow_events.each do |event| %>
+    <tr>
+      <td scope="row"><%=link_to event.id, event %></th>
+      <td><%=link_to event.eventName, event %></td>
+      <td><%= event.startDate %></td>
+      <td><%= event.endDate %></td>
+      <td><%= event.startTime %></td>
+      <td><%= event.endTime %></td>
+      <td><%= event.peakStartTime %></td>
+      <td><%= event.peakEndTime %></td>
+      <td><%= event.averageLakeSurfaceTemperature %></td>
+    </tr>
+  <% end %>
+  </tbody>
+    
+</table>
+  
+</div>
+
+<%= link_to "New Event", new_lake_effect_snow_event_path, class:"btn btn-dark" %>

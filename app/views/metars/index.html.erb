@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Metars</h1>
+
+<div id="metars">
+  <% @metars.each do |metar| %>
+    <%= render metar %>
+    <p>
+      <%= link_to "Show this metar", metar %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New metar", new_metar_path %>

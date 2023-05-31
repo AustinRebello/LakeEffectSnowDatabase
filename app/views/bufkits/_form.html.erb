@@ -1,0 +1,147 @@
+<%= form_with(model: bufkit) do |form| %>
+  <% if bufkit.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(bufkit.errors.count, "error") %> prohibited this bufkit from being saved:</h2>
+
+      <ul>
+        <% bufkit.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :modelType, style: "display: block" %>
+    <%= form.text_field :modelType %>
+  </div>
+
+  <div>
+    <%= form.label :lowTemp, style: "display: block" %>
+    <%= form.text_field :lowTemp %>
+  </div>
+
+  <div>
+    <%= form.label :lowDew, style: "display: block" %>
+    <%= form.text_field :lowDew %>
+  </div>
+
+  <div>
+    <%= form.label :lowHumidity, style: "display: block" %>
+    <%= form.number_field :lowHumidity %>
+  </div>
+
+  <div>
+    <%= form.label :lowWindDirection, style: "display: block" %>
+    <%= form.number_field :lowWindDirection %>
+  </div>
+
+  <div>
+    <%= form.label :lowWindSpeed, style: "display: block" %>
+    <%= form.number_field :lowWindSpeed %>
+  </div>
+
+  <div>
+    <%= form.label :lowHeight, style: "display: block" %>
+    <%= form.number_field :lowHeight %>
+  </div>
+
+  <div>
+    <%= form.label :medTemp, style: "display: block" %>
+    <%= form.text_field :medTemp %>
+  </div>
+
+  <div>
+    <%= form.label :medDew, style: "display: block" %>
+    <%= form.text_field :medDew %>
+  </div>
+
+  <div>
+    <%= form.label :medHumidity, style: "display: block" %>
+    <%= form.number_field :medHumidity %>
+  </div>
+
+  <div>
+    <%= form.label :medWindDirection, style: "display: block" %>
+    <%= form.number_field :medWindDirection %>
+  </div>
+
+  <div>
+    <%= form.label :medWindSpeed, style: "display: block" %>
+    <%= form.number_field :medWindSpeed %>
+  </div>
+
+  <div>
+    <%= form.label :medHeight, style: "display: block" %>
+    <%= form.number_field :medHeight %>
+  </div>
+
+  <div>
+    <%= form.label :highTemp, style: "display: block" %>
+    <%= form.text_field :highTemp %>
+  </div>
+
+  <div>
+    <%= form.label :highDew, style: "display: block" %>
+    <%= form.text_field :highDew %>
+  </div>
+
+  <div>
+    <%= form.label :highHumidity, style: "display: block" %>
+    <%= form.number_field :highHumidity %>
+  </div>
+
+  <div>
+    <%= form.label :highWindDirection, style: "display: block" %>
+    <%= form.number_field :highWindDirection %>
+  </div>
+
+  <div>
+    <%= form.label :highWindSpeed, style: "display: block" %>
+    <%= form.number_field :highWindSpeed %>
+  </div>
+
+  <div>
+    <%= form.label :highHeight, style: "display: block" %>
+    <%= form.number_field :highHeight %>
+  </div>
+
+  <div>
+    <%= form.label :modelCape, style: "display: block" %>
+    <%= form.number_field :modelCape %>
+  </div>
+
+  <div>
+    <%= form.label :lakeEffectCape, style: "display: block" %>
+    <%= form.number_field :lakeEffectCape %>
+  </div>
+
+  <div>
+    <%= form.label :lakeEffectNCape, style: "display: block" %>
+    <%= form.number_field :lakeEffectNCape %>
+  </div>
+
+  <div>
+    <%= form.label :lakeEffectEQL, style: "display: block" %>
+    <%= form.number_field :lakeEffectEQL %>
+  </div>
+
+  <div>
+    <%= form.label :tenMeterWindDirection, style: "display: block" %>
+    <%= form.number_field :tenMeterWindDirection %>
+  </div>
+
+  <div>
+    <%= form.label :tenMeterWindSpeed, style: "display: block" %>
+    <%= form.number_field :tenMeterWindSpeed %>
+  </div>
+
+  <div>
+    <%= form.label :lakeEffectSnowEvent_id, style: "display: block" %>
+    <%= form.text_field :lakeEffectSnowEvent_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

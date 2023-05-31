@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @bufkit %>
+
+<div>
+  <%= link_to "Edit this bufkit", edit_bufkit_path(@bufkit) %> |
+  <%= link_to "Back to bufkits", bufkits_path %>
+
+  <%= button_to "Destroy this bufkit", @bufkit, method: :delete %>
+</div>

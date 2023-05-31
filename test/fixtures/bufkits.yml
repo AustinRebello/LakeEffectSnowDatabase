@@ -1,0 +1,57 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  modelType: MyString
+  lowTemp: 1.5
+  lowDew: 1.5
+  lowHumidity: 1
+  lowWindDirection: 1
+  lowWindSpeed: 1
+  lowHeight: 1
+  medTemp: 1.5
+  medDew: 1.5
+  medHumidity: 1
+  medWindDirection: 1
+  medWindSpeed: 1
+  medHeight: 1
+  highTemp: 1.5
+  highDew: 1.5
+  highHumidity: 1
+  highWindDirection: 1
+  highWindSpeed: 1
+  highHeight: 1
+  modelCape: 1
+  lakeEffectCape: 1
+  lakeEffectNCape: 1
+  lakeEffectEQL: 1
+  tenMeterWindDirection: 1
+  tenMeterWindSpeed: 1
+  lakeEffectSnowEvent: one
+
+two:
+  modelType: MyString
+  lowTemp: 1.5
+  lowDew: 1.5
+  lowHumidity: 1
+  lowWindDirection: 1
+  lowWindSpeed: 1
+  lowHeight: 1
+  medTemp: 1.5
+  medDew: 1.5
+  medHumidity: 1
+  medWindDirection: 1
+  medWindSpeed: 1
+  medHeight: 1
+  highTemp: 1.5
+  highDew: 1.5
+  highHumidity: 1
+  highWindDirection: 1
+  highWindSpeed: 1
+  highHeight: 1
+  modelCape: 1
+  lakeEffectCape: 1
+  lakeEffectNCape: 1
+  lakeEffectEQL: 1
+  tenMeterWindDirection: 1
+  tenMeterWindSpeed: 1
+  lakeEffectSnowEvent: two

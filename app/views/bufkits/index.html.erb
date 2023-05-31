@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Bufkits</h1>
+
+<div id="bufkits">
+  <% @bufkits.each do |bufkit| %>
+    <%= render bufkit %>
+    <p>
+      <%= link_to "Show this bufkit", bufkit %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New bufkit", new_bufkit_path %>

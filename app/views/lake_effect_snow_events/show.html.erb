@@ -1,0 +1,33 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @lake_effect_snow_event %>
+
+<div class="p-1 text-center">
+  <%= link_to "Back to all events", lake_effect_snow_events_path, class:"btn btn-secondary" %>
+  <%= link_to "Edit", edit_lake_effect_snow_event_path(@lake_effect_snow_event), class:"btn btn-primary" %>
+  <%= link_to "Delete this event", @lake_effect_snow_event, method: :delete, class:"btn btn-danger" %>
+</div>
+
+<div class="p-1 text-center">
+  <button type="button" class="btn btn-success">Generate BUFKIT and METARS data</button>
+  <button type="button" class="btn btn-success">Add Snow Reports CSV</button>
+</div>
+
+<div>
+  <p>All BUFKIT, METARS, Snow Report Information goes here</p>
+  <div id="BUFKIT" class="row text-center">
+    <p>BUFKIT DATA</p>
+    <div id="NAM" class="col text-center">
+      <p>NAM DATA</p>
+    </div>
+    <div id="RAP" class="col text-center">
+      <p>RAP DATA</p>
+    </div>
+  </div>
+  <div id="METARS" class="text-center">
+    <p>METARS DATA</p>
+  </div>
+  <div id="SnowReports" class="text-center">
+    <p>SNOW REPORTS</p>
+  </div>
+</div>
