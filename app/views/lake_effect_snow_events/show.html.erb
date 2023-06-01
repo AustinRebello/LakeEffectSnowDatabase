@@ -5,13 +5,13 @@
 <div class="p-1 text-center">
   <%= link_to "Back to all events", lake_effect_snow_events_path, class:"btn btn-secondary" %>
   <%= link_to "Edit", edit_lake_effect_snow_event_path(@lake_effect_snow_event), class:"btn btn-primary" %>
-  <%= button_to "Delete this event", @lake_effect_snow_event, method: :delete, class:"btn btn-danger" %>
+  <%= link_to "Delete this event", @lake_effect_snow_event, method: :delete, class:"btn btn-danger", data: {turbo_method: :get, turbo_confirm: "This will permanently delete this event. Are you sure you wish to continue?"} %>
 </div>
 
 <div class="p-1 text-center">
   <button type="button" class="btn btn-success">Generate BUFKIT and METARS data</button>
   <% #link_to 'Generate BUFKIT and METARS data', file_snow_reports_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success" %>
-  <%= link_to 'Add Snow Report CSV file', file_snow_reports_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success" %>
+  <%= link_to 'Add Snow Report CSV file', file_snow_reports_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success", data: { turbo_method: :get, turbo_confirm: 'This will delete all snow reports for this event. Are you sure you wish to continue?'} %>
 
 </div>
 
