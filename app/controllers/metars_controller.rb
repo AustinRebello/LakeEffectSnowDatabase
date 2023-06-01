@@ -65,6 +65,6 @@ class MetarsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def metar_params
-      params.require(:metar).permit(:site, :observationTime, :temperature, :dewPoint, :humidity, :windDirection, :windSpeed, :meanLevelSeaPressure, :visibility, :windGust, :presentWX, :peakWindGust, :peakWindDirection, :peakWindTime, :lakeEffectSnowEvent_id)
+      params.require(:metar).permit(:site, :observationTime, :temperature, :dewPoint, :humidity, :windDirection, :windSpeed, :meanLevelSeaPressure, :visibility, :windGust, :presentWX, :peakWindGust, :peakWindDirection, :peakWindTime, :lake_effect_snow_event_id)
     end
 end

@@ -1,6 +1,19 @@
 class SnowReportsController < ApplicationController
   before_action :set_snow_report, only: %i[ show edit update destroy ]
 
+  def file
+    @event = LakeEffectSnowEvent.find(params[:event_id])
+
+  end
+
+  def import
+    @file = params[:file]
+    @event = LakeEffectSnowEvent.find(params[:event_id])
+    @eventID = @event.id
+    SnowReport.import(@file, @eventID)
+    redirect_to lake_effect_snow_event_url(@event)
+end
+
   # GET /snow_reports or /snow_reports.json
   def index
     @snow_reports = SnowReport.all
@@ -8,11 +21,14 @@ class SnowReportsController < ApplicationController
 
   # GET /snow_reports/1 or /snow_reports/1.json
   def show
+    @snow_reports = SnowReport.all
   end
+
 
   # GET /snow_reports/new
   def new
     @snow_report = SnowReport.new
+    @lake_effect_snow_events = LakeEffectSnowEvent.all
   end
 
   # GET /snow_reports/1/edit
@@ -22,6 +38,7 @@ class SnowReportsController < ApplicationController
   # POST /snow_reports or /snow_reports.json
   def create
     @snow_report = SnowReport.new(snow_report_params)
+    @lake_effect_snow_events = LakeEffectSnowEvent.all
 
     respond_to do |format|
       if @snow_report.save
@@ -65,6 +82,6 @@ class SnowReportsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def snow_report_params
-      params.require(:snow_report).permit(:lastName, :city, :latitude, :longitude, :stormTotal, :lakeEffectSnowEvent_id)
+      params.require(:snow_report).permit(:lastName, :city, :latitude, :longitude, :stormTotal, :lake_effect_snow_event_id)
     end
 end

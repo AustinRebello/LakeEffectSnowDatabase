@@ -6,7 +6,7 @@ class CreateSnowReports < ActiveRecord::Migration[7.0]
       t.float :latitude
       t.float :longitude
       t.float :stormTotal
-      t.references :lakeEffectSnowEvent, null: false, foreign_key: true
+      t.integer :lake_effect_snow_event_id
 
       t.timestamps
     end

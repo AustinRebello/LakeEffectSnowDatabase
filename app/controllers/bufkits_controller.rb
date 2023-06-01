@@ -65,6 +65,6 @@ class BufkitsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def bufkit_params
-      params.require(:bufkit).permit(:modelType, :lowTemp, :lowDew, :lowHumidity, :lowWindDirection, :lowWindSpeed, :lowHeight, :medTemp, :medDew, :medHumidity, :medWindDirection, :medWindSpeed, :medHeight, :highTemp, :highDew, :highHumidity, :highWindDirection, :highWindSpeed, :highHeight, :modelCape, :lakeEffectCape, :lakeEffectNCape, :lakeEffectEQL, :tenMeterWindDirection, :tenMeterWindSpeed, :lakeEffectSnowEvent_id)
+      params.require(:bufkit).permit(:modelType, :lowTemp, :lowDew, :lowHumidity, :lowWindDirection, :lowWindSpeed, :lowHeight, :medTemp, :medDew, :medHumidity, :medWindDirection, :medWindSpeed, :medHeight, :highTemp, :highDew, :highHumidity, :highWindDirection, :highWindSpeed, :highHeight, :modelCape, :lakeEffectCape, :lakeEffectNCape, :lakeEffectEQL, :tenMeterWindDirection, :tenMeterWindSpeed, :lake_effect_snow_event_id)
     end
 end

@@ -26,7 +26,7 @@ class CreateBufkits < ActiveRecord::Migration[7.0]
       t.integer :lakeEffectEQL
       t.integer :tenMeterWindDirection
       t.integer :tenMeterWindSpeed
-      t.references :lakeEffectSnowEvent, null: false, foreign_key: true
+      t.integer :lake_effect_snow_event_id
 
       t.timestamps
     end

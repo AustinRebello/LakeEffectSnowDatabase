@@ -15,7 +15,7 @@ class CreateMetars < ActiveRecord::Migration[7.0]
       t.integer :peakWindGust
       t.integer :peakWindDirection
       t.string :peakWindTime
-      t.references :lakeEffectSnowEvent, null: false, foreign_key: true
+      t.integer :lake_effect_snow_event_id
 
       t.timestamps
     end

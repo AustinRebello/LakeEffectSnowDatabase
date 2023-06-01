@@ -37,10 +37,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_181557) do
     t.integer "lakeEffectEQL"
     t.integer "tenMeterWindDirection"
     t.integer "tenMeterWindSpeed"
-    t.integer "lakeEffectSnowEvent_id", null: false
+    t.integer "lake_effect_snow_event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["lakeEffectSnowEvent_id"], name: "index_bufkits_on_lakeEffectSnowEvent_id"
   end
 
   create_table "lake_effect_snow_events", force: :cascade do |t|
@@ -71,10 +70,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_181557) do
     t.integer "peakWindGust"
     t.integer "peakWindDirection"
     t.string "peakWindTime"
-    t.integer "lakeEffectSnowEvent_id", null: false
+    t.integer "lake_effect_snow_event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["lakeEffectSnowEvent_id"], name: "index_metars_on_lakeEffectSnowEvent_id"
   end
 
   create_table "snow_reports", force: :cascade do |t|
@@ -83,13 +81,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_181557) do
     t.float "latitude"
     t.float "longitude"
     t.float "stormTotal"
-    t.integer "lakeEffectSnowEvent_id", null: false
+    t.integer "lake_effect_snow_event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["lakeEffectSnowEvent_id"], name: "index_snow_reports_on_lakeEffectSnowEvent_id"
   end
 
-  add_foreign_key "bufkits", "lakeEffectSnowEvents"
-  add_foreign_key "metars", "lakeEffectSnowEvents"
-  add_foreign_key "snow_reports", "lakeEffectSnowEvents"
 end

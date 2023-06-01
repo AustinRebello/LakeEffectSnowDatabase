@@ -1,5 +1,6 @@
 class LakeEffectSnowEventsController < ApplicationController
   before_action :set_lake_effect_snow_event, only: %i[ show edit update destroy ]
+  
 
   # GET /lake_effect_snow_events or /lake_effect_snow_events.json
   def index
@@ -8,6 +9,7 @@ class LakeEffectSnowEventsController < ApplicationController
 
   # GET /lake_effect_snow_events/1 or /lake_effect_snow_events/1.json
   def show
+    @snow_reports = SnowReport.where(lake_effect_snow_event_id: params[:id])
   end
 
   # GET /lake_effect_snow_events/new
@@ -49,6 +51,11 @@ class LakeEffectSnowEventsController < ApplicationController
 
   # DELETE /lake_effect_snow_events/1 or /lake_effect_snow_events/1.json
   def destroy
+
+    @snowReports = SnowReport.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
+    @snowReports.each do |report|
+        report.destroy
+    end
     @lake_effect_snow_event.destroy
 
     respond_to do |format|
