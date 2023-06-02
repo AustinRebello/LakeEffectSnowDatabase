@@ -13,6 +13,11 @@
 ActiveRecord::Schema[7.0].define(version: 2023_05_31_181557) do
   create_table "bufkits", force: :cascade do |t|
     t.string "modelType"
+    t.string "station"
+    t.integer "year"
+    t.integer "month"
+    t.integer "day"
+    t.integer "hour"
     t.float "lowTemp"
     t.float "lowDew"
     t.integer "lowHumidity"
@@ -37,6 +42,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_181557) do
     t.integer "lakeEffectEQL"
     t.integer "tenMeterWindDirection"
     t.integer "tenMeterWindSpeed"
+    t.float "bulkShear"
+    t.float "bulkShearU"
+    t.float "bulkShearV"
+    t.float "lowDeltaT"
+    t.float "highDeltaT"
     t.integer "lake_effect_snow_event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

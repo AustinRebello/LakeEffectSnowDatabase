@@ -1,26 +1,32 @@
 <div id="<%= dom_id snow_report %>">
-  <table class="table table-striped table-hover table-bordered">
-  <thead class="thead-dark">
-    <tr>
-      <th scope="col">ID</th>
-      <th scope="col">Last Name</th>
-      <th scope="col">Town/City</th>
-      <th scope="col">Latitude</th>
-      <th scope="col">Longitude</th>
-      <th scope="col">Storm Total</th>
-      <th scope="col">Event ID</th>
-    </tr>
-  </thead>
-  <tbody class="table-group-divider">
-   <% @snow_reports.each do |report| %>
-    <tr>
-      <td><%= report.id %></td>
-      <td><%=link_to report.lastName, report %></td>
-      <td><%= report.city %></td>
-      <td><%= report.latitude %></td>
-      <td><%= report.longitude %></td>
-      <td><%= report.stormTotal %></td>
-      <td><%= report.lake_effect_snow_event_id %></td>
-    </tr>
-  <% end %>
+  <p>
+    <strong>Lastname:</strong>
+    <%= snow_report.lastName %>
+  </p>
+
+  <p>
+    <strong>City:</strong>
+    <%= snow_report.city %>
+  </p>
+
+  <p>
+    <strong>Latitude:</strong>
+    <%= snow_report.latitude %>
+  </p>
+
+  <p>
+    <strong>Longitude:</strong>
+    <%= snow_report.longitude %>
+  </p>
+
+  <p>
+    <strong>Stormtotal:</strong>
+    <%= snow_report.stormTotal %>
+  </p>
+
+  <p>
+    <strong>Lakeeffectsnowevent:</strong>
+    <%= snow_report.lake_effect_snow_event_id %>
+  </p>
+
 </div>

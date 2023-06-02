@@ -1,6 +1,22 @@
 class BufkitsController < ApplicationController
   before_action :set_bufkit, only: %i[ show edit update destroy ]
 
+  def python
+    @event = LakeEffectSnowEvent.find(params[:event_id])
+    @eventID = @event.id
+    @eSplit = @event.startDate.inspect.split('-')
+
+    @eventStartDate = Bufkit.handleDate(@event.startDate, @event.startTime)
+    @eventEndDate = Bufkit.handleDate(@event.endDate, @event.endTime)
+
+    @eventLake = @event.averageLakeSurfaceTemperature
+    @output = `python lib/assets/getBufkit.py "#{@eventStartDate}" "#{@eventEndDate}" "#{@eventLake}"`
+    Bufkit.python(@output, @eventID)
+    redirect_to lake_effect_snow_event_url(@event)
+  end
+  
+  
+
   # GET /bufkits or /bufkits.json
   def index
     @bufkits = Bufkit.all
@@ -65,6 +81,6 @@ class BufkitsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def bufkit_params
-      params.require(:bufkit).permit(:modelType, :lowTemp, :lowDew, :lowHumidity, :lowWindDirection, :lowWindSpeed, :lowHeight, :medTemp, :medDew, :medHumidity, :medWindDirection, :medWindSpeed, :medHeight, :highTemp, :highDew, :highHumidity, :highWindDirection, :highWindSpeed, :highHeight, :modelCape, :lakeEffectCape, :lakeEffectNCape, :lakeEffectEQL, :tenMeterWindDirection, :tenMeterWindSpeed, :lake_effect_snow_event_id)
+      params.require(:bufkit).permit(:modelType, :lowTemp, :lowDew, :lowHumidity, :lowWindDirection, :lowWindSpeed, :lowHeight, :medTemp, :medDew, :medHumidity, :medWindDirection, :medWindSpeed, :medHeight, :highTemp, :highDew, :highHumidity, :highWindDirection, :highWindSpeed, :highHeight, :modelCape, :lakeEffectCape, :lakeEffectNCape, :lakeEffectEQL, :tenMeterWindDirection, :tenMeterWindSpeed, :bulkShear, :bulkShearU, :bulkShearV, :lowDeltaT, :highDeltaT, :lake_effect_snow_event_id)
     end
 end

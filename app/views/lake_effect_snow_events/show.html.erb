@@ -9,22 +9,18 @@
 </div>
 
 <div class="p-1 text-center">
-  <button type="button" class="btn btn-success">Generate BUFKIT and METARS data</button>
-  <% #link_to 'Generate BUFKIT and METARS data', file_snow_reports_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success" %>
+  <button type="button" class="btn btn-success">Generate METAR data</button>
+  <%= link_to 'Generate BUFKIT data', python_bufkits_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success" %>
   <%= link_to 'Add Snow Report CSV file', file_snow_reports_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success", data: { turbo_method: :get, turbo_confirm: 'This will delete all snow reports for this event. Are you sure you wish to continue?'} %>
 
 </div>
 
 <div>
-  <p>All BUFKIT, METARS, Snow Report Information goes here</p>
-  <div id="BUFKIT" class="row text-center">
-    <p>BUFKIT DATA</p>
-    <div id="NAM" class="col text-center">
-      <p>NAM DATA</p>
-    </div>
-    <div id="RAP" class="col text-center">
-      <p>RAP DATA</p>
-    </div>
+  <div id="NAM" class="row text-center">
+    <p>NAM DATA</p>
+  </div>
+  <div id="RAP" class="row text-center">
+    <p>RAP DATA</p>
   </div>
   <div id="METARS" class="text-center">
     <p>METARS DATA</p>

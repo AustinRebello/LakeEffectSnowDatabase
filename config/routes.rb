@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   resources :metars
-  resources :bufkits
+  resources :bufkits do 
+    collection {
+      get :python
+    }
+  end
   resources :snow_reports do
     collection {
       get :file

@@ -2,6 +2,11 @@ class CreateBufkits < ActiveRecord::Migration[7.0]
   def change
     create_table :bufkits do |t|
       t.string :modelType
+      t.string :station
+      t.integer :year
+      t.integer :month
+      t.integer :day
+      t.integer :hour
       t.float :lowTemp
       t.float :lowDew
       t.integer :lowHumidity
@@ -26,6 +31,11 @@ class CreateBufkits < ActiveRecord::Migration[7.0]
       t.integer :lakeEffectEQL
       t.integer :tenMeterWindDirection
       t.integer :tenMeterWindSpeed
+      t.float :bulkShear
+      t.float :bulkShearU
+      t.float :bulkShearV
+      t.float :lowDeltaT
+      t.float :highDeltaT
       t.integer :lake_effect_snow_event_id
 
       t.timestamps
