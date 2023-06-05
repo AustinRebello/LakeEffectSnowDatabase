@@ -4,9 +4,15 @@ class SnowReportsController < ApplicationController
   def file
     @event = LakeEffectSnowEvent.find(params[:event_id])
 
+    @snowReports = SnowReport.where(lake_effect_snow_event_id: @event.id)
+    @snowReports.each do |report|
+        report.destroy
+    end
+
   end
 
   def import
+
     @file = params[:file]
     @event = LakeEffectSnowEvent.find(params[:event_id])
     @eventID = @event.id
@@ -21,7 +27,6 @@ end
 
   # GET /snow_reports/1 or /snow_reports/1.json
   def show
-    @snow_reports = SnowReport.all
   end
 
 

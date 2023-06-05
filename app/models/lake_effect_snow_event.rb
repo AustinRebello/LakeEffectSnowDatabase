@@ -8,5 +8,5 @@ class LakeEffectSnowEvent < ActiveRecord::Base
     validates :endTime, presence: true
     validates :averageLakeSurfaceTemperature, presence: true
     validates :startDate, comparison: { less_than_or_equal_to: :endDate}
-    
+
 end

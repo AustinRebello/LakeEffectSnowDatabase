@@ -1,4 +1,4 @@
 <%= form_tag import_snow_reports_url(:event_id => @event.id), multipart: true do %>
-<p>Submit the CSV File Here: <%= file_field_tag :file, accept: 'text/csv'%></p>
-<%= submit_tag "Submit Snow Reportss File" %>
+<p>Submit the CSV File Here: <%= file_field_tag :file, accept: 'text/csv', :required => true%></p>
+<%= submit_tag "Submit Snow Reports File" %>
 <% end %>

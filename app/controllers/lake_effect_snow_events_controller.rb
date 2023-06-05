@@ -2,6 +2,26 @@ class LakeEffectSnowEventsController < ApplicationController
   before_action :set_lake_effect_snow_event, only: %i[ show edit update destroy ]
   
 
+  def report
+    @snowReports = SnowReport.where(lake_effect_snow_event_id: params[:id])
+    @snowReports.each do |report|
+        report.destroy
+    end
+    @event = LakeEffectSnowEvent.where id: params[:id]
+    redirect_to lake_effect_snow_event_url(@event)
+  end
+
+  def bufkit
+    @bufkits = Bufkit.where(lake_effect_snow_event_id: params[:id])
+    @bufkits.each do |buf|
+        buf.destroy
+    end
+
+    @event = LakeEffectSnowEvent.where id: params[:id]
+    redirect_to lake_effect_snow_event_url(@event)
+  end
+
+
   # GET /lake_effect_snow_events or /lake_effect_snow_events.json
   def index
     @lake_effect_snow_events = LakeEffectSnowEvent.all
@@ -9,8 +29,20 @@ class LakeEffectSnowEventsController < ApplicationController
 
   # GET /lake_effect_snow_events/1 or /lake_effect_snow_events/1.json
   def show
-    @snow_reports = SnowReport.where(lake_effect_snow_event_id: params[:id])
+
+    @event = LakeEffectSnowEvent.find(params[:id])
+    @snow_reports = SnowReport.where(lake_effect_snow_event_id: @event.id)
+    @namBuf = Bufkit.where(lake_effect_snow_event_id: @event.id).where(modelType: "NAM")
+    @rapBuf = Bufkit.where(lake_effect_snow_event_id: @event.id).where(modelType: "RAP")
+    @metar = Metar.where(lake_effect_snow_event_id: @event.id)
+  
+    respond_to do |format|
+      format.html
+      format.csv { send_data Bufkit.downloadBUF(params[:id], params[:modelType]), filename: "#{params[:modelType]}-_EVENT_DATA-#{@event.eventName}.csv"}
+    end
+
   end
+
 
   # GET /lake_effect_snow_events/new
   def new
@@ -19,6 +51,11 @@ class LakeEffectSnowEventsController < ApplicationController
 
   # GET /lake_effect_snow_events/1/edit
   def edit
+    @bufkits = Bufkit.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
+    @bufkits.each do |buf|
+        buf.destroy
+    end
+
   end
 
   # POST /lake_effect_snow_events or /lake_effect_snow_events.json
@@ -55,6 +92,11 @@ class LakeEffectSnowEventsController < ApplicationController
     @snowReports = SnowReport.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
     @snowReports.each do |report|
         report.destroy
+    end
+
+    @bufkits = Bufkit.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
+    @bufkits.each do |buf|
+        buf.destroy
     end
     @lake_effect_snow_event.destroy
 

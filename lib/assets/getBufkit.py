@@ -1,4 +1,3 @@
-import matplotlib
 import sys
 import json
 import numpy as np
@@ -6,16 +5,8 @@ import time
 import math
 import urllib.request as request
 import re
-import csv
 import metpy.calc as mc
 from metpy.units import units
-import boto3
-from botocore.client import Config
-import botocore
-import matplotlib.pyplot as plt
-from metpy.io import Level2File
-from metpy.plots import add_timestamp, ctables
-from mpl_toolkits.axes_grid1 import make_axes_locatable
 from datetime import datetime
 
 ####################################################
@@ -24,8 +15,6 @@ from datetime import datetime
 #Lets get the data from iastate, thanks iastate!
 #
 url='https://mtarchive.geol.iastate.edu'
-csvFile = "C:\\Users\\austi\\documents\\csvFile.csv"
-csvOut = "app\\csvOut.csv"
 #Format is url/YYYY/MM/DD/bufkit/HH/rap
 ####################################################
 
@@ -34,30 +23,23 @@ class processBufkit:
         self.url = url
         self.startTime = startTime
         self.endTime = endTime
-        self.model = "rap"
         self.hour = ""
         self.year = ""
         self.month = ""
         self.day = ""
-        self.stations = ["kcle"]
-        #self.stations = ["kcle","keri","kgkl","le1","le2"]
-
+        #self.stations = ["kcle"]
+        self.stations = ["kcle","keri","kgkl","le1","le2"]
         self.cape = 0
         self.times=[]
         self.bufkitRows = []
         self.bulkShearValues = []
         self.compiledRows = []
-        self.analysisHrData = {}
-        self.waterTempLoc = "45004"
-        self.plot=True
-        self.dataDict = {}
         self.lkTmp = float(lakeTemp)
 
     def run(self):
         """Run it!"""
         self.setUpTimeRange()
-        for station in self.stations:
-            self.analysisHrData[station] = {}    
+        for station in self.stations:  
             self.getRAPData(station)
             self.getNAMData(station)
         jsonOutput = json.dumps(self.compiledRows)

@@ -6,6 +6,11 @@ class BufkitsController < ApplicationController
     @eventID = @event.id
     @eSplit = @event.startDate.inspect.split('-')
 
+    @bufkits = Bufkit.where(lake_effect_snow_event_id: @eventID)
+    @bufkits.each do |buf|
+        buf.destroy
+    end
+
     @eventStartDate = Bufkit.handleDate(@event.startDate, @event.startTime)
     @eventEndDate = Bufkit.handleDate(@event.endDate, @event.endTime)
 

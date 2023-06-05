@@ -1,6 +1,27 @@
 class MetarsController < ApplicationController
   before_action :set_metar, only: %i[ show edit update destroy ]
 
+  
+  
+  def python
+    @event = LakeEffectSnowEvent.find(params[:event_id])
+    @eventID = @event.id
+    @eSplit = @event.startDate.inspect.split('-')
+
+    @metars = Metar.where(lake_effect_snow_event_id: @eventID)
+    @metars.each do |met|
+        met.destroy
+    end
+
+    @eventStartDate = Bufkit.handleDate(@event.startDate, @event.startTime)
+    @eventEndDate = Bufkit.handleDate(@event.endDate, @event.endTime)
+
+    @eventLake = @event.averageLakeSurfaceTemperature
+    @output = `python lib/assets/getMetar.py "#{@eventStartDate}" "#{@eventEndDate}"`
+    Metar.python(@output, @eventID)
+    redirect_to lake_effect_snow_event_url(@event)
+  end
+  
   # GET /metars or /metars.json
   def index
     @metars = Metar.all

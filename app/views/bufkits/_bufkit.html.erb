@@ -1,157 +1,77 @@
 <div id="<%= dom_id bufkit %>">
-  <p>
-    <strong>Modeltype:</strong>
-    <%= bufkit.modelType %>
-  </p>
-
-  <p>
-    <strong>Lowtemp:</strong>
-    <%= bufkit.lowTemp %>
-  </p>
-
-  <p>
-    <strong>Lowdew:</strong>
-    <%= bufkit.lowDew %>
-  </p>
-
-  <p>
-    <strong>Lowhumidity:</strong>
-    <%= bufkit.lowHumidity %>
-  </p>
-
-  <p>
-    <strong>Lowwinddirection:</strong>
-    <%= bufkit.lowWindDirection %>
-  </p>
-
-  <p>
-    <strong>Lowwindspeed:</strong>
-    <%= bufkit.lowWindSpeed %>
-  </p>
-
-  <p>
-    <strong>Lowheight:</strong>
-    <%= bufkit.lowHeight %>
-  </p>
-
-  <p>
-    <strong>Medtemp:</strong>
-    <%= bufkit.medTemp %>
-  </p>
-
-  <p>
-    <strong>Meddew:</strong>
-    <%= bufkit.medDew %>
-  </p>
-
-  <p>
-    <strong>Medhumidity:</strong>
-    <%= bufkit.medHumidity %>
-  </p>
-
-  <p>
-    <strong>Medwinddirection:</strong>
-    <%= bufkit.medWindDirection %>
-  </p>
-
-  <p>
-    <strong>Medwindspeed:</strong>
-    <%= bufkit.medWindSpeed %>
-  </p>
-
-  <p>
-    <strong>Medheight:</strong>
-    <%= bufkit.medHeight %>
-  </p>
-
-  <p>
-    <strong>Hightemp:</strong>
-    <%= bufkit.highTemp %>
-  </p>
-
-  <p>
-    <strong>Highdew:</strong>
-    <%= bufkit.highDew %>
-  </p>
-
-  <p>
-    <strong>Highhumidity:</strong>
-    <%= bufkit.highHumidity %>
-  </p>
-
-  <p>
-    <strong>Highwinddirection:</strong>
-    <%= bufkit.highWindDirection %>
-  </p>
-
-  <p>
-    <strong>Highwindspeed:</strong>
-    <%= bufkit.highWindSpeed %>
-  </p>
-
-  <p>
-    <strong>Highheight:</strong>
-    <%= bufkit.highHeight %>
-  </p>
-
-  <p>
-    <strong>Modelcape:</strong>
-    <%= bufkit.modelCape %>
-  </p>
-
-  <p>
-    <strong>Lakeeffectcape:</strong>
-    <%= bufkit.lakeEffectCape %>
-  </p>
-
-  <p>
-    <strong>Lakeeffectncape:</strong>
-    <%= bufkit.lakeEffectNCape %>
-  </p>
-
-  <p>
-    <strong>Lakeeffecteql:</strong>
-    <%= bufkit.lakeEffectEQL %>
-  </p>
-
-  <p>
-    <strong>Tenmeterwinddirection:</strong>
-    <%= bufkit.tenMeterWindDirection %>
-  </p>
-
-  <p>
-    <strong>Tenmeterwindspeed:</strong>
-    <%= bufkit.tenMeterWindSpeed %>
-  </p>
-
-  <p>
-    <strong>BulkShear:</strong>
-    <%= bufkit.bulkShear %>
-  </p>
-
-  <p>
-    <strong>BulkShearU:</strong>
-    <%= bufkit.bulkShearU %>
-  </p>
-
-  <p>
-    <strong>Tenmeterwindspeed:</strong>
-    <%= bufkit.bulkShearV %>
-  </p>
-
-  <p>
-    <strong>Tenmeterwindspeed:</strong>
-    <%= bufkit.lowDeltaT %>
-  </p>
-
-  <p>
-    <strong>Tenmeterwindspeed:</strong>
-    <%= bufkit.highDeltaT %>
-  </p>
-
-  <p>
-    <strong>Lakeeffectsnowevent:</strong>
-    <%= bufkit.lake_effect_snow_event_id %>
-  </p>
-
+  <table class="table table-striped table-hover table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Model Type</th>
+      <th scope="col">Station</th>
+      <th scope="col">Time</th>
+      <th scope="col">10M Wind Direction</th>
+      <th scope="col">10M Wind Speed</th>
+      <th scope="col">925mb Temperature</th>
+      <th scope="col">925mb Dew Point</th>
+      <th scope="col">925mb Humidity</th>
+      <th scope="col">925mb Wind Direction</th>
+      <th scope="col">925mb Wind Speed</th>
+      <th scope="col">925mb Height</th>
+      <th scope="col">850mb Temperature</th>
+      <th scope="col">850mb Dew Point</th>
+      <th scope="col">850mb Humidity</th>
+      <th scope="col">850mb Wind Direction</th>
+      <th scope="col">850mb Wind Speed</th>
+      <th scope="col">850mb Height</th>
+      <th scope="col">700mb Temperature</th>
+      <th scope="col">700mb Dew Point</th>
+      <th scope="col">700mb Humidity</th>
+      <th scope="col">700mb Wind Direction</th>
+      <th scope="col">700mb Wind Speed</th>
+      <th scope="col">700mb Height</th>
+      <th scope="col">Model Cape</th>
+      <th scope="col">Lake Induced Cape</th>
+      <th scope="col">Lake Induced NCape</th>
+      <th scope="col">Lake Induced EQL</th>
+      <th scope="col">Bulk Shear</th>
+      <th scope="col">Bulk Shear U</th>
+      <th scope="col">Bulk Shear V</th>
+      <th scope="col">Lake Surface to 850mb Temperature Difference</th>
+      <th scope="col">Lake Surface to 700mb Temperature Difference</th>
+      <th scope="col">Lake Effect Snow Event ID</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+    <tr>
+      <td><%= bufkit.modelType %></td>
+      <td><%= bufkit.station %></td>
+      <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
+      <td><%= bufkit.tenMeterWindDirection %></td>
+      <td><%= bufkit.tenMeterWindSpeed %></td>
+      <td><%= bufkit.lowTemp %></td>
+      <td><%= bufkit.lowDew %></td>
+      <td><%= bufkit.lowHumidity %></td>
+      <td><%= bufkit.lowWindDirection %></td>
+      <td><%= bufkit.lowWindSpeed %></td>
+      <td><%= bufkit.lowHeight %></td>
+      <td><%= bufkit.medTemp %></td>
+      <td><%= bufkit.medDew %></td>
+      <td><%= bufkit.medHumidity %></td>
+      <td><%= bufkit.medWindDirection %></td>
+      <td><%= bufkit.medWindSpeed %></td>
+      <td><%= bufkit.medHeight %></td>
+      <td><%= bufkit.highTemp %></td>
+      <td><%= bufkit.highDew %></td>
+      <td><%= bufkit.highHumidity %></td>
+      <td><%= bufkit.highWindDirection %></td>
+      <td><%= bufkit.highWindSpeed %></td>
+      <td><%= bufkit.highHeight %></td>
+      <td><%= bufkit.modelCape %></td>
+      <td><%= bufkit.lakeEffectCape %></td>
+      <td><%= bufkit.lakeEffectNCape %></td>
+      <td><%= bufkit.lakeEffectEQL %></td>
+      <td><%= bufkit.bulkShear %></td>
+      <td><%= bufkit.bulkShearU %></td>
+      <td><%= bufkit.bulkShearV %></td>
+      <td><%= bufkit.lowDeltaT %></td>
+      <td><%= bufkit.highDeltaT %></td>
+      <td><%= bufkit.lake_effect_snow_event_id %></td>
+    </tr>
+  </tbody>
 </div>
