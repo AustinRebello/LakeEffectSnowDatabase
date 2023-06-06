@@ -1,14 +1,39 @@
 <p style="color: green"><%= notice %></p>
 
 <h1>Metars</h1>
-
-<div id="metars">
-  <% @metars.each do |metar| %>
-    <%= render metar %>
-    <p>
-      <%= link_to "Show this metar", metar %>
-    </p>
+<div id="metar" class="text-center container">
+    <table class="table table-striped table-hover table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Site</th>
+      <th scope="col">Time</th>
+      <th scope="col">Temperature</th>
+      <th scope="col">Dew Point</th>
+      <th scope="col">Humidity</th>
+      <th scope="col">Wind Direction</th>
+      <th scope="col">Wind Speed</th>
+      <th scope="col">Mean Level Sea Pressure</th>
+      <th scope="col">Visibility</th>
+      <th scope="col">Wind Gust</th>
+      <th scope="col">Present Weather</th>
+      <th scope="col">Peak Wind Gust</th>
+      <th scope="col">Peak Wind Direction</th>
+      <th scope="col">Peak Wind Time</th>
+      <th scope="col">Event ID</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+   <% @metars.each do |report| %>
+    <tr>
+      <% value = 1 %>
+      <% report.attributes.each do |attr_value| %>
+        <% if value < 17 %>
+          <td><%= attr_value[1] %></td>
+        <% end %>
+        <% value = value + 1%>
+      <% end %>
+    </tr>
   <% end %>
+  </tbody>
 </div>
-
-<%= link_to "New metar", new_metar_path %>

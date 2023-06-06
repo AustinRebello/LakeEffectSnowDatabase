@@ -4,6 +4,7 @@ import numpy as np
 import time
 import math
 import urllib.request as request
+from urllib.error import HTTPError
 import re
 import metpy.calc as mc
 from metpy.units import units
@@ -51,6 +52,7 @@ class processBufkit:
     #This gets a list of all the hours w/i the time range    
     def setUpTimeRange(self):
         """Get a list of all the hours w/i the provided time range"""
+        
         st = time.strptime(self.startTime,"%Y/%m/%d/%H")
         startUTCBase = datetime(st.tm_year, st.tm_mon, st.tm_mday, st.tm_hour)
         stUnix = (startUTCBase - datetime(1970,1,1)).total_seconds()
@@ -73,9 +75,15 @@ class processBufkit:
 
 
     def calculateRelativeHumidity(self, temperature, dewPoint):
-        relHum = round(100*
-                       ((math.e**((17.625*dewPoint)/(243.04+dewPoint)))
-                       /(math.e**((17.625*temperature)/(243.04+temperature)))),2)
+        tempE = 6.1094*math.e**((17.625*temperature)/(243.04+temperature))
+        dewE = 6.1094*math.e**((17.625*dewPoint)/(243.04+dewPoint))
+        relHum = round(100*(dewE/tempE),2)
+        return str(relHum)
+    
+    def calculateRelativeHumidityIce(self, temperature, dewPoint):
+        tempE = 6.1121*math.e**((22.587*temperature)/(273.64+temperature))
+        dewE = 6.1121*math.e**((22.587*dewPoint)/(273.64+dewPoint))
+        relHum = round(100*(dewE/tempE),2)
         return str(relHum)
     
     def compileRow(self, station, modelType, year, month, day, hour):
@@ -87,9 +95,10 @@ class processBufkit:
             currentTemp = self.bufkitRows[i+1][2]
             currentDew = self.bufkitRows[i+1][3]
             relativeHumidity = self.calculateRelativeHumidity(float(currentTemp), float(currentDew))
+            relativeHumidityIce = self.calculateRelativeHumidityIce(float(currentTemp), float(currentDew))
             bS = self.bulkShearValues
             
-            rowBuild.extend([currentTemp, currentDew, relativeHumidity])
+            rowBuild.extend([currentTemp, currentDew, relativeHumidity, relativeHumidityIce])
             rowBuild.extend([self.bufkitRows[i+1][5],self.bufkitRows[i+1][6],self.bufkitRows[i+1][9]])
         rowBuild.append(self.cape)
         #   calc and append LI Cape
@@ -110,7 +119,14 @@ class processBufkit:
       
     def queryDataNAM(self, modelType, hour, startingSTIM, endingSTIM, station):
         request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,hour,'nam',modelType,station)
-        response = request.urlopen(request_url)
+        try:
+            response = request.urlopen(request_url)
+        except HTTPError as err:
+            if station == 'kgkl':
+                station = 'kgkj'
+                request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,hour,'nam',modelType,station)
+                response = request.urlopen(request_url)
+                    
         data = response.read().splitlines()
         for stimSearch in range(startingSTIM, endingSTIM+1):
             stimFound = stimSearch*132+6
@@ -201,7 +217,14 @@ class processBufkit:
             
             self.year,self.month,self.day,self.hour = atime.split("/")
             request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,self.hour,'rap','rap',station)
-            response = request.urlopen(request_url)
+            
+            try:
+                response = request.urlopen(request_url)
+            except HTTPError as err:
+                if station == 'kgkl':
+                    station = 'kgkj'
+                    request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,self.hour,'rap','rap',station)
+                    response = request.urlopen(request_url)
             data = response.read().splitlines()
             prevD = [10]
             found925 = False

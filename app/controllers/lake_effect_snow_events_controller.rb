@@ -21,6 +21,14 @@ class LakeEffectSnowEventsController < ApplicationController
     redirect_to lake_effect_snow_event_url(@event)
   end
 
+  def metar
+    @metars = Metar.where(lake_effect_snow_event_id: params[:id])
+    @metars.each do |met|
+        met.destroy
+    end
+    @event = LakeEffectSnowEvent.where id: params[:id]
+    redirect_to lake_effect_snow_event_url(@event)
+  end
 
   # GET /lake_effect_snow_events or /lake_effect_snow_events.json
   def index
@@ -35,11 +43,13 @@ class LakeEffectSnowEventsController < ApplicationController
     @namBuf = Bufkit.where(lake_effect_snow_event_id: @event.id).where(modelType: "NAM")
     @rapBuf = Bufkit.where(lake_effect_snow_event_id: @event.id).where(modelType: "RAP")
     @metar = Metar.where(lake_effect_snow_event_id: @event.id)
-  
-    respond_to do |format|
-      format.html
-      format.csv { send_data Bufkit.downloadBUF(params[:id], params[:modelType]), filename: "#{params[:modelType]}-_EVENT_DATA-#{@event.eventName}.csv"}
-    end
+
+    @tableHeaderBuf = ["Model Type", "Station", "Time", 
+      "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Humidity (Ice)","925mb Wind Direction", "925mb Wind Speed","925mb Height",
+      "850mb Temperature", "850mb Dew Point", "850mb Humidity", "850mb Humidity (Ice)","850mb Wind Direction", "850mb Wind Speed","850mb Height",                             
+      "700mb Temperature", "700mb Dew Point", "700mb Humidity", "850mb Humidity (Ice)","700mb Wind Direction", "700mb Wind Speed","700mb Height",
+      "Model Cape", "Lake Induced Cape", "Lake Induced NCape", "Lake Induced EQL", "10M Wind Direction", "10M Wind Speed",
+      "Bulk Shear", "Bulk Shear U", "Bulk Shear V", "Lake Surface to 850mb Temperature Difference", "Lake Surface to 700mb Temperature Difference"]
 
   end
 
@@ -54,6 +64,11 @@ class LakeEffectSnowEventsController < ApplicationController
     @bufkits = Bufkit.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
     @bufkits.each do |buf|
         buf.destroy
+    end
+
+    @metars = Metar.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
+    @metars.each do |met|
+        met.destroy
     end
 
   end
@@ -88,7 +103,6 @@ class LakeEffectSnowEventsController < ApplicationController
 
   # DELETE /lake_effect_snow_events/1 or /lake_effect_snow_events/1.json
   def destroy
-
     @snowReports = SnowReport.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
     @snowReports.each do |report|
         report.destroy
@@ -98,6 +112,12 @@ class LakeEffectSnowEventsController < ApplicationController
     @bufkits.each do |buf|
         buf.destroy
     end
+
+    @metars = Metar.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
+    @metars.each do |met|
+        met.destroy
+    end
+
     @lake_effect_snow_event.destroy
 
     respond_to do |format|
@@ -114,6 +134,6 @@ class LakeEffectSnowEventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def lake_effect_snow_event_params
-      params.require(:lake_effect_snow_event).permit(:eventName, :startDate, :endDate, :startTime, :endTime, :peakStartTime, :peakEndTime, :averageLakeSurfaceTemperature)
+      params.require(:lake_effect_snow_event).permit(:eventName, :startDate, :endDate, :peakStartDate, :peakEndDate, :startTime, :endTime, :peakStartTime, :peakEndTime, :averageLakeSurfaceTemperature)
     end
 end

@@ -78,8 +78,7 @@ class processMetar:
         self.month2 = newEnd.month
         self.year1 = newStart.year
         self.year2 = newEnd.year
-        
-        
+
         self.endDate = date.fromisoformat(self.formatISO(et.tm_year,et.tm_mon,et.tm_mday))
         self.endHour = et.tm_hour
         
@@ -111,18 +110,10 @@ class processMetar:
             if(self.checkDate(decodedData[1])):
                 self.compiledRows.append(prevD)
                 
-            if(self.startHour > self.endHour):
+            if(self.startDate >= self.endDate and self.startHour > self.endHour):
                 break
             prevD = data[line].decode().split(',')
             
-            
-            
-            
-            
-            
-            
-            
-        
-        
+     
 args = sys.argv
 processMetar(args[1], args[2]).run()

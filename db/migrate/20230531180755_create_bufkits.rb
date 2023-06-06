@@ -9,19 +9,22 @@ class CreateBufkits < ActiveRecord::Migration[7.0]
       t.integer :hour
       t.float :lowTemp
       t.float :lowDew
-      t.integer :lowHumidity
+      t.float :lowHumidity
+      t.float :lowHumidityIce
       t.integer :lowWindDirection
       t.integer :lowWindSpeed
       t.integer :lowHeight
       t.float :medTemp
       t.float :medDew
-      t.integer :medHumidity
+      t.float :medHumidity
+      t.float :medHumidityIce
       t.integer :medWindDirection
       t.integer :medWindSpeed
       t.integer :medHeight
       t.float :highTemp
       t.float :highDew
-      t.integer :highHumidity
+      t.float :highHumidity
+      t.float :highHumidityIce
       t.integer :highWindDirection
       t.integer :highWindSpeed
       t.integer :highHeight

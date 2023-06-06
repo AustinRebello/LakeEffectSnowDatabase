@@ -27,6 +27,16 @@
   </div>
 
   <div>
+    <%= form.label "Peak Start Date", style: "display: block" %>
+    <%= form.date_field :peakStartDate %>
+  </div>
+
+  <div>
+    <%= form.label "Peak End Date", style: "display: block" %>
+    <%= form.date_field :peakEndDate %>
+  </div>
+
+  <div>
     <%= form.label "Start Time (Zulu)", style: "display: block" %>
     <%= form.number_field :startTime %>
   </div>

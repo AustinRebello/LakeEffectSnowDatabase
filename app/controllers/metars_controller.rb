@@ -17,11 +17,21 @@ class MetarsController < ApplicationController
     @eventEndDate = Bufkit.handleDate(@event.endDate, @event.endTime)
 
     @eventLake = @event.averageLakeSurfaceTemperature
+    puts(@eventStartDate)
+    puts (@eventEndDate)
     @output = `python lib/assets/getMetar.py "#{@eventStartDate}" "#{@eventEndDate}"`
     Metar.python(@output, @eventID)
     redirect_to lake_effect_snow_event_url(@event)
   end
   
+  def downloadCSV
+    @event = LakeEffectSnowEvent.find(params[:event_id])
+    respond_to do |format|
+      format.html
+      format.csv { send_data Metar.downloadBUF(params[:event_id]), filename: "METAR_EVENT_DATA-#{@event.eventName}.csv"}
+    end
+  end
+
   # GET /metars or /metars.json
   def index
     @metars = Metar.all

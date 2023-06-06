@@ -20,6 +20,14 @@ class SnowReportsController < ApplicationController
     redirect_to lake_effect_snow_event_url(@event)
 end
 
+def downloadCSV
+  @event = LakeEffectSnowEvent.find(params[:event_id])
+  respond_to do |format|
+    format.html
+    format.csv { send_data SnowReport.downloadBUF(params[:event_id]), filename: "SNOW_REPORT_EVENT_DATA-#{@event.eventName}.csv"}
+  end
+end
+
   # GET /snow_reports or /snow_reports.json
   def index
     @snow_reports = SnowReport.all

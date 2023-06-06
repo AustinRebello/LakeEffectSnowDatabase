@@ -20,7 +20,13 @@ class BufkitsController < ApplicationController
     redirect_to lake_effect_snow_event_url(@event)
   end
   
-  
+  def downloadCSV
+    @event = LakeEffectSnowEvent.find(params[:event_id])
+    respond_to do |format|
+      format.html
+      format.csv { send_data Bufkit.downloadBUF(params[:event_id], params[:modelType]), filename: "#{params[:modelType]}-_EVENT_DATA-#{@event.eventName}.csv"}
+    end
+  end
 
   # GET /bufkits or /bufkits.json
   def index

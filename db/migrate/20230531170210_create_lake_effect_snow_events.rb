@@ -4,6 +4,8 @@ class CreateLakeEffectSnowEvents < ActiveRecord::Migration[7.0]
       t.string :eventName
       t.date :startDate
       t.date :endDate
+      t.date :peakStartDate
+      t.date :peakEndDate
       t.integer :startTime
       t.integer :endTime
       t.integer :peakStartTime
