@@ -11,7 +11,6 @@ class Bufkit < ActiveRecord::Base
         end
     end
   end
-
   
   def self.handleDate(date, time)
     month = date.month.to_s

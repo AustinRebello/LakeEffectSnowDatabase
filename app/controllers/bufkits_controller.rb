@@ -87,7 +87,11 @@ class BufkitsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_bufkit
-      @bufkit = Bufkit.find(params[:id])
+      begin
+        @bufkit = Bufkit.find(params[:id])
+      rescue ActiveRecord::RecordNotFound => e
+        redirect_to home_record_not_found_url
+      end
     end
 
     # Only allow a list of trusted parameters through.

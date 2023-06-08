@@ -217,7 +217,6 @@ class processBufkit:
             
             self.year,self.month,self.day,self.hour = atime.split("/")
             request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,self.hour,'rap','rap',station)
-            
             try:
                 response = request.urlopen(request_url)
             except HTTPError as err:
@@ -225,6 +224,7 @@ class processBufkit:
                     station = 'kgkj'
                     request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,self.hour,'rap','rap',station)
                     response = request.urlopen(request_url)
+                    
             data = response.read().splitlines()
             prevD = [10]
             found925 = False

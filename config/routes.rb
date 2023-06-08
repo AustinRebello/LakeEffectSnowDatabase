@@ -25,10 +25,12 @@ Rails.application.routes.draw do
       get :metar
     }
   end
-
+  get 'home/404'
+  get 'home/record_not_found'
   root 'home#index'
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")
   # root "articles#index"
+  get '*unmatched_route', to: 'application#not_found'
 end

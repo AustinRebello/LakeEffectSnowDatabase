@@ -16,8 +16,13 @@ class SnowReportsController < ApplicationController
     @file = params[:file]
     @event = LakeEffectSnowEvent.find(params[:event_id])
     @eventID = @event.id
-    SnowReport.import(@file, @eventID)
-    redirect_to lake_effect_snow_event_url(@event)
+    exit_code = SnowReport.import(@file, @eventID)
+    if exit_code == 0
+      redirect_to lake_effect_snow_event_url(@event)
+    else
+      flash.alert = 'Snow Reports failed to upload, please check to make sure you uploaded the correct CSV Template starting with a "Last Name", "City", "Lat" and "Lon" as the column names'
+      redirect_to lake_effect_snow_event_url(@event)
+    end
 end
 
 def downloadCSV
@@ -90,7 +95,11 @@ end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_snow_report
-      @snow_report = SnowReport.find(params[:id])
+      begin
+        @snow_report = SnowReport.find(params[:id])
+      rescue ActiveRecord::RecordNotFound => e
+        redirect_to home_record_not_found_url
+      end
     end
 
     # Only allow a list of trusted parameters through.

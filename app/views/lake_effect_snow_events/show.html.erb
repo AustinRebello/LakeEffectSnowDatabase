@@ -3,20 +3,9 @@
 <%= render @lake_effect_snow_event %>
 
 <script>
-  const namBut = document.getElementById("nam");
-  namBut.addEventListener("click", showData(1));
-
-  const rapBut = document.getElementById("rap");
-  rapBut.addEventListener("click", showData(2));
-
-  const metBut = document.getElementById("met");
-  metBut.addEventListener("click", showData(3));
-
-  const snoBut = document.getElementById("sno");
-  snoBut.addEventListener("click", showData(4));
 
   const allData = document.getElementById("data");
-  window.addEventListener("load", showData(1))
+  window.addEventListener("turbo:load", () => showData(1))
 
 
   function showData(dataToShow){
@@ -40,7 +29,75 @@
         sno.style.display = 'block'
     }
   }
+
+  function showMetData(dataToShow){
+    var cle = document.getElementById("cle");
+    var eri = document.getElementById("eri");
+    var gkj = document.getElementById("gkj");
+
+    cle.style.display = 'none';
+    eri.style.display = 'none';
+    gkj.style.display = 'none';
+
+    if(dataToShow == 1) {
+        cle.style.display = null;
+    } else if (dataToShow == 2){
+        eri.style.display = null;
+    } else if (dataToShow == 3){
+        gkj.style.display = null;
+    } else {
+      cle.style.display = null;
+      eri.style.display = null;
+      gkj.style.display = null;
+    }
+  }
+
+  function showBufData(dataToShow, flag){
+    if(flag){
+      var kcle = document.getElementById("nkcle");
+      var keri = document.getElementById("nkeri");
+      var kgkl = document.getElementById("nkgkl");
+      var le1 = document.getElementById("nle1");
+      var le2 = document.getElementById("nle2");
+    } else {
+      var kcle = document.getElementById("rkcle");
+      var keri = document.getElementById("rkeri");
+      var kgkl = document.getElementById("rkgkl");
+      var le1 = document.getElementById("rle1");
+      var le2 = document.getElementById("rle2");
+    }
+    
+
+
+    kcle.style.display = 'none';
+    keri.style.display = 'none';
+    kgkl.style.display = 'none';
+    le1.style.display = 'none';
+    le2.style.display = 'none';
+
+    if(dataToShow == 1) {
+        kcle.style.display = null;
+    } else if (dataToShow == 2){
+        keri.style.display = null;
+    } else if (dataToShow == 3){
+        kgkl.style.display = null;
+    } else if (dataToShow == 4){
+        le1.style.display = null;
+    } else if (dataToShow == 5){
+        le2.style.display = null;
+    } else {
+      kcle.style.display = null;
+      keri.style.display = null;
+      kgkl.style.display = null;
+      le1.style.display = null;
+      le2.style.display = null;
+    }
+  }
 </script>
+
+<div class = "text-center">
+  <%= link_to "View Radar Loop for This Event", @url, :target => '_blank', class:"btn btn-primary"%>
+</div>
 
 <div class="p-1 text-center">
   <%= link_to "Back to all events", lake_effect_snow_events_path, class:"btn btn-secondary" %>
@@ -61,7 +118,7 @@
 </div>
 
 
-<div id="tFields" class="pb-4">
+<div id="dFields" class="pb-4">
   <ul class="nav nav-tabs nav-fill">
     <li class="nav-item">
       <%= button_tag  'NAM Data', id:"nam", class:"nav-link link-dark", :onclick => "showData(1)" %>
@@ -80,8 +137,24 @@
 
 <div id = "data">
   <div id="METARS" class="text-center container">
-    <%= link_to "Export METAR Data", downloadCSV_metars_url(format: 'csv', event_id: @event.id) %>
-    <table id = "namTable" class="table table-striped table-hover table-bordered">
+    <div id="mFields" class="pb-4">
+      <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item">
+          <%= button_tag  'CLE', class:"nav-link link-dark", :onclick => "showMetData(1)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'ERI', class:"nav-link link-dark", :onclick => "showMetData(2)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'GKJ', class:"nav-link link-dark", :onclick => "showMetData(3)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'ALL', class:"nav-link link-dark", :onclick => "showMetData(4)" %>
+        </li>
+      </ul>
+    </div>
+    <%= link_to "Export All METAR Data", downloadCSV_metars_url(format: 'csv', event_id: @event.id) %>
+    <table id = "metTable" class="table table-striped table-hover table-bordered">
       <thead class="thead-dark">
         <tr>
           <th scope="col">Site</th>
@@ -92,7 +165,7 @@
           <th scope="col">Wind Direction</th>
           <th scope="col">Wind Speed</th>
           <th scope="col">Mean Sea Level Pressure</th>
-          <th scope="col">Vsibility</th>
+          <th scope="col">Visibility</th>
           <th scope="col">Wind Gust</th>
           <th scope="col">Present Weather</th>
           <th scope="col">Peak Wind Gust</th>
@@ -100,8 +173,35 @@
           <th scope="col">Peak Wind Time</th>
         </tr>
       </thead>
-      <tbody class="table-group-divider">
-        <% @metar.each do |met| %>
+
+      <tbody id = "cle" class="table-group-divider">
+        <% @metarCLE.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+      <tbody id = "eri" class="table-group-divider">
+        <% @metarERI.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+      <tbody id = "gkj" class="table-group-divider">
+        <% @metarGKJ.each do |met| %>
           <tr>
               <% value = 1%>
               <% met.attributes.each do |attr_value| %>
@@ -142,6 +242,28 @@
   </div>
 
   <div id="NAM" class="text-center container">
+    <div id="tFields" class="pb-4">
+      <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item">
+          <%= button_tag  'KCLE', class:"nav-link link-dark", :onclick => "showBufData(1, true)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'KERI', class:"nav-link link-dark", :onclick => "showBufData(2, true)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'KGKL', class:"nav-link link-dark", :onclick => "showBufData(3, true)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'LE1', class:"nav-link link-dark", :onclick => "showBufData(4, true)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'LE2', class:"nav-link link-dark", :onclick => "showBufData(5, true)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'ALL', class:"nav-link link-dark", :onclick => "showBufData(6, true)" %>
+        </li>
+      </ul>
+    </div>
     <%= link_to "Export NAM Data", downloadCSV_bufkits_url(format: 'csv', modelType: "NAM", event_id: @event.id) %>
     <table id = "namTable" class="table table-striped table-hover table-bordered">
     <thead class="thead-dark">
@@ -151,8 +273,72 @@
         <% end %>
       </tr>
     </thead>
-    <tbody class="table-group-divider">
-      <% @namBuf.each do |bufkit| %>
+    <tbody id = "nkcle" class="table-group-divider">
+      <% @namBufCLE.each do |bufkit| %>
+        <tr>
+          <td><%= bufkit.modelType %></td>
+          <td><%= bufkit.station %></td>
+          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
+          <% value = 1 %>
+          <% bufkit.attributes.each do |attr_value| %>
+            <% if (value > 7) && (value < 40) %>
+              <td><%= attr_value[1] %></td>
+            <% end %>
+            <% value = value + 1%>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    <tbody id = "nkeri" class="table-group-divider">
+      <% @namBufERI.each do |bufkit| %>
+        <tr>
+          <td><%= bufkit.modelType %></td>
+          <td><%= bufkit.station %></td>
+          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
+          <% value = 1 %>
+          <% bufkit.attributes.each do |attr_value| %>
+            <% if (value > 7) && (value < 40) %>
+              <td><%= attr_value[1] %></td>
+            <% end %>
+            <% value = value + 1%>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    <tbody id = "nkgkl" class="table-group-divider">
+      <% @namBufGKJ.each do |bufkit| %>
+        <tr>
+          <td><%= bufkit.modelType %></td>
+          <td><%= bufkit.station %></td>
+          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
+          <% value = 1 %>
+          <% bufkit.attributes.each do |attr_value| %>
+            <% if (value > 7) && (value < 40) %>
+              <td><%= attr_value[1] %></td>
+            <% end %>
+            <% value = value + 1%>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    <tbody id = "nle1" class="table-group-divider">
+      <% @namBufLE1.each do |bufkit| %>
+        <tr>
+          <td><%= bufkit.modelType %></td>
+          <td><%= bufkit.station %></td>
+          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
+          <% value = 1 %>
+          <% bufkit.attributes.each do |attr_value| %>
+            <% if (value > 7) && (value < 40) %>
+              <td><%= attr_value[1] %></td>
+            <% end %>
+            <% value = value + 1%>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    <tbody id = "nle2" class="table-group-divider">
+      <% @namBufLE2.each do |bufkit| %>
         <tr>
           <td><%= bufkit.modelType %></td>
           <td><%= bufkit.station %></td>
@@ -171,6 +357,28 @@
   </div>
 
   <div id="RAP" class="text-center container">
+    <div id="tFields" class="pb-4">
+      <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item">
+          <%= button_tag  'KCLE', class:"nav-link link-dark", :onclick => "showBufData(1, false)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'KERI', class:"nav-link link-dark", :onclick => "showBufData(2, false)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'KGKL', class:"nav-link link-dark", :onclick => "showBufData(3, false)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'LE1', class:"nav-link link-dark", :onclick => "showBufData(4, false)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'LE2', class:"nav-link link-dark", :onclick => "showBufData(5, false)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'ALL', class:"nav-link link-dark", :onclick => "showBufData(6, false)" %>
+        </li>
+      </ul>
+    </div>
     <%= link_to "Export RAP Data", downloadCSV_bufkits_url(format: 'csv', modelType: "RAP", event_id: @event.id) %>
     <table id = "rapTable" class="table table-striped table-hover table-bordered">
     <thead class="thead-dark">
@@ -180,8 +388,72 @@
         <% end %>
       </tr>
     </thead>
-    <tbody class="table-group-divider">
-      <% @rapBuf.each do |bufkit| %>
+    <tbody id = "rkcle" class="table-group-divider">
+      <% @rapBufCLE.each do |bufkit| %>
+        <tr>
+          <td><%= bufkit.modelType %></td>
+          <td><%= bufkit.station %></td>
+          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
+          <% value = 1 %>
+          <% bufkit.attributes.each do |attr_value| %>
+            <% if (value > 7) && (value < 40) %>
+              <td><%= attr_value[1] %></td>
+            <% end %>
+            <% value = value + 1%>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    <tbody id = "rkeri" class="table-group-divider">
+      <% @rapBufERI.each do |bufkit| %>
+        <tr>
+          <td><%= bufkit.modelType %></td>
+          <td><%= bufkit.station %></td>
+          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
+          <% value = 1 %>
+          <% bufkit.attributes.each do |attr_value| %>
+            <% if (value > 7) && (value < 40) %>
+              <td><%= attr_value[1] %></td>
+            <% end %>
+            <% value = value + 1%>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    <tbody id = "rkgkl" class="table-group-divider">
+      <% @rapBufGKJ.each do |bufkit| %>
+        <tr>
+          <td><%= bufkit.modelType %></td>
+          <td><%= bufkit.station %></td>
+          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
+          <% value = 1 %>
+          <% bufkit.attributes.each do |attr_value| %>
+            <% if (value > 7) && (value < 40) %>
+              <td><%= attr_value[1] %></td>
+            <% end %>
+            <% value = value + 1%>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    <tbody id = "rle1" class="table-group-divider">
+      <% @rapBufLE1.each do |bufkit| %>
+        <tr>
+          <td><%= bufkit.modelType %></td>
+          <td><%= bufkit.station %></td>
+          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
+          <% value = 1 %>
+          <% bufkit.attributes.each do |attr_value| %>
+            <% if (value > 7) && (value < 40) %>
+              <td><%= attr_value[1] %></td>
+            <% end %>
+            <% value = value + 1%>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+    <tbody id = "rle2" class="table-group-divider">
+      <% @rapBufLE2.each do |bufkit| %>
         <tr>
           <td><%= bufkit.modelType %></td>
           <td><%= bufkit.station %></td>

@@ -8,8 +8,11 @@ class SnowReport < ApplicationRecord
     csv = CSV.parse(csv_text)
     rowCount = 0
     csv.each do |row|
-      if rowCount==0
-        rowCount = rowCount+1
+      if rowCount<1
+        if !(row[0]=='Last Name' && row[1]=='City' && row[2]=='Lat' && row[3]=='Lon')
+          return 1
+        end
+        
       else
         newReport=SnowReport.new
         newReport.lake_effect_snow_event_id=event_ID
@@ -19,9 +22,11 @@ class SnowReport < ApplicationRecord
         newReport.longitude = row[3]
         newReport.stormTotal = row[4]
         newReport.save
-      
+        
       end
+      rowCount = rowCount + 1
     end
+    return 0
   end
 
   def self.downloadBUF(event_id)

@@ -11,54 +11,59 @@
     </div>
   <% end %>
 
-  <div>
+  <div class="p-2 text-capitalize">
     <%= form.label "Event Name", style: "display: block" %>
     <%= form.text_field :eventName %>
   </div>
 
-  <div>
-    <%= form.label "Start Date", style: "display: block" %>
-    <%= form.date_field :startDate %>
+  <div class = "row p-3 text-capitalize">
+    <div class = "col-2">
+      <%= form.label "Start Date", style: "display: block" %>
+      <%= form.date_field :startDate %>
+    </div>
+
+    <div class = "col-10">
+      <%= form.label "Start Time (Zulu)", style: "display: block" %>
+      <%= form.number_field :startTime, placeholder: "0z"  %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label "End Date", style: "display: block" %>
-    <%= form.date_field :endDate %>
+  <div class = "row p-3 text-capitalize">
+      <div class="col-2">
+        <%= form.label "End Date", style: "display: block" %>
+        <%= form.date_field :endDate %>
+      </div>
+      <div class = "col-10">
+        <%= form.label "End Time (Zulu)", style: "display: block" %>
+        <%= form.number_field :endTime, placeholder: "0z"  %>
+      </div>
   </div>
 
-  <div>
-    <%= form.label "Peak Start Date", style: "display: block" %>
-    <%= form.date_field :peakStartDate %>
+  <div class = "row p-3 text-capitalize">
+      <div class="col-2">
+        <%= form.label "Peak Start Date", style: "display: block" %>
+        <%= form.date_field :peakStartDate %>
+      </div>
+      <div class = "col-10">
+        <%= form.label "Peak Start Time (Zulu)", style: "display: block" %>
+        <%= form.number_field :peakStartTime, placeholder: "0z"  %>
+      </div>
   </div>
 
-  <div>
-    <%= form.label "Peak End Date", style: "display: block" %>
-    <%= form.date_field :peakEndDate %>
+  <div class = "row p-3 text-capitalize">
+      <div class="col-2">
+        <%= form.label "Peak End Date", style: "display: block" %>
+        <%= form.date_field :peakEndDate %>
+      </div>
+      <div class = "col-10">
+        <%= form.label "Peak End Time (Zulu)", style: "display: block" %>
+        <%= form.number_field :peakEndTime, placeholder: "0z" %>
+      </div>
   </div>
 
-  <div>
-    <%= form.label "Start Time (Zulu)", style: "display: block" %>
-    <%= form.number_field :startTime %>
-  </div>
-
-  <div>
-    <%= form.label "End Time (Zulu)", style: "display: block" %>
-    <%= form.number_field :endTime %>
-  </div>
-
-  <div>
-    <%= form.label "Peak Start Time (Zulu)", style: "display: block" %>
-    <%= form.number_field :peakStartTime %>
-  </div>
-
-  <div>
-    <%= form.label "Peak End Time (Zulu)", style: "display: block" %>
-    <%= form.number_field :peakEndTime %>
-  </div>
-
-  <div>
+  <div class = "p-2 text-capitalize">
     <%= form.label "Average Lake Surface Temperature", style: "display: block" %>
-    <%= form.number_field :averageLakeSurfaceTemperature %>
+    <%= form.number_field :averageLakeSurfaceTemperature, placeholder: "0"  %>
   </div>
 
   <div>
