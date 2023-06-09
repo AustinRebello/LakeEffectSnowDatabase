@@ -3,7 +3,7 @@
 <h1 class="text-center">All BUFKIT Data</h1>
 
 <div id="bufkits">
-  <table class="table table-striped table-hover table-bordered">
+  <table id="sortTable" class="table table-striped table-hover table-bordered">
   <thead class="thead-dark">
     <tr>
       <th scope="col">Model Type</th>
@@ -41,43 +41,58 @@
       <th scope="col">Lake Effect Snow Event ID</th>
     </tr>
   </thead>
-  <% @bufkits.each do |bufkit| %>
-    <tbody class="table-group-divider">
-      <tr>
-        <td><%= link_to bufkit.modelType, bufkit %></td>
-        <td><%= bufkit.station %></td>
-        <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
-        <td><%= bufkit.tenMeterWindDirection %></td>
-        <td><%= bufkit.tenMeterWindSpeed %></td>
-        <td><%= bufkit.lowTemp %></td>
-        <td><%= bufkit.lowDew %></td>
-        <td><%= bufkit.lowHumidity %></td>
-        <td><%= bufkit.lowWindDirection %></td>
-        <td><%= bufkit.lowWindSpeed %></td>
-        <td><%= bufkit.lowHeight %></td>
-        <td><%= bufkit.medTemp %></td>
-        <td><%= bufkit.medDew %></td>
-        <td><%= bufkit.medHumidity %></td>
-        <td><%= bufkit.medWindDirection %></td>
-        <td><%= bufkit.medWindSpeed %></td>
-        <td><%= bufkit.medHeight %></td>
-        <td><%= bufkit.highTemp %></td>
-        <td><%= bufkit.highDew %></td>
-        <td><%= bufkit.highHumidity %></td>
-        <td><%= bufkit.highWindDirection %></td>
-        <td><%= bufkit.highWindSpeed %></td>
-        <td><%= bufkit.highHeight %></td>
-        <td><%= bufkit.modelCape %></td>
-        <td><%= bufkit.lakeEffectCape %></td>
-        <td><%= bufkit.lakeEffectNCape %></td>
-        <td><%= bufkit.lakeEffectEQL %></td>
-        <td><%= bufkit.bulkShear %></td>
-        <td><%= bufkit.bulkShearU %></td>
-        <td><%= bufkit.bulkShearV %></td>
-        <td><%= bufkit.lowDeltaT %></td>
-        <td><%= bufkit.highDeltaT %></td>
-        <td><%= bufkit.lake_effect_snow_event_id %></td>
-      </tr>
-    </tbody>
-  <% end %>
+  <tbody class="table-group-divider">
+    <% @bufkits.each do |bufkit| %>
+        <tr>
+          <td><%= link_to bufkit.modelType, bufkit %></td>
+          <td><%= bufkit.station %></td>
+          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
+          <td><%= bufkit.tenMeterWindDirection %></td>
+          <td><%= bufkit.tenMeterWindSpeed %></td>
+          <td><%= bufkit.lowTemp %></td>
+          <td><%= bufkit.lowDew %></td>
+          <td><%= bufkit.lowHumidity %></td>
+          <td><%= bufkit.lowWindDirection %></td>
+          <td><%= bufkit.lowWindSpeed %></td>
+          <td><%= bufkit.lowHeight %></td>
+          <td><%= bufkit.medTemp %></td>
+          <td><%= bufkit.medDew %></td>
+          <td><%= bufkit.medHumidity %></td>
+          <td><%= bufkit.medWindDirection %></td>
+          <td><%= bufkit.medWindSpeed %></td>
+          <td><%= bufkit.medHeight %></td>
+          <td><%= bufkit.highTemp %></td>
+          <td><%= bufkit.highDew %></td>
+          <td><%= bufkit.highHumidity %></td>
+          <td><%= bufkit.highWindDirection %></td>
+          <td><%= bufkit.highWindSpeed %></td>
+          <td><%= bufkit.highHeight %></td>
+          <td><%= bufkit.modelCape %></td>
+          <td><%= bufkit.lakeEffectCape %></td>
+          <td><%= bufkit.lakeEffectNCape %></td>
+          <td><%= bufkit.lakeEffectEQL %></td>
+          <td><%= bufkit.bulkShear %></td>
+          <td><%= bufkit.bulkShearU %></td>
+          <td><%= bufkit.bulkShearV %></td>
+          <td><%= bufkit.lowDeltaT %></td>
+          <td><%= bufkit.highDeltaT %></td>
+          <td><%= bufkit.lake_effect_snow_event_id %></td>
+        </tr>
+
+    <% end %>
+  </tbody>
+  </table>
 </div>
+
+
+<script>
+  $(document).ready(function () {
+    if(document.getElementById('sortTable_wrapper')==null){
+      $('#sortTable').dataTable({
+        paging: false,
+        searching: false,
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+  });
+</script>

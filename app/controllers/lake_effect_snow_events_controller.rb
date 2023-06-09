@@ -7,7 +7,7 @@ class LakeEffectSnowEventsController < ApplicationController
     @snowReports.each do |report|
         report.destroy
     end
-    @event = LakeEffectSnowEvent.where id: params[:id]
+    @event = LakeEffectSnowEvent.find(params[:id])
     redirect_to lake_effect_snow_event_url(@event)
   end
 
@@ -17,16 +17,17 @@ class LakeEffectSnowEventsController < ApplicationController
         buf.destroy
     end
 
-    @event = LakeEffectSnowEvent.where id: params[:id]
+    @event = LakeEffectSnowEvent.find(params[:id])
     redirect_to lake_effect_snow_event_url(@event)
   end
 
   def metar
+
     @metars = Metar.where(lake_effect_snow_event_id: params[:id])
     @metars.each do |met|
         met.destroy
     end
-    @event = LakeEffectSnowEvent.where id: params[:id]
+    @event = LakeEffectSnowEvent.find(params[:id])
     redirect_to lake_effect_snow_event_url(@event)
   end
 

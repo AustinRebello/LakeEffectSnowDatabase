@@ -16,6 +16,7 @@ Rails.application.routes.draw do
       get :file
       post :import
       get :downloadCSV
+      get :map
     }
   end
   resources :lake_effect_snow_events do

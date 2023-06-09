@@ -33,6 +33,10 @@ def downloadCSV
   end
 end
 
+def map
+  @reports = SnowReport.where(lake_effect_snow_event_id: params[:event_id])
+end
+
   # GET /snow_reports or /snow_reports.json
   def index
     @snow_reports = SnowReport.all
