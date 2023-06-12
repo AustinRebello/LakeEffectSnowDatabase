@@ -95,15 +95,22 @@
   }
 </script>
 
-<div class = "text-center">
-  <%= link_to "View Radar Loop for This Event", @url, :target => '_blank', class:"btn btn-primary"%>
+<div class = "p-1 text-center">
+  <%= link_to "View Radar Loop for This Event", @radarURL, :target => '_blank', class:"btn btn-primary"%>
   <%= link_to "View Snow Report Map for This Event", map_snow_reports_url(:event_id => @lake_effect_snow_event.id), :target => '_blank', class:"btn btn-primary"%>
+</div>
+
+<div class = "p-1 text-center">
+  <%= link_to "View Buffalo Atmospheric Sounding", @buffaloURL, :target => '_blank', class:"btn btn-primary"%>
+  <%= link_to "View Detroit Atmospheric Sounding", @detroitURL, :target => '_blank', class:"btn btn-primary"%>
 </div>
 
 <div class="p-1 text-center">
   <%= link_to "Back to all events", lake_effect_snow_events_path, class:"btn btn-secondary" %>
   <%= link_to "Edit", edit_lake_effect_snow_event_path(@lake_effect_snow_event), class:"btn btn-primary", data: { turbo_method: :get, turbo_confirm: 'This will delete all current BUFKIT and METARs data for this event. Are you sure you wish to edit?'} %>
-  <%= button_to "Delete this event", @lake_effect_snow_event, method: :delete, class:"btn btn-danger", data: {turbo_method: :get, turbo_confirm: "This will permanently delete this event and all associated data. Are you sure you wish to delete?"} %>
+  <%= button_to "Delete this event", @lake_effect_snow_event, method: :delete, class:"btn btn-danger", data: {turbo_method: :get, turbo_confirm: "This will permanently delete this event and all associated data. Are you sure you wish to delete?"}, form: {style: 'display:inline-block;'} %>
+  <% link_to "Delete this event", @lake_effect_snow_event, method: :delete, class:"btn btn-danger", data: {turbo_method: :get, turbo_confirm: "This will permanently delete this event and all associated data. Are you sure you wish to delete?"} %>
+
 </div>
 
 <div class="p-1 text-center">
@@ -155,7 +162,7 @@
       </ul>
     </div>
     <%= link_to "Export All METAR Data", downloadCSV_metars_url(format: 'csv', event_id: @event.id) %>
-    <table id = "metTable" class="table table-striped table-hover table-bordered">
+    <table id = "metTable" class="sortTable table table-striped table-hover table-bordered">
       <thead class="thead-dark">
         <tr>
           <th scope="col">Site</th>
@@ -218,7 +225,7 @@
   </div>
   <div id="SnowReports" class="text-center container">
     <%= link_to "Export Snow Report Data", downloadCSV_snow_reports_url(format: 'csv', event_id: @event.id) %>
-    <table id = "snowTable"class="table table-striped table-hover table-bordered">
+    <table id = "snowTable"class="sortTable table table-striped table-hover table-bordered">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Last Name</th>
@@ -266,7 +273,7 @@
       </ul>
     </div>
     <%= link_to "Export NAM Data", downloadCSV_bufkits_url(format: 'csv', modelType: "NAM", event_id: @event.id) %>
-    <table id = "namTable" class="table table-striped table-hover table-bordered">
+    <table id = "namTable" class="sortTable table table-striped table-hover table-bordered">
     <thead class="thead-dark">
       <tr>
         <% @tableHeaderBuf.each do |head| %>
@@ -277,12 +284,9 @@
     <tbody id = "nkcle" class="table-group-divider">
       <% @namBufCLE.each do |bufkit| %>
         <tr>
-          <td><%= bufkit.modelType %></td>
-          <td><%= bufkit.station %></td>
-          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
           <% value = 1 %>
           <% bufkit.attributes.each do |attr_value| %>
-            <% if (value > 7) && (value < 40) %>
+            <% if  (value >1) && (value < 37) %>
               <td><%= attr_value[1] %></td>
             <% end %>
             <% value = value + 1%>
@@ -293,12 +297,9 @@
     <tbody id = "nkeri" class="table-group-divider">
       <% @namBufERI.each do |bufkit| %>
         <tr>
-          <td><%= bufkit.modelType %></td>
-          <td><%= bufkit.station %></td>
-          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
           <% value = 1 %>
           <% bufkit.attributes.each do |attr_value| %>
-            <% if (value > 7) && (value < 40) %>
+            <% if (value >1) && (value < 37) %>
               <td><%= attr_value[1] %></td>
             <% end %>
             <% value = value + 1%>
@@ -309,12 +310,9 @@
     <tbody id = "nkgkl" class="table-group-divider">
       <% @namBufGKJ.each do |bufkit| %>
         <tr>
-          <td><%= bufkit.modelType %></td>
-          <td><%= bufkit.station %></td>
-          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
           <% value = 1 %>
           <% bufkit.attributes.each do |attr_value| %>
-            <% if (value > 7) && (value < 40) %>
+            <% if (value >1) && (value < 37) %>
               <td><%= attr_value[1] %></td>
             <% end %>
             <% value = value + 1%>
@@ -325,12 +323,9 @@
     <tbody id = "nle1" class="table-group-divider">
       <% @namBufLE1.each do |bufkit| %>
         <tr>
-          <td><%= bufkit.modelType %></td>
-          <td><%= bufkit.station %></td>
-          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
           <% value = 1 %>
           <% bufkit.attributes.each do |attr_value| %>
-            <% if (value > 7) && (value < 40) %>
+            <% if (value >1) && (value < 37) %>
               <td><%= attr_value[1] %></td>
             <% end %>
             <% value = value + 1%>
@@ -341,12 +336,9 @@
     <tbody id = "nle2" class="table-group-divider">
       <% @namBufLE2.each do |bufkit| %>
         <tr>
-          <td><%= bufkit.modelType %></td>
-          <td><%= bufkit.station %></td>
-          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
           <% value = 1 %>
           <% bufkit.attributes.each do |attr_value| %>
-            <% if (value > 7) && (value < 40) %>
+            <% if (value >1) && (value < 37) %>
               <td><%= attr_value[1] %></td>
             <% end %>
             <% value = value + 1%>
@@ -381,7 +373,7 @@
       </ul>
     </div>
     <%= link_to "Export RAP Data", downloadCSV_bufkits_url(format: 'csv', modelType: "RAP", event_id: @event.id) %>
-    <table id = "rapTable" class="table table-striped table-hover table-bordered">
+    <table id = "rapTable" class="sortTable table table-striped table-hover table-bordered">
     <thead class="thead-dark">
       <tr>
         <% @tableHeaderBuf.each do |head| %>
@@ -392,12 +384,9 @@
     <tbody id = "rkcle" class="table-group-divider">
       <% @rapBufCLE.each do |bufkit| %>
         <tr>
-          <td><%= bufkit.modelType %></td>
-          <td><%= bufkit.station %></td>
-          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
           <% value = 1 %>
           <% bufkit.attributes.each do |attr_value| %>
-            <% if (value > 7) && (value < 40) %>
+            <% if (value >1) && (value < 37) %>
               <td><%= attr_value[1] %></td>
             <% end %>
             <% value = value + 1%>
@@ -408,12 +397,9 @@
     <tbody id = "rkeri" class="table-group-divider">
       <% @rapBufERI.each do |bufkit| %>
         <tr>
-          <td><%= bufkit.modelType %></td>
-          <td><%= bufkit.station %></td>
-          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
           <% value = 1 %>
           <% bufkit.attributes.each do |attr_value| %>
-            <% if (value > 7) && (value < 40) %>
+            <% if (value >1) && (value < 37) %>
               <td><%= attr_value[1] %></td>
             <% end %>
             <% value = value + 1%>
@@ -424,12 +410,9 @@
     <tbody id = "rkgkl" class="table-group-divider">
       <% @rapBufGKJ.each do |bufkit| %>
         <tr>
-          <td><%= bufkit.modelType %></td>
-          <td><%= bufkit.station %></td>
-          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
           <% value = 1 %>
           <% bufkit.attributes.each do |attr_value| %>
-            <% if (value > 7) && (value < 40) %>
+            <% if (value >1) && (value < 37) %>
               <td><%= attr_value[1] %></td>
             <% end %>
             <% value = value + 1%>
@@ -440,12 +423,9 @@
     <tbody id = "rle1" class="table-group-divider">
       <% @rapBufLE1.each do |bufkit| %>
         <tr>
-          <td><%= bufkit.modelType %></td>
-          <td><%= bufkit.station %></td>
-          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
           <% value = 1 %>
           <% bufkit.attributes.each do |attr_value| %>
-            <% if (value > 7) && (value < 40) %>
+            <% if (value >1) && (value < 37) %>
               <td><%= attr_value[1] %></td>
             <% end %>
             <% value = value + 1%>
@@ -456,12 +436,9 @@
     <tbody id = "rle2" class="table-group-divider">
       <% @rapBufLE2.each do |bufkit| %>
         <tr>
-          <td><%= bufkit.modelType %></td>
-          <td><%= bufkit.station %></td>
-          <td><%= bufkit.month %>/<%= bufkit.day %>/<%= bufkit.year %> <%= bufkit.hour %>Z</td>
           <% value = 1 %>
           <% bufkit.attributes.each do |attr_value| %>
-            <% if (value > 7) && (value < 40) %>
+            <% if (value >1) && (value < 37) %>
               <td><%= attr_value[1] %></td>
             <% end %>
             <% value = value + 1%>
@@ -472,3 +449,15 @@
     </table>
   </div>
 </div>
+
+<script>
+  $(document).ready(function () {
+    if(document.getElementById('sortTable_wrapper')==null){
+      $('.sortTable').dataTable({
+        paging: false,
+        searching: false,
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+  });
+</script>

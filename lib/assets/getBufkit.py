@@ -88,7 +88,7 @@ class processBufkit:
     
     def compileRow(self, station, modelType, year, month, day, hour):
         rowBuild = []
-        rowBuild.extend([modelType, station, year, month, day, hour])
+        rowBuild.extend([modelType, station, (str(year)+"-"+str(month)+"-"+str(day)+" "+str(hour))])
         rowBuild.append(self.bufkitRows[0][5])
         rowBuild.append(self.bufkitRows[0][6])
         for i in range(3):

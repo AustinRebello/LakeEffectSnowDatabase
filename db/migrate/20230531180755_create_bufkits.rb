@@ -3,10 +3,7 @@ class CreateBufkits < ActiveRecord::Migration[7.0]
     create_table :bufkits do |t|
       t.string :modelType
       t.string :station
-      t.integer :year
-      t.integer :month
-      t.integer :day
-      t.integer :hour
+      t.string :date
       t.float :lowTemp
       t.float :lowDew
       t.float :lowHumidity

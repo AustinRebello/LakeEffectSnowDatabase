@@ -24,6 +24,8 @@ Rails.application.routes.draw do
       get :report
       get :bufkit
       get :metar
+      get :search
+      get :searchResults
     }
   end
   get 'home/404'

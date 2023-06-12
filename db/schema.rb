@@ -14,10 +14,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_181557) do
   create_table "bufkits", force: :cascade do |t|
     t.string "modelType"
     t.string "station"
-    t.integer "year"
-    t.integer "month"
-    t.integer "day"
-    t.integer "hour"
+    t.string "date"
     t.float "lowTemp"
     t.float "lowDew"
     t.float "lowHumidity"

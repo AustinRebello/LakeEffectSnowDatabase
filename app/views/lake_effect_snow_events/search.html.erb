@@ -1,0 +1,51 @@
+<%= form_with url: "searchResults", method: :get do |form| %>
+
+  <div>
+    <%= form.label "Model Type (uppercase)", style: "display: block" %>
+    <%= form.text_field :model, :required => true %>
+  </div>
+
+  <div>
+    <%= form.label "Station / Site (lowercase)", style: "display: block" %>
+    <%= form.text_field :site, :required => true %>
+  </div>
+  
+  <div>
+    <%= form.label "Surface Wind Direction (+/- 5 degrees)", style: "display: block" %>
+    <%= form.number_field :surWindDirection %>
+  </div>
+
+  <div>
+    <%= form.label "Surface Wind Speed (+/- 5 kts)", style: "display: block" %>
+    <%= form.number_field :surWindSpeed %>
+  </div>
+
+  <div>
+    <%= form.label "Minimum Lake Surface to 850mb Temperature Difference (>= this value)", style: "display: block" %>
+    <%= form.number_field :sur850TempDiff %>
+  </div>
+
+    <div>
+    <%= form.label "Minimum Lake Surface to 700mb Temperature Difference (>= this value)", style: "display: block" %>
+    <%= form.number_field :sur700TempDiff %>
+  </div>
+
+  <div>
+    <%= form.label "Minimum Lake Induced Cape (>= this value)", style: "display: block" %>
+    <%= form.number_field :liCAPE %>
+  </div>
+
+  <div>
+    <%= form.label "Minimum Lake Induced NCape (>= this value)", style: "display: block" %>
+    <%= form.number_field :liNCAPE %>
+  </div>
+
+  <div>
+    <%= form.label "Minimum Lake Induced EQL (>= this value)", style: "display: block" %>
+    <%= form.number_field :liEQL %>
+  </div>
+
+    <div>
+    <%= form.submit %>
+  </div>
+<% end %>
