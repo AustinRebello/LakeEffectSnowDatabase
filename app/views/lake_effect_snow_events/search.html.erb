@@ -1,51 +1,101 @@
+<h1 class = "text-center p-2">Lake Effect Snow Event Simple Search</h1>
+
 <%= form_with url: "searchResults", method: :get do |form| %>
+ <div  class = "row p-2 text-center">
+    <div class = "col">
+      <%= form.label :model, "Model Type", style: "display: block" %>
+      <%= form.select :model, ["NAM", "RAP"], :required => true %>
+    </div>
 
-  <div>
-    <%= form.label "Model Type (uppercase)", style: "display: block" %>
-    <%= form.text_field :model, :required => true %>
+    <div class = "col">
+      <%= form.label :site, "Station / Site", style: "display: block" %>
+      <%= form.select :site, ["kcle", "keri", "kgkj", "le1", "le2"], :required => true %>
+    </div>
+  </div>
+  <div class = "row p-2 text-center">
+    <div class = "col">
+      <%= form.label :sWindDirectionLow, "Surface Wind Direction Left Bound", style: "display: block" %>
+      <%= form.number_field :sWindDirectionLow %>
+    </div>
+
+    <div class = "col">
+      <%= form.label :sWindDirectionHigh, "Surface Wind Direction Right Bound", style: "display: block" %>
+      <%= form.number_field :sWindDirectionHigh %>
+    </div>
+
+    <div class = "col">
+      <%= form.label :sWindSpeed, "Minimum Surface Wind Speed (>= this value)", style: "display: block" %>
+      <%= form.number_field :sWindSpeed %>
+    </div>
+  </div>
+  <div class = "row p-2 text-center">
+    <div class = "col">
+      <%= form.label :nWindDirectionLow, "925mb Wind Direction Left Bound", style: "display: block" %>
+      <%= form.number_field :nWindDirectionLow %>
+    </div>
+
+    <div class = "col">
+      <%= form.label :nWindDirectionHigh, "925mb Wind Direction Right Bound", style: "display: block" %>
+      <%= form.number_field :nWindDirectionHigh %>
+    </div>
+
+    <div class = "col">
+      <%= form.label :nWindSpeed,  "Minimum 925mb Wind Speed (>= this value)", style: "display: block" %>
+      <%= form.number_field :nWindSpeed %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label "Station / Site (lowercase)", style: "display: block" %>
-    <%= form.text_field :site, :required => true %>
-  </div>
-  
-  <div>
-    <%= form.label "Surface Wind Direction (+/- 5 degrees)", style: "display: block" %>
-    <%= form.number_field :surWindDirection %>
+  <div class = "row p-2 text-center">
+    <div class = "col">
+      <%= form.label :eWindDirectionLow, "850mb Wind Direction Left Bound", style: "display: block" %>
+      <%= form.number_field :eWindDirectionLow %>
+    </div>
+
+    <div class = "col">
+      <%= form.label :eWindDirectionHigh, "850mb Wind Direction Right Bound", style: "display: block" %>
+      <%= form.number_field :eWindDirectionHigh %>
+    </div>
+
+    <div class = "col">
+      <%= form.label :eWindSpeed, "Minimum 850mb Wind Speed (>= this value)", style: "display: block" %>
+      <%= form.number_field :eWindSpeed %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label "Surface Wind Speed (+/- 5 kts)", style: "display: block" %>
-    <%= form.number_field :surWindSpeed %>
+  <div class = "row p-2 text-center">
+    <div class = "col">
+      <%= form.label :liCAPE, "Minimum Lake Induced Cape (>= this value)", style: "display: block" %>
+      <%= form.number_field :liCAPE %>
+    </div>
+
+    <div class = "col">
+      <%= form.label :liNCAPE, "Minimum Lake Induced NCape (>= this value)", style: "display: block" %>
+      <%= form.number_field :liNCAPE %>
+    </div>
+
+    <div class = "col">
+      <%= form.label :liEQL, "Minimum Lake Induced EQL (>= this value)", style: "display: block" %>
+      <%= form.number_field :liEQL %>
+    </div>
+  </div> 
+
+  <div class = "row p-2 text-center">
+    <div class = "col">
+      <%= form.label :sur850TempDiff, "Minimum Lake Surface to 850mb Temperature Difference (>= this value)", style: "display: block" %>
+      <%= form.number_field :sur850TempDiff %>
+    </div>
+
+      <div class = "col">
+      <%= form.label :sur700TempDiff, "Minimum Lake Surface to 700mb Temperature Difference (>= this value)", style: "display: block" %>
+      <%= form.number_field :sur700TempDiff %>
+    </div>
   </div>
 
-  <div>
-    <%= form.label "Minimum Lake Surface to 850mb Temperature Difference (>= this value)", style: "display: block" %>
-    <%= form.number_field :sur850TempDiff %>
+  <div  class = "p-2 text-center">
+    <%= form.label :bulkShear, "Minimum Surface to 700mb Bulk Shear (>= this value)", style: "display: block" %>
+    <%= form.number_field :bulkShear %>
   </div>
-
-    <div>
-    <%= form.label "Minimum Lake Surface to 700mb Temperature Difference (>= this value)", style: "display: block" %>
-    <%= form.number_field :sur700TempDiff %>
-  </div>
-
-  <div>
-    <%= form.label "Minimum Lake Induced Cape (>= this value)", style: "display: block" %>
-    <%= form.number_field :liCAPE %>
-  </div>
-
-  <div>
-    <%= form.label "Minimum Lake Induced NCape (>= this value)", style: "display: block" %>
-    <%= form.number_field :liNCAPE %>
-  </div>
-
-  <div>
-    <%= form.label "Minimum Lake Induced EQL (>= this value)", style: "display: block" %>
-    <%= form.number_field :liEQL %>
-  </div>
-
-    <div>
-    <%= form.submit %>
+    
+    <%= form.submit "Search Past Events", class: "btn btn-dark text-center" %>
   </div>
 <% end %>

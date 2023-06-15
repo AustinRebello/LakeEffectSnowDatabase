@@ -5,8 +5,9 @@
 <script>
 
   const allData = document.getElementById("data");
-  window.addEventListener("turbo:load", () => showData(1))
-
+  if(allData != null){
+    window.addEventListener("turbo:load", () => showData(1))
+  }
 
   function showData(dataToShow){
     var nam = document.getElementById("NAM");
@@ -21,34 +22,37 @@
 
     if(dataToShow == 1) {
         nam.style.display = 'block';
+        showBufData(6, true)
     } else if (dataToShow == 2){
         rap.style.display = 'block';
+        showBufData(6, false)
     } else if (dataToShow == 3){
         met.style.display = 'block';
+        showMetData(4)
     } else {
         sno.style.display = 'block'
     }
   }
 
   function showMetData(dataToShow){
-    var cle = document.getElementById("cle");
-    var eri = document.getElementById("eri");
-    var gkj = document.getElementById("gkj");
+    var cle = document.getElementById("mcle");
+    var eri = document.getElementById("meri");
+    var gkj = document.getElementById("mgkj");
+    var all = document.getElementById("mall")
 
     cle.style.display = 'none';
     eri.style.display = 'none';
     gkj.style.display = 'none';
+    all.style.display = 'none';
 
     if(dataToShow == 1) {
-        cle.style.display = null;
-    } else if (dataToShow == 2){
-        eri.style.display = null;
-    } else if (dataToShow == 3){
-        gkj.style.display = null;
-    } else {
       cle.style.display = null;
+    } else if (dataToShow == 2){
       eri.style.display = null;
+    } else if (dataToShow == 3){
       gkj.style.display = null;
+    } else {
+      all.style.display = null;
     }
   }
 
@@ -59,12 +63,15 @@
       var kgkl = document.getElementById("nkgkl");
       var le1 = document.getElementById("nle1");
       var le2 = document.getElementById("nle2");
+      var all = document.getElementById("nall")
+      
     } else {
       var kcle = document.getElementById("rkcle");
       var keri = document.getElementById("rkeri");
       var kgkl = document.getElementById("rkgkl");
       var le1 = document.getElementById("rle1");
       var le2 = document.getElementById("rle2");
+      var all = document.getElementById("rall");
     }
     
 
@@ -74,23 +81,20 @@
     kgkl.style.display = 'none';
     le1.style.display = 'none';
     le2.style.display = 'none';
+    all.style.display = 'none';
 
     if(dataToShow == 1) {
-        kcle.style.display = null;
-    } else if (dataToShow == 2){
-        keri.style.display = null;
-    } else if (dataToShow == 3){
-        kgkl.style.display = null;
-    } else if (dataToShow == 4){
-        le1.style.display = null;
-    } else if (dataToShow == 5){
-        le2.style.display = null;
-    } else {
       kcle.style.display = null;
+    } else if (dataToShow == 2){
       keri.style.display = null;
+    } else if (dataToShow == 3){
       kgkl.style.display = null;
+    } else if (dataToShow == 4){
       le1.style.display = null;
+    } else if (dataToShow == 5){
       le2.style.display = null;
+    } else {
+      all.style.display = null;
     }
   }
 </script>
@@ -105,7 +109,7 @@
 
 <div class = "p-1 text-center">
   <%= link_to "View Radar Loop for This Event", @radarURL, :target => '_blank', class:"btn btn-primary"%>
-  <%= link_to "View Snow Report Map for This Event", map_snow_reports_url(:event_id => @lake_effect_snow_event.id), :target => '_blank', class:"btn btn-primary"%>
+  <%= link_to "View Snow Report Map for This Event", @snowfallURL, :target => '_blank', class:"btn btn-primary"%>
 </div>
 
 <div class = "p-1 text-center">
@@ -113,20 +117,7 @@
   <%= link_to "View Detroit Atmospheric Sounding", @detroitURL, :target => '_blank', class:"btn btn-primary"%>
 </div>
 
-<div class="p-1 text-center">
-  <%= link_to 'Generate METAR data', python_metars_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success", data: { turbo_method: :get, turbo_confirm: 'This will delete all current METAR data for this event. Are you sure you wish to continue?'} %>
-  <%= link_to 'Generate BUFKIT data', python_bufkits_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success", data: { turbo_method: :get, turbo_confirm: 'This will delete all current BUFKIT data for this event. Are you sure you wish to continue?'} %>
-  <%= link_to 'Add Snow Report CSV file', file_snow_reports_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success", data: { turbo_method: :get, turbo_confirm: 'This will delete all snow reports for this event. Are you sure you wish to continue?'} %>
-</div>
-
-<div class="p-1 text-center">
-  <%= link_to 'Delete METAR data', metar_lake_effect_snow_events_url(:id => @lake_effect_snow_event.id), class:"btn btn-danger", data: { turbo_method: :get, turbo_confirm: 'This will delete all current METAR data for this event. Are you sure you wish to continue?'} %>
-  <%= link_to 'Delete BUFKIT data', bufkit_lake_effect_snow_events_url(:id => @lake_effect_snow_event.id), class:"btn btn-danger", data: { turbo_method: :get, turbo_confirm: 'This will delete all current BUFKIT data for this event. Are you sure you wish to continue?'} %>
-  <%= link_to 'Delete Snow Reports', report_lake_effect_snow_events_url(:id => @lake_effect_snow_event.id), class:"btn btn-danger", data: { turbo_method: :get, turbo_confirm: 'This will delete all snow reports for this event. Are you sure you wish to continue?'} %>
-</div>
-
-
-<div id="dFields" class="pb-4">
+<div id="dFields" class="pb-4 pt-4">
   <ul class="nav nav-tabs nav-fill">
     <li class="nav-item">
       <%= button_tag  'NAM Data', id:"nam", class:"nav-link link-dark", :onclick => "showData(1)" %>
@@ -161,28 +152,20 @@
         </li>
       </ul>
     </div>
-    <%= link_to "Export All METAR Data", downloadCSV_metars_url(format: 'csv', event_id: @event.id) %>
-    <table id = "metTable" class="sortTable table table-striped table-hover table-bordered">
+
+    <%= link_to 'Generate METAR data', python_metars_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success", data: { turbo_method: :get, turbo_confirm: 'This will delete all current METAR data for this event. Are you sure you wish to continue?'} %>
+    <%= link_to 'Delete METAR data', metar_lake_effect_snow_events_url(:id => @lake_effect_snow_event.id), class:"btn btn-danger", data: { turbo_method: :get, turbo_confirm: 'This will delete all current METAR data for this event. Are you sure you wish to continue?'} %>
+    <%= link_to "Export All METAR Data", downloadCSV_metars_url(format: 'csv', event_id: @event.id), class:"btn btn-primary" %>
+    
+    <table id = "mcle" class="table table-striped table-hover table-bordered">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">Site</th>
-          <th scope="col">Observation Time</th>
-          <th scope="col">Temperature</th>
-          <th scope="col">Dew Point</th>
-          <th scope="col">Humidity</th>
-          <th scope="col">Wind Direction</th>
-          <th scope="col">Wind Speed</th>
-          <th scope="col">Mean Sea Level Pressure</th>
-          <th scope="col">Visibility</th>
-          <th scope="col">Wind Gust</th>
-          <th scope="col">Present Weather</th>
-          <th scope="col">Peak Wind Gust</th>
-          <th scope="col">Peak Wind Direction</th>
-          <th scope="col">Peak Wind Time</th>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
         </tr>
       </thead>
-
-      <tbody id = "cle" class="table-group-divider">
+      <tbody class="table-group-divider">
         <% @metarCLE.each do |met| %>
           <tr>
               <% value = 1%>
@@ -195,7 +178,17 @@
           </tr>
         <% end %>
       </tbody>
-      <tbody id = "eri" class="table-group-divider">
+    </table>
+
+    <table id = "meri" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
         <% @metarERI.each do |met| %>
           <tr>
               <% value = 1%>
@@ -208,7 +201,17 @@
           </tr>
         <% end %>
       </tbody>
-      <tbody id = "gkj" class="table-group-divider">
+    </table>
+
+    <table id = "mgkj" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
         <% @metarGKJ.each do |met| %>
           <tr>
               <% value = 1%>
@@ -222,10 +225,36 @@
         <% end %>
       </tbody>
     </table>
+
+    <table id = "mall" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @metars.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
   </div>
   <div id="SnowReports" class="text-center container">
-    <%= link_to "Export Snow Report Data", downloadCSV_snow_reports_url(format: 'csv', event_id: @event.id) %>
-    <table id = "snowTable"class="sortTable table table-striped table-hover table-bordered">
+    <%= link_to 'Add Snow Report CSV file', file_snow_reports_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success", data: { turbo_method: :get, turbo_confirm: 'This will delete all snow reports for this event. Are you sure you wish to continue?'} %>
+    <%= link_to 'Delete Snow Reports', report_lake_effect_snow_events_url(:id => @lake_effect_snow_event.id), class:"btn btn-danger", data: { turbo_method: :get, turbo_confirm: 'This will delete all snow reports for this event. Are you sure you wish to continue?'} %>
+    <%= link_to "Export Snow Report Data", downloadCSV_snow_reports_url(format: 'csv', event_id: @event.id),  class:"btn btn-primary" %>
+    <table id = "snowTable"class="table table-striped table-hover table-bordered">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Last Name</th>
@@ -272,80 +301,147 @@
         </li>
       </ul>
     </div>
-    <%= link_to "Export NAM Data", downloadCSV_bufkits_url(format: 'csv', modelType: "NAM", event_id: @event.id) %>
-    <table id = "namTable" class="sortTable table table-striped table-hover table-bordered">
-    <thead class="thead-dark">
-      <tr>
-        <% @tableHeaderBuf.each do |head| %>
-          <th scope="col"><%= head %></th>
+
+    <%= link_to 'Generate BUFKIT data', python_bufkits_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success", data: { turbo_method: :get, turbo_confirm: 'This will delete all current BUFKIT data for this event. Are you sure you wish to continue?'} %>
+    <%= link_to 'Delete BUFKIT data', bufkit_lake_effect_snow_events_url(:id => @lake_effect_snow_event.id), class:"btn btn-danger", data: { turbo_method: :get, turbo_confirm: 'This will delete all current BUFKIT data for this event. Are you sure you wish to continue?'} %>
+    <%= link_to "Export NAM Data", downloadCSV_bufkits_url(format: 'csv', modelType: "NAM", event_id: @event.id), class:"btn btn-primary" %>
+    
+    <table id = "nkcle" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @namBufCLE.each do |bufkit| %>
+          <tr>
+            <% value = 1 %>
+            <% bufkit.attributes.each do |attr_value| %>
+              <% if (value >1) && (value < 37) %>
+                <td><%= attr_value[1] %></td>
+              <% end %>
+              <% value = value + 1%>
+            <% end %>
+          </tr>
         <% end %>
-      </tr>
-    </thead>
-    <tbody id = "nkcle" class="table-group-divider">
-      <% @namBufCLE.each do |bufkit| %>
+      </tbody>
+    </table>
+
+    <table id = "nkeri" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
         <tr>
-          <% value = 1 %>
-          <% bufkit.attributes.each do |attr_value| %>
-            <% if  (value >1) && (value < 37) %>
-              <td><%= attr_value[1] %></td>
-            <% end %>
-            <% value = value + 1%>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
           <% end %>
         </tr>
-      <% end %>
-    </tbody>
-    <tbody id = "nkeri" class="table-group-divider">
-      <% @namBufERI.each do |bufkit| %>
+      </thead>
+        <tbody class="table-group-divider">
+          <% @namBufERI.each do |bufkit| %>
+            <tr>
+              <% value = 1 %>
+              <% bufkit.attributes.each do |attr_value| %>
+                <% if (value >1) && (value < 37) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+            </tr>
+          <% end %>
+      </tbody>
+    </table>
+
+    <table id = "nkgkl" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
         <tr>
-          <% value = 1 %>
-          <% bufkit.attributes.each do |attr_value| %>
-            <% if (value >1) && (value < 37) %>
-              <td><%= attr_value[1] %></td>
-            <% end %>
-            <% value = value + 1%>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
           <% end %>
         </tr>
-      <% end %>
-    </tbody>
-    <tbody id = "nkgkl" class="table-group-divider">
-      <% @namBufGKJ.each do |bufkit| %>
+      </thead>
+        <tbody class="table-group-divider">
+          <% @namBufGKJ.each do |bufkit| %>
+            <tr>
+              <% value = 1 %>
+              <% bufkit.attributes.each do |attr_value| %>
+                <% if (value >1) && (value < 37) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+            </tr>
+          <% end %>
+      </tbody>
+    </table>
+
+    <table id = "nle1" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
         <tr>
-          <% value = 1 %>
-          <% bufkit.attributes.each do |attr_value| %>
-            <% if (value >1) && (value < 37) %>
-              <td><%= attr_value[1] %></td>
-            <% end %>
-            <% value = value + 1%>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
           <% end %>
         </tr>
-      <% end %>
-    </tbody>
-    <tbody id = "nle1" class="table-group-divider">
-      <% @namBufLE1.each do |bufkit| %>
-        <tr>
-          <% value = 1 %>
-          <% bufkit.attributes.each do |attr_value| %>
-            <% if (value >1) && (value < 37) %>
-              <td><%= attr_value[1] %></td>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @namBufLE1.each do |bufkit| %>
+          <tr>
+            <% value = 1 %>
+            <% bufkit.attributes.each do |attr_value| %>
+              <% if (value >1) && (value < 37) %>
+                <td><%= attr_value[1] %></td>
+              <% end %>
+              <% value = value + 1%>
             <% end %>
-            <% value = value + 1%>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "nle2" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
           <% end %>
         </tr>
-      <% end %>
-    </tbody>
-    <tbody id = "nle2" class="table-group-divider">
-      <% @namBufLE2.each do |bufkit| %>
-        <tr>
-          <% value = 1 %>
-          <% bufkit.attributes.each do |attr_value| %>
-            <% if (value >1) && (value < 37) %>
-              <td><%= attr_value[1] %></td>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @namBufLE2.each do |bufkit| %>
+          <tr>
+            <% value = 1 %>
+            <% bufkit.attributes.each do |attr_value| %>
+              <% if (value >1) && (value < 37) %>
+                <td><%= attr_value[1] %></td>
+              <% end %>
+              <% value = value + 1%>
             <% end %>
-            <% value = value + 1%>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "nall" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
           <% end %>
         </tr>
-      <% end %>
-    </tbody>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @namBuf.each do |bufkit| %>
+          <tr>
+            <% value = 1 %>
+            <% bufkit.attributes.each do |attr_value| %>
+              <% if (value >1) && (value < 37) %>
+                <td><%= attr_value[1] %></td>
+              <% end %>
+              <% value = value + 1%>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
     </table>
   </div>
 
@@ -372,90 +468,288 @@
         </li>
       </ul>
     </div>
-    <%= link_to "Export RAP Data", downloadCSV_bufkits_url(format: 'csv', modelType: "RAP", event_id: @event.id) %>
-    <table id = "rapTable" class="sortTable table table-striped table-hover table-bordered">
-    <thead class="thead-dark">
-      <tr>
-        <% @tableHeaderBuf.each do |head| %>
-          <th scope="col"><%= head %></th>
+
+    <%= link_to 'Generate BUFKIT data', python_bufkits_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success", data: { turbo_method: :get, turbo_confirm: 'This will delete all current BUFKIT data for this event. Are you sure you wish to continue?'} %>
+    <%= link_to 'Delete BUFKIT data', bufkit_lake_effect_snow_events_url(:id => @lake_effect_snow_event.id), class:"btn btn-danger", data: { turbo_method: :get, turbo_confirm: 'This will delete all current BUFKIT data for this event. Are you sure you wish to continue?'} %>
+    <%= link_to "Export RAP Data", downloadCSV_bufkits_url(format: 'csv', modelType: "RAP", event_id: @event.id), class: "btn btn-primary" %>
+    
+    <table id = "rkcle" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @rapBufCLE.each do |bufkit| %>
+          <tr>
+            <% value = 1 %>
+            <% bufkit.attributes.each do |attr_value| %>
+              <% if (value >1) && (value < 37) %>
+                <td><%= attr_value[1] %></td>
+              <% end %>
+              <% value = value + 1%>
+            <% end %>
+          </tr>
         <% end %>
-      </tr>
-    </thead>
-    <tbody id = "rkcle" class="table-group-divider">
-      <% @rapBufCLE.each do |bufkit| %>
-        <tr>
-          <% value = 1 %>
-          <% bufkit.attributes.each do |attr_value| %>
-            <% if (value >1) && (value < 37) %>
-              <td><%= attr_value[1] %></td>
-            <% end %>
-            <% value = value + 1%>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-    <tbody id = "rkeri" class="table-group-divider">
-      <% @rapBufERI.each do |bufkit| %>
-        <tr>
-          <% value = 1 %>
-          <% bufkit.attributes.each do |attr_value| %>
-            <% if (value >1) && (value < 37) %>
-              <td><%= attr_value[1] %></td>
-            <% end %>
-            <% value = value + 1%>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-    <tbody id = "rkgkl" class="table-group-divider">
-      <% @rapBufGKJ.each do |bufkit| %>
-        <tr>
-          <% value = 1 %>
-          <% bufkit.attributes.each do |attr_value| %>
-            <% if (value >1) && (value < 37) %>
-              <td><%= attr_value[1] %></td>
-            <% end %>
-            <% value = value + 1%>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-    <tbody id = "rle1" class="table-group-divider">
-      <% @rapBufLE1.each do |bufkit| %>
-        <tr>
-          <% value = 1 %>
-          <% bufkit.attributes.each do |attr_value| %>
-            <% if (value >1) && (value < 37) %>
-              <td><%= attr_value[1] %></td>
-            <% end %>
-            <% value = value + 1%>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
-    <tbody id = "rle2" class="table-group-divider">
-      <% @rapBufLE2.each do |bufkit| %>
-        <tr>
-          <% value = 1 %>
-          <% bufkit.attributes.each do |attr_value| %>
-            <% if (value >1) && (value < 37) %>
-              <td><%= attr_value[1] %></td>
-            <% end %>
-            <% value = value + 1%>
-          <% end %>
-        </tr>
-      <% end %>
-    </tbody>
+      </tbody>
     </table>
+
+    <table id = "rkeri" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+        <tbody class="table-group-divider">
+          <% @rapBufERI.each do |bufkit| %>
+            <tr>
+              <% value = 1 %>
+              <% bufkit.attributes.each do |attr_value| %>
+                <% if (value >1) && (value < 37) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+            </tr>
+          <% end %>
+      </tbody>
+    </table>
+
+    <table id = "rkgkl" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+        <tbody class="table-group-divider">
+          <% @rapBufGKJ.each do |bufkit| %>
+            <tr>
+              <% value = 1 %>
+              <% bufkit.attributes.each do |attr_value| %>
+                <% if (value >1) && (value < 37) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+            </tr>
+          <% end %>
+      </tbody>
+    </table>
+
+    <table id = "rle1" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @rapBufLE1.each do |bufkit| %>
+          <tr>
+            <% value = 1 %>
+            <% bufkit.attributes.each do |attr_value| %>
+              <% if (value >1) && (value < 37) %>
+                <td><%= attr_value[1] %></td>
+              <% end %>
+              <% value = value + 1%>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "rle2" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @rapBufLE2.each do |bufkit| %>
+          <tr>
+            <% value = 1 %>
+            <% bufkit.attributes.each do |attr_value| %>
+              <% if (value >1) && (value < 37) %>
+                <td><%= attr_value[1] %></td>
+              <% end %>
+              <% value = value + 1%>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "rall" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderBuf.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @rapBuf.each do |bufkit| %>
+          <tr>
+            <% value = 1 %>
+            <% bufkit.attributes.each do |attr_value| %>
+              <% if (value >1) && (value < 37) %>
+                <td><%= attr_value[1] %></td>
+              <% end %>
+              <% value = value + 1%>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
   </div>
 </div>
 
 <script>
   $(document).ready(function () {
-    if(document.getElementById('sortTable_wrapper')==null){
-      $('.sortTable').dataTable({
+    showBufData(6, true)
+    if(document.getElementById('rkcle_wrapper')==null){
+      $('#rkcle').dataTable({
         paging: false,
         searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('rkeri_wrapper')==null){
+      $('#rkeri').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('rkgkl_wrapper')==null){
+      $('#rkgkl').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('rle1_wrapper')==null){
+      $('#rle1').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('rle2_wrapper')==null){
+      $('#rle2').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('rall_wrapper')==null){
+      $('#rall').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('nkcle_wrapper')==null){
+      $('#nkcle').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('nkeri_wrapper')==null){
+      $('#nkeri').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('rngkl_wrapper')==null){
+      $('#nkgkl').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('nle1_wrapper')==null){
+      $('#nle1').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('nle2_wrapper')==null){
+      $('#nle2').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('nall_wrapper')==null){
+      $('#nall').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('mcle_wrapper')==null){
+      $('#mcle').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('meri_wrapper')==null){
+      $('#meri').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('mgkj_wrapper')==null){
+      $('#mgkj').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('mall_wrapper')==null){
+      $('#mall').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('snowTable_wrapper')==null){
+      $('#snowTable').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
       });
       $('.dataTables_length').addClass('bs-select');
     }

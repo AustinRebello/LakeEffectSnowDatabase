@@ -5,5 +5,5 @@ class ApplicationController < ActionController::Base
         end
       
         redirect_to home_404_url
-      end
+    end
 end

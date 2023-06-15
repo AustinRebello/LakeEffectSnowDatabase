@@ -1,7 +1,13 @@
 
 <div class="container pt-5 text-center">
     <%= form_tag import_snow_reports_url(:event_id => @event.id), multipart: true do %>
-    <p>Choose CSV File: <%= file_field_tag :file, accept: 'text/csv', :required => true%></p>
-    <%= submit_tag "Submit Snow Reports File" %>
+    <p>Choose CSV File: </p>
+    <span class = "btn text-center">
+        <%= file_field_tag :file, accept: 'text/csv', :required => true%>
+    </span>
+    <span class = "container text-center">
+        <%= submit_tag "Submit Snow Reports File" %>
+    </span>
+    
     <% end %>
 </div>
