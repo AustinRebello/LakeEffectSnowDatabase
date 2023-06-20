@@ -68,6 +68,7 @@ class Bufkit < ActiveRecord::Base
       newbufkit.bulkShearV = row[32]
       newbufkit.lowDeltaT = row[33]
       newbufkit.highDeltaT = row[34]
+      newbufkit.maxOmega = row[35]
       newbufkit.lake_effect_snow_event_id = event_id
       newbufkit.save
     end

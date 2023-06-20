@@ -31,6 +31,7 @@ class processBufkit:
         #self.stations = ["kcle"]
         self.stations = ["kcle","keri","kgkl","le1","le2"]
         self.cape = 0
+        self.crosshair = False
         self.times=[]
         self.bufkitRows = []
         self.bulkShearValues = []
@@ -86,7 +87,7 @@ class processBufkit:
         relHum = round(100*(dewE/tempE),2)
         return str(relHum)
     
-    def compileRow(self, station, modelType, year, month, day, hour):
+    def compileRow(self, station, modelType, year, month, day, hour, cross):
         rowBuild = []
         rowBuild.extend([modelType, station, (str(year)+"-"+str(month)+"-"+str(day)+" "+str(hour))])
         rowBuild.append(self.bufkitRows[0][5])
@@ -108,6 +109,7 @@ class processBufkit:
         rowBuild.extend([round(bS[0].magnitude,2),round(bS[1],2),round(bS[2],2)])
         rowBuild.append(round(self.lkTmp - float(self.bufkitRows[2][2]),2)) #DeltaTemperature for Lake surface temp to 850mb temp 
         rowBuild.append(round(self.lkTmp - float(self.bufkitRows[3][2]),2)) #DeltaTemperature for Lake surface temp to 700mb temp 
+        rowBuild.append(cross)
         self.compiledRows.append(rowBuild)
         
     def collectBulkShear(self, Ps, Us, Vs):
@@ -128,7 +130,7 @@ class processBufkit:
                 response = request.urlopen(request_url)
                     
         data = response.read().splitlines()
-        for stimSearch in range(startingSTIM, endingSTIM+1):
+        for stimSearch in range(startingSTIM, startingSTIM+endingSTIM+1):
             stimFound = stimSearch*132+6
             stim = data[stimFound].decode('ascii').split(' ')[2]
             prevD = [10]
@@ -142,6 +144,10 @@ class processBufkit:
             Vs = []
             Ps = []
             self.cape = 0
+            self.crosshair = False
+            
+            omegaData = [0,0,0]
+            
             for line in range(stimSearch*132+6,len(data)):
                 if re.search("(((-\d+\.\d+.)|(\d+\.\d+.)){7}((\d+\.\d+)|(-\d+\.\d+)))",data[line].decode('ascii')):
                     d = (data[line].decode('ascii')+" "+data[line+1].decode('ascii')).split()
@@ -152,6 +158,8 @@ class processBufkit:
                     Us.append(u.m)
                     Vs.append(v.m)
                     Ps.append(float(d[0]))
+                    
+                    
                     
                     if not foundSurface:
                         foundSurface = True
@@ -173,10 +181,23 @@ class processBufkit:
                         self.bufkitRows.append(truePressureData)
                         self.collectBulkShear(Ps, Us, Vs)
                         
-                        self.compileRow(station, "NAM", self.year, self.month, self.day, int(hour)+int(stim))
+                        if(float(d[7])>=omegaData[0] or omegaData[2]<80 or omegaData[1]>-10 or omegaData[1]<-20):
+                            self.crosshair = False
+                        else:
+                            self.crosshair = True
+                        
+                        
+                        self.compileRow(station, "NAM", self.year, self.month, self.day, int(hour)+int(stim), self.crosshair)
                         break
                     else:
                         prevD = d
+                        
+                    if(float(d[7])>=omegaData[0]):
+                        omegaData[0] = float(d[7])
+                        omegaData[1] = float(d[1])
+                        omegaData[2] = float(self.calculateRelativeHumidity(float(d[1]), float(d[2])))
+                        #print("NEW OMEGA PEAK AT: "+str(d[0])+" with values of "+str(omegaData[0])+" "+str(omegaData[1])+" "+str(omegaData[2]))  
+                    
                 elif line == stimFound+3:
                     capeLine = data[line].decode('ascii')
                     splitLine = capeLine.split(" ")
@@ -199,17 +220,26 @@ class processBufkit:
                 useValue = 5
             if int(self.hour)>=0 and int(self.hour)<6:
                 startStim = int(self.hour)-0
+                if(startStim + useValue > 5):
+                    useValue = 5 - startStim
                 self.queryDataNAM('nam','00', startStim, useValue, station)
             elif int(self.hour)>=6 and int(self.hour)<12:
                 startStim = int(self.hour)-6
+                if(startStim + useValue > 5):
+                    useValue = 5 - startStim
                 self.queryDataNAM('namm','06', startStim, useValue, station)
             elif int(self.hour)>=12 and int(self.hour)<18:
                 startStim = int(self.hour)-12
+                if(startStim + useValue > 5):
+                    useValue = 5 - startStim
                 self.queryDataNAM('nam','12', startStim, useValue, station)
             elif int(self.hour)>=18 and int(self.hour)<24:
                 startStim = int(self.hour)-18
+                if(startStim + useValue > 5):
+                    useValue = 5 - startStim
                 self.queryDataNAM('namm','18', startStim, useValue, station)
-            ah = ah + useValue - startStim + 1
+            ah = ah + useValue + 1
+
                    
     def getRAPData(self,station):
         for ah in self.times:
@@ -237,9 +267,14 @@ class processBufkit:
             Vs = []
             Ps = []
             self.cape = 0
+            self.crosshair = False
+            
+            omegaData = [0,0,0]
+            
             for line in range(0,len(data)):
                 if re.search("(((-\d+\.\d+.)|(\d+\.\d+.)){7}((\d+\.\d+)|(-\d+\.\d+)))",data[line].decode('ascii')):
                     d = (data[line].decode('ascii')+" "+data[line+1].decode('ascii')).split()
+                    
                     d2,s = d[5:7]
                     s = float(s) * units('knots')
                     d2 = float(d2) * units('deg')
@@ -247,6 +282,7 @@ class processBufkit:
                     Us.append(u.m)
                     Vs.append(v.m)
                     Ps.append(float(d[0]))
+                    
                     
                     if not foundSurface:
                         foundSurface = True
@@ -264,17 +300,32 @@ class processBufkit:
                         prevD = d
                     elif float(d[0]) < 700.0 and not found700:
                         truePressureData = self.calculateExactPressureValue(700, d, prevD)
+                        
+                        if(float(d[7])>=omegaData[0] or omegaData[2]<80 or omegaData[1]>-10 or omegaData[1]<-20):
+                            self.crosshair = False
+                        else:
+                            self.crosshair = True
+                        
                         found700 = True
                         self.bufkitRows.append(truePressureData)
                         self.collectBulkShear(Ps, Us, Vs)
-                        self.compileRow(station, "RAP", self.year, self.month, self.day, self.hour)
+                        self.compileRow(station, "RAP", self.year, self.month, self.day, self.hour , self.crosshair)
                         break
                     else:
                         prevD = d
+                        
+                    if(float(d[7])>=omegaData[0]):
+                        
+                        omegaData[0] = float(d[7])
+                        omegaData[1] = float(d[1])
+                        omegaData[2] = float(self.calculateRelativeHumidity(float(d[1]), float(d[2])))
+                        #print("NEW OMEGA PEAK AT: "+str(d[0])+" with values of "+str(omegaData[0])+" "+str(omegaData[1])+" "+str(omegaData[2]))
+                        
                 elif line == 9:
                     capeLine = data[line].decode('ascii')
                     splitLine = capeLine.split(" ")
                     self.cape = splitLine[-1]
 
 args = sys.argv
-processBufkit(args[1], args[2], args[3]).run()
+#processBufkit(args[1], args[2], args[3]).run()
+processBufkit("2021/01/18/17","2021/01/19/01", 14).run()

@@ -65,7 +65,7 @@ class LakeEffectSnowEventsController < ApplicationController
 
       #@xyz = @xyz.where(id: params[:id]) if params[:id].present?
       
-      if(@site = "kgkj")
+      if(@site == "kgkj")
         @bufkits = Bufkit.where(lake_effect_snow_event: event.id).where(modelType: @model)
         @bufkits = @bufkits.where(station: "kgkj").or(@bufkits.where(station:"kgkl"))
         @bufkits = @bufkits.where("date <= ?", @peTime).where("date >= ?", @psTime)
@@ -241,13 +241,12 @@ class LakeEffectSnowEventsController < ApplicationController
 
       @snowfallURL = "https://www.nohrsc.noaa.gov/interactive/html/map.html?ql=station&zoom=&loc=42.174+N%2C+84.863+W&var=snowfall_"+@hourDuration.to_s+"_h&dy="+@event.endDate.year.to_s+"&dm="+@month2+"&dd="+@day2+"&dh=12&snap=1&o11=1&o10=1&o9=1&o12=1&o13=1&lbl=m&mode=pan&extents=us&min_x=-84.975000000002&min_y=39.758333333329&max_x=-79.200000000002&max_y=43.008333333329&coord_x=-82.087500000002&coord_y=41.383333333329&zbox_n=&zbox_s=&zbox_e=&zbox_w=&metric=0&bgvar=dem&shdvar=shading&width=800&height=450&nw=800&nh=450&h_o=0&font=0&js=1&uc=0"
       
-
       if @day2 < @day1
-        @day2 = @day1
+        @day1 = "01"
       end
 
-      @buffaloURL = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.startDate.year.to_s+"&MONTH="+@month+"&FROM="+@day1+"00&TO="+@day2+"00&STNM=72528"
-      @detroitURL = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.startDate.year.to_s+"&MONTH="+@month+"&FROM="+@day1+"00&TO="+@day2+"00&STNM=72632"
+      @buffaloURL = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.endDate.year.to_s+"&MONTH="+@month2+"&FROM="+@day1+"00&TO="+@day2+"00&STNM=72528"
+      @detroitURL = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.endDate.year.to_s+"&MONTH="+@month2+"&FROM="+@day1+"00&TO="+@day2+"00&STNM=72632"
       @radarURL = `python lib/assets/getRadar.py "#{@radarStart}" "#{@radarEnd}"`
 
       @snow_reports = SnowReport.where(lake_effect_snow_event_id: @event.id)
@@ -280,8 +279,8 @@ class LakeEffectSnowEventsController < ApplicationController
         "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Humidity (Ice)","925mb Wind Direction", "925mb Wind Speed","925mb Height",
         "850mb Temperature", "850mb Dew Point", "850mb Humidity", "850mb Humidity (Ice)","850mb Wind Direction", "850mb Wind Speed","850mb Height",                             
         "700mb Temperature", "700mb Dew Point", "700mb Humidity", "850mb Humidity (Ice)","700mb Wind Direction", "700mb Wind Speed","700mb Height",
-        "Model Cape", "Lake Induced Cape", "Lake Induced NCape", "Lake Induced EQL", "10M Wind Direction", "10M Wind Speed",
-        "Bulk Shear  Surface-700mb", "Bulk Shear U", "Bulk Shear V", "Lake Surface to 850mb Temperature Difference", "Lake Surface to 700mb Temperature Difference"]
+        "Model Cape", "Lake Induced Cape", "Lake Induced NCape", "Lake Induced EQL", "10M Wind Direction", "10M Wind Speed", "Bulk Shear  Surface-700mb", 
+        "Bulk Shear U", "Bulk Shear V", "Lake Surface to 850mb Temperature Difference", "Lake Surface to 700mb Temperature Difference", "Max Omega?"]
       rescue ActiveRecord::RecordNotFound => e
         redirect_to home_record_not_found_url
       end

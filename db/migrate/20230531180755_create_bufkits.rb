@@ -36,6 +36,7 @@ class CreateBufkits < ActiveRecord::Migration[7.0]
       t.float :bulkShearV
       t.float :lowDeltaT
       t.float :highDeltaT
+      t.boolean :maxOmega
       t.integer :lake_effect_snow_event_id
 
       t.timestamps

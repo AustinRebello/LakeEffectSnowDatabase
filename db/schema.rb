@@ -47,6 +47,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_181557) do
     t.float "bulkShearV"
     t.float "lowDeltaT"
     t.float "highDeltaT"
+    t.boolean "maxOmega"
     t.integer "lake_effect_snow_event_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
