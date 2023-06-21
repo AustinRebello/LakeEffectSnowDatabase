@@ -35,6 +35,15 @@ class LakeEffectSnowEventsController < ApplicationController
 
     @eventIDs = []
 
+    @surSpeedGraph = []
+    @nineSpeedGraph = []
+    @eightSpeedGraph = []
+    @capeGraph = []
+    @ncapeGraph = []
+    @eqlGraph = []
+    @delta850Graph = []
+    @delta700Graph = []
+
     @allEvents = LakeEffectSnowEvent.all
     
     for event in @allEvents do
@@ -169,6 +178,15 @@ class LakeEffectSnowEventsController < ApplicationController
         end
 
         @eventIDs.append(@bufkits[0].lake_effect_snow_event_id)
+        @lakeEvent = LakeEffectSnowEvent.find(@bufkits[0].lake_effect_snow_event_id).eventName
+        @surSpeedGraph.append([@lakeEvent, dataArray[0]])
+        @nineSpeedGraph.append([@lakeEvent, dataArray[1]])
+        @eightSpeedGraph.append([@lakeEvent, dataArray[2]])
+        @delta850Graph.append([@lakeEvent, dataArray[3]])
+        @delta700Graph.append([@lakeEvent, dataArray[4]])
+        @capeGraph.append([@lakeEvent, dataArray[5]])
+        @ncapeGraph.append([@lakeEvent, dataArray[6]])
+        @eqlGraph.append([@lakeEvent, dataArray[7]])
 
       end
     end
@@ -231,6 +249,11 @@ class LakeEffectSnowEventsController < ApplicationController
       end
 
 
+      @hour1 = (@event.startTime - @event.startTime%3).to_s
+      if(@event.startTime < 10)
+        @hour1 = "0"+@hour1
+      end
+
       @durationDay = (@event.endDate - @event.startDate).to_i
       @hourDuration = 0
       if(@durationDay >=2)
@@ -239,8 +262,21 @@ class LakeEffectSnowEventsController < ApplicationController
         @hourDuration = (@durationDay+1)*24
       end
 
+      @truncatedYear1 = @event.startDate.year.to_s[2,3]
+      @truncatedYear2 = @event.endDate.year.to_s[2,3]
+      puts(@truncatedYear1)
+      @upperHour1 = "00"
+      @upperHour2 = "12"
+      if(@event.startTime >= 12)
+        @upperHour1 = "12"
+      end
+
+
       @snowfallURL = "https://www.nohrsc.noaa.gov/interactive/html/map.html?ql=station&zoom=&loc=42.174+N%2C+84.863+W&var=snowfall_"+@hourDuration.to_s+"_h&dy="+@event.endDate.year.to_s+"&dm="+@month2+"&dd="+@day2+"&dh=12&snap=1&o11=1&o10=1&o9=1&o12=1&o13=1&lbl=m&mode=pan&extents=us&min_x=-84.975000000002&min_y=39.758333333329&max_x=-79.200000000002&max_y=43.008333333329&coord_x=-82.087500000002&coord_y=41.383333333329&zbox_n=&zbox_s=&zbox_e=&zbox_w=&metric=0&bgvar=dem&shdvar=shading&width=800&height=450&nw=800&nh=450&h_o=0&font=0&js=1&uc=0"
-      
+      @surfaceAnalysisURL = "https://www.wpc.ncep.noaa.gov/archives/web_pages/sfc/sfc_archive_maps.php?arcdate="+@month+"/"+@day1+"/"+@event.endDate.year.to_s+"&selmap="+@event.endDate.year.to_s+@month+@day1+@hour1
+      @upperAirAnalysisURL = "https://www.spc.noaa.gov/cgi-bin-spc/getuadata.pl?MyDate1="+@truncatedYear1+@month+@day1+"&Time1="+@upperHour1+"&MyDate2="+@truncatedYear2+@month2+@day2+"&Time2="+@upperHour2+"&align=V&Levels=925&Levels=850&Levels=700&Levels=500"
+
+
       if @day2 < @day1
         @day1 = "01"
       end
@@ -249,6 +285,7 @@ class LakeEffectSnowEventsController < ApplicationController
       @detroitURL = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.endDate.year.to_s+"&MONTH="+@month2+"&FROM="+@day1+"00&TO="+@day2+"00&STNM=72632"
       @radarURL = `python lib/assets/getRadar.py "#{@radarStart}" "#{@radarEnd}"`
 
+     
       @snow_reports = SnowReport.where(lake_effect_snow_event_id: @event.id)
       @namBuf = Bufkit.where(lake_effect_snow_event_id: @event.id, modelType: "NAM")
       @rapBuf = Bufkit.where(lake_effect_snow_event_id: @event.id, modelType: "RAP")

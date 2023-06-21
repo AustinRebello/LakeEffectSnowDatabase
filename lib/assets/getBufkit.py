@@ -121,6 +121,7 @@ class processBufkit:
       
     def queryDataNAM(self, modelType, hour, startingSTIM, endingSTIM, station):
         request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,hour,'nam',modelType,station)
+        
         try:
             response = request.urlopen(request_url)
         except HTTPError as err:
@@ -181,7 +182,7 @@ class processBufkit:
                         self.bufkitRows.append(truePressureData)
                         self.collectBulkShear(Ps, Us, Vs)
                         
-                        if(float(d[7])>=omegaData[0] or omegaData[2]<80 or omegaData[1]>-10 or omegaData[1]<-20):
+                        if(float(d[7])>=omegaData[0] or omegaData[2]<80 or omegaData[1]>-12 or omegaData[1]<-18 or omegaData[0]>=0.0):
                             self.crosshair = False
                         else:
                             self.crosshair = True
@@ -192,7 +193,7 @@ class processBufkit:
                     else:
                         prevD = d
                         
-                    if(float(d[7])>=omegaData[0]):
+                    if(float(d[7])<=omegaData[0]):
                         omegaData[0] = float(d[7])
                         omegaData[1] = float(d[1])
                         omegaData[2] = float(self.calculateRelativeHumidity(float(d[1]), float(d[2])))
@@ -269,7 +270,7 @@ class processBufkit:
             self.cape = 0
             self.crosshair = False
             
-            omegaData = [0,0,0]
+            omegaData = [0,0,0,0]
             
             for line in range(0,len(data)):
                 if re.search("(((-\d+\.\d+.)|(\d+\.\d+.)){7}((\d+\.\d+)|(-\d+\.\d+)))",data[line].decode('ascii')):
@@ -301,10 +302,12 @@ class processBufkit:
                     elif float(d[0]) < 700.0 and not found700:
                         truePressureData = self.calculateExactPressureValue(700, d, prevD)
                         
-                        if(float(d[7])>=omegaData[0] or omegaData[2]<80 or omegaData[1]>-10 or omegaData[1]<-20):
+                    
+                        if(float(d[7])<=omegaData[0] or omegaData[2]<80 or omegaData[1]>-12 or omegaData[1]<-18 or omegaData[0]>=0.0):
                             self.crosshair = False
                         else:
                             self.crosshair = True
+                            #print("Stored Pressure: "+str(omegaData[3])+" Omega: "+str(omegaData[0])+" RelHum: "+str(omegaData[2])+" Tmp: "+str(omegaData[1])+" Current Omega "+d[7])
                         
                         found700 = True
                         self.bufkitRows.append(truePressureData)
@@ -314,11 +317,12 @@ class processBufkit:
                     else:
                         prevD = d
                         
-                    if(float(d[7])>=omegaData[0]):
+                    if(float(d[7])<=omegaData[0]):
                         
                         omegaData[0] = float(d[7])
                         omegaData[1] = float(d[1])
                         omegaData[2] = float(self.calculateRelativeHumidity(float(d[1]), float(d[2])))
+                        omegaData[3] = float(d[0])
                         #print("NEW OMEGA PEAK AT: "+str(d[0])+" with values of "+str(omegaData[0])+" "+str(omegaData[1])+" "+str(omegaData[2]))
                         
                 elif line == 9:
@@ -327,5 +331,5 @@ class processBufkit:
                     self.cape = splitLine[-1]
 
 args = sys.argv
-#processBufkit(args[1], args[2], args[3]).run()
-processBufkit("2021/01/18/17","2021/01/19/01", 14).run()
+processBufkit(args[1], args[2], args[3]).run()
+#processBufkit("2021/01/17/21","2021/01/19/02", 14).run()

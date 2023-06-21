@@ -106,13 +106,18 @@
 </div>
 
 <div class = "p-1 text-center">
-  <%= link_to "View Radar Loop for This Event", @radarURL, :target => '_blank', class:"btn btn-primary"%>
-  <%= link_to "View Snow Report Map for This Event", @snowfallURL, :target => '_blank', class:"btn btn-primary"%>
+  <%= link_to "Radar Loop for This Event", @radarURL, :target => '_blank', class:"btn btn-primary"%>
+  <%= link_to "Snow Report Map for This Event", @snowfallURL, :target => '_blank', class:"btn btn-primary"%>
 </div>
 
 <div class = "p-1 text-center">
-  <%= link_to "View Buffalo Atmospheric Sounding", @buffaloURL, :target => '_blank', class:"btn btn-primary"%>
-  <%= link_to "View Detroit Atmospheric Sounding", @detroitURL, :target => '_blank', class:"btn btn-primary"%>
+  <%= link_to "Buffalo Atmospheric Sounding Gif", @buffaloURL, :target => '_blank', class:"btn btn-primary"%>
+  <%= link_to "Detroit Atmospheric Sounding Gif", @detroitURL, :target => '_blank', class:"btn btn-primary"%>
+</div>
+
+<div class = "p-1 text-center">
+  <%= link_to "Surface Analysis for Event Start", @surfaceAnalysisURL, :target => '_blank', class:"btn btn-primary"%>
+  <%= link_to "Upper Air Analysis for Event Start and End", @upperAirAnalysisURL, :target => '_blank', class:"btn btn-primary" %>
 </div>
 
 <div id="dFields" class="pb-4 pt-4">

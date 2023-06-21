@@ -33,8 +33,39 @@
   
 </div>
 
-<%= link_to "Search Events", search_lake_effect_snow_events_path, class:"btn btn-dark" %>
+<%= link_to "Search Events", search_lake_effect_snow_events_path, class:"btn btn-dark mb-2" %>
 
+
+<div class = "border mt-2 mb-2">
+  <%= column_chart @surSpeedGraph, xtitle: "Average Peak Event Time - Surface Wind Speeds (kts)", ytitle: "Event Names" %>
+</div>
+<div class = "border mt-2 mb-2">
+  <%= column_chart @nineSpeedGraph, xtitle: "Average Peak Event Time - 925mb Wind Speeds (kts)", ytitle: "Event Names" %>
+</div>
+<div class = "border mt-2 mb-2">
+  <%= column_chart @eightSpeedGraph, xtitle: "Average Peak Event Time - 850mb Wind Speeds (kts)", ytitle: "Event Names" %>
+</div>
+<div class = "border mt-2 mb-2">
+  <%= column_chart @delta850Graph, xtitle: "Average Peak Event Time - Lake Surface to 850mb ΔT", ytitle: "Event Names" %>
+</div>
+<div class = "border mt-2 mb-2">
+  <%= column_chart @delta700Graph, xtitle: "Average Peak Event Time - Lake Surface to 700mb ΔT", ytitle: "Event Names" %>
+</div>
+<div class = "border mt-2 mb-2">
+  <%= column_chart @capeGraph, xtitle: "Average Peak Event Time - Lake Induced Cape", ytitle: "Event Names" %>
+</div>
+<div class = "border mt-2 mb-2">
+  <%= column_chart @ncapeGraph, xtitle: "Average Peak Event Time - Lake Induced NCape", ytitle: "Event Names" %>
+</div>
+<div class = "border mt-2 mb-2">
+  <%= column_chart @eqlGraph, xtitle: "Average Peak Event Time - Lake Induced EQL", ytitle: "Event Names" %>
+</div>
+
+
+
+ @capeGraph.append([@lakeEvent, dataArray[5]])
+        @ncapeGraph.append([@lakeEvent, dataArray[6]])
+        @eqlGraph.append([@lakeEvent, dataArray[7]])
 
 <script>
   $(document).ready(function () {
