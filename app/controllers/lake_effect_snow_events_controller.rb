@@ -12,8 +12,6 @@ class LakeEffectSnowEventsController < ApplicationController
   end
 
   def searchResults
-
-    #condition ? if_true : if_false
     @model = params[:model]
     @site = params[:site]
 
@@ -48,45 +46,11 @@ class LakeEffectSnowEventsController < ApplicationController
     
     for event in @allEvents do
 
-      @month1 = event.peakStartDate.month.to_s
-      @month2 = event.peakEndDate.month.to_s
-      @day1 = event.peakStartDate.day.to_s
-      @day2 = event.peakEndDate.day.to_s
-
-      if event.peakStartDate.month < 10
-        @month1 = "0"+@month1
-      end
-
-      if event.peakEndDate.month < 10
-        @month2 = "0"+@month2
-      end
-
-      if event.peakStartDate.day < 10
-        @day1 = "0"+@day1
-      end
-
-      if event.peakEndDate.day < 10
-        @day2 = "0"+@day2
-      end
-
-      @psTime = event.peakStartDate.year.to_s+"-"+@month1+"-"+@day1+" "+event.peakStartTime.to_s
-      @peTime = event.peakEndDate.year.to_s+"-"+@month2+"-"+@day2+" "+event.peakEndTime.to_s
-
-      #@xyz = @xyz.where(id: params[:id]) if params[:id].present?
-      
-      if(@site == "kgkj")
-        @bufkits = Bufkit.where(lake_effect_snow_event: event.id).where(modelType: @model)
-        @bufkits = @bufkits.where(station: "kgkj").or(@bufkits.where(station:"kgkl"))
-        @bufkits = @bufkits.where("date <= ?", @peTime).where("date >= ?", @psTime)
-      else 
-        @bufkits = Bufkit.where(lake_effect_snow_event: event.id).where(modelType: @model).where(station: @site).where("date <= ?", @peTime).where("date >= ?", @psTime)
-      end
-
-      
+      @bufkits = get_bufkits(event)
  
-      dataArray = [0,0,0,0,0,0,0,0,0]
-      windArray = [[0,0],[0,0],[0,0]]
-      windDirections = [0.0,0.0,0.0]
+      dataArray = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+      windArray = [[0, 0],[0, 0],[0, 0]]
+      windDirections = [0.0, 0.0, 0.0]
 
       for bufkit in @bufkits do
         windArray[0][0] = windArray[0][0] + Math.sin(bufkit.tenMeterWindDirection*Math::PI/180)
@@ -117,65 +81,29 @@ class LakeEffectSnowEventsController < ApplicationController
           dataArray[i] = dataArray[i] / @bufkits.length
         end
 
-        if ((@sWindDirectionLow != -1 && @sWindDirectionHigh != -1) && (windDirections[0] < (@sWindDirectionLow ) || windDirections[0] > (@sWindDirectionHigh)))
-          puts("SDIR")
-          next
-        end
+        if ((@sWindDirectionLow != -1 && @sWindDirectionHigh != -1) && (windDirections[0] < (@sWindDirectionLow ) || windDirections[0] > (@sWindDirectionHigh))) then next end
 
-        if ((@nWindDirectionLow != -1 && @nWindDirectionHigh != -1) && (windDirections[1] < (@nWindDirectionLow ) || windDirections[1] > (@nWindDirectionHigh)))
-          puts("NDIR")
-          next
-        end
+        if ((@nWindDirectionLow != -1 && @nWindDirectionHigh != -1) && (windDirections[1] < (@nWindDirectionLow ) || windDirections[1] > (@nWindDirectionHigh))) then next end
 
-        if ((@eWindDirectionLow != -1 && @eWindDirectionHigh != -1) && (windDirections[2] < (@eWindDirectionLow ) || windDirections[2] > (@eWindDirectionHigh)))
-          puts("EDIR")
-          next
-        end
+        if ((@eWindDirectionLow != -1 && @eWindDirectionHigh != -1) && (windDirections[2] < (@eWindDirectionLow ) || windDirections[2] > (@eWindDirectionHigh))) then next end
 
-        if (@sWindSpeed != -1 && (dataArray[0] < @sWindSpeed))
-          puts("SSPEED")
-          next
-        end
+        if (@sWindSpeed != -1 && (dataArray[0] < @sWindSpeed)) then next end
 
-        if (@nWindSpeed != -1 && (dataArray[1] < @nWindSpeed))
-          puts("NSPEED")
-          next
-        end
+        if (@nWindSpeed != -1 && (dataArray[1] < @nWindSpeed)) then next end
 
-        if (@eWindSpeed != -1 && (dataArray[2] < @eWindSpeed))
-          puts("ESPEED")
-          next
-        end
+        if (@eWindSpeed != -1 && (dataArray[2] < @eWindSpeed)) then next end
 
-        if (@sur850TempDiff != -1 && (dataArray[3] < @sur850TempDiff))
-          puts("LTEMPDIFF")
-          next
-        end
+        if (@sur850TempDiff != -1 && (dataArray[3] < @sur850TempDiff)) then next end
 
-        if (@sur700TempDiff != -1 && (dataArray[4] < @sur700TempDiff))
-          puts("HTEMPDIFF")
-          next
-        end
+        if (@sur700TempDiff != -1 && (dataArray[4] < @sur700TempDiff)) then next end
 
-        if (@cape != -1 && (dataArray[5] < @cape))
-          puts("CAPE")
-          next
-        end
+        if (@cape != -1 && (dataArray[5] < @cape)) then next end
 
-        if (@ncape != -1 && (dataArray[6] < @ncape))
-          puts("NCAPE")
-          next
-        end
+        if (@ncape != -1 && (dataArray[6] < @ncape)) then next end
 
-        if (@eql != -1 && (dataArray[7] < @eql))
-          puts("EQL")
-          next
-        end
+        if (@eql != -1 && (dataArray[7] < @eql))  then next end
 
-        if (@bulkShear != -1 && (dataArray[8] < @bulkShear))
-          puts("SHEAR")
-          next
-        end
+        if (@bulkShear != -1 && (dataArray[8] < @bulkShear)) then next end
 
         @eventIDs.append(@bufkits[0].lake_effect_snow_event_id)
         @lakeEvent = LakeEffectSnowEvent.find(@bufkits[0].lake_effect_snow_event_id).eventName
@@ -194,6 +122,131 @@ class LakeEffectSnowEventsController < ApplicationController
     @results = LakeEffectSnowEvent.find(@eventIDs)
 
   end
+
+  def advancedSearchResults
+    @model = params[:model]
+    @site = params[:site]
+
+    @surfaceWindDirection = (params[:surfaceWindDirection] =="" ? -1 : params[:surfaceWindDirection].to_i)
+    @surfaceWindSpeed = (params[:surfaceWindSpeed] == "" ? -1 : params[:surfaceWindSpeed].to_i)
+    @nineWindDirection = (params[:nineWindDirection] =="" ? -1 : params[:nineWindDirection].to_i)
+    @nineWindSpeed = (params[:nineWindSpeed] == "" ? -1 : params[:nineWindSpeed].to_i)
+    @eightWindDirection = (params[:eightWindDirection] =="" ? -1 : params[:eightWindDirection].to_i)
+    @eightWindSpeed = (params[:eightWindSpeed] == "" ? -1 : params[:eightWindSpeed].to_i)
+    @sevenWindDirection = (params[:sevenWindDirection] =="" ? -1 : params[:sevenWindDirection].to_i)
+    @sevenWindSpeed = (params[:sevenWindSpeed] == "" ? -1 : params[:sevenWindSpeed].to_i)
+    @sur850TempDiff = (params[:sur850TempDiff] == "" ? -1 : params[:sur850TempDiff].to_i)
+    @sur700TempDiff = (params[:sur700TempDiff] == "" ? -1 : params[:sur700TempDiff].to_i)
+    @cape = (params[:liCAPE] =="" ? -1 : params[:liCAPE].to_i)
+    @ncape = (params[:liNCAPE] =="" ? -1 : params[:liNCAPE].to_i)
+    @eql = (params[:liEQL] == "" ? -1 : params[:liEQL].to_i)
+
+    @eventResults = []
+
+    @allEvents = LakeEffectSnowEvent.all
+    
+    for event in @allEvents do
+
+      @bufkits = get_bufkits(event)
+ 
+      puts(event.eventName)
+      puts(@bufkits)
+
+      dataArray = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+      windArray = [[0, 0],[0, 0],[0, 0], [0, 0]]
+      windDirections = [0.0, 0.0, 0.0, 0.0]
+
+      @score = 0
+      @scoreArray = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+
+      for bufkit in @bufkits do
+        windArray[0][0] = windArray[0][0] + Math.sin(bufkit.tenMeterWindDirection*Math::PI/180)
+        windArray[0][1] = windArray[0][1] + Math.cos(bufkit.tenMeterWindDirection*Math::PI/180)
+        windArray[1][0] = windArray[1][0] + Math.sin(bufkit.lowWindDirection*Math::PI/180)
+        windArray[1][1] = windArray[1][1] + Math.cos(bufkit.lowWindDirection*Math::PI/180)
+        windArray[2][0] = windArray[2][0] + Math.sin(bufkit.medWindDirection*Math::PI/180)
+        windArray[2][1] = windArray[2][1] + Math.cos(bufkit.medWindDirection*Math::PI/180)
+        windArray[3][0] = windArray[3][0] + Math.sin(bufkit.highWindDirection*Math::PI/180)
+        windArray[3][1] = windArray[3][1] + Math.cos(bufkit.highWindDirection*Math::PI/180)
+        dataArray[0] = dataArray[0] + bufkit.tenMeterWindSpeed
+        dataArray[1] = dataArray[1] + bufkit.lowWindSpeed
+        dataArray[2] = dataArray[2] + bufkit.medWindSpeed
+        dataArray[3] = dataArray[3] + bufkit.highWindSpeed
+        dataArray[4] = dataArray[4] + bufkit.lowDeltaT
+        dataArray[5] = dataArray[5] + bufkit.highDeltaT
+        dataArray[6] = dataArray[6] + bufkit.lakeEffectCape
+        dataArray[7] = dataArray[7] + bufkit.lakeEffectNCape
+        dataArray[8] = dataArray[8] + bufkit.lakeEffectEQL
+      end
+
+      if @bufkits.length > 0
+
+        for i in (0..windDirections.length-1) do
+          windDirections[i] = ((Math.atan2(windArray[i][0], windArray[i][1])*180/Math::PI) % 360).round(1)
+        end
+        
+        for i in (0..dataArray.length-1) do
+          dataArray[i] = dataArray[i] / @bufkits.length
+        end
+        
+        if (@surfaceWindDirection != -1)
+          @score = @score + (windDirections[0]-@surfaceWindDirection).abs*@scoreArray[0]
+        end
+        
+        if (@nineWindDirection != -1)
+          @score = @score + (windDirections[1]-@nineWindDirection).abs*@scoreArray[1]
+        end
+
+        if (@eightWindDirection != -1)
+          @score = @score + (windDirections[2]-@eightWindDirection).abs*@scoreArray[2]
+        end
+
+        if (@sevenWindDirection != -1)
+          @score = @score + (windDirections[3]-@sevenWindDirection).abs*@scoreArray[3]
+        end
+        
+        if (@surfaceWindSpeed != -1)
+          @score = @score + (dataArray[0]-@surfaceWindSpeed).abs*@scoreArray[4]
+        end
+  
+        if (@nineWindSpeed != -1)
+          @score = @score + (dataArray[1]-@nineWindSpeed).abs*@scoreArray[5]
+        end
+  
+        if (@eightWindSpeed != -1)
+          @score = @score + (dataArray[2]-@eightWindSpeed).abs*@scoreArray[6]
+        end
+
+        if (@sevenWindSpeed != -1)
+          @score = @score + (dataArray[3]-@sevenWindSpeed).abs*@scoreArray[7]
+        end
+  
+        if (@sur850TempDiff != -1)
+          @score = @score + (dataArray[4]-@sur850TempDiff).abs*@scoreArray[8]
+        end
+  
+        if (@sur700TempDiff != -1)
+          @score = @score + (dataArray[5]-@sur700TempDiff).abs*@scoreArray[9]
+        end
+  
+        if (@cape != -1)
+          @score = @score + (dataArray[6]-@cape).abs*@scoreArray[10]
+        end
+  
+        if (@ncape != -1)
+          @score = @score + (dataArray[7]-@ncape).abs*@scoreArray[11]
+        end
+  
+        if (@eql != -1)
+          @score = @score + (dataArray[8]-@eql).abs*@scoreArray[12]
+        end
+      end
+
+      @eventResults.append([event.id,event.eventName,@score.round(1)])
+    end
+  end
+
+
 
   def bufkit
     @bufkits = Bufkit.where(lake_effect_snow_event_id: params[:id])
@@ -229,32 +282,22 @@ class LakeEffectSnowEventsController < ApplicationController
       @radarEnd = Bufkit.handleDate(@event.endDate, @event.endTime)
 
       @month = @event.startDate.month.to_s
-      if(@event.startDate.month < 10)
-        @month = "0"+ @month
-      end
+      if(@event.startDate.month < 10) then @month = "0"+ @month end
 
       @month2 = @event.endDate.month.to_s
-      if(@event.endDate.month < 10)
-        @month2 = "0"+ @month2
-      end
+      if(@event.endDate.month < 10) then @month2 = "0"+ @month2 end
 
       @day1 = @event.startDate.day.to_s
-      if(@event.startDate.day < 10)
-        @day1 = "0"+@day1
-      end
+      if(@event.startDate.day < 10) then @day1 = "0"+@day1 end
 
       @day2 = @event.endDate.day.to_s
-      if(@event.endDate.day < 10)
-        @day2 = "0"+@day2
-      end
-
+      if(@event.endDate.day < 10) then @day2 = "0"+@day2 end
 
       @hour1 = (@event.startTime - @event.startTime%3).to_s
-      if(@event.startTime < 10)
-        @hour1 = "0"+@hour1
-      end
+      if(@event.startTime < 10) then @hour1 = "0"+@hour1 end
 
       @durationDay = (@event.endDate - @event.startDate).to_i
+      
       @hourDuration = 0
       if(@durationDay >=2)
         @hourDuration = 72
@@ -264,12 +307,9 @@ class LakeEffectSnowEventsController < ApplicationController
 
       @truncatedYear1 = @event.startDate.year.to_s[2,3]
       @truncatedYear2 = @event.endDate.year.to_s[2,3]
-      puts(@truncatedYear1)
       @upperHour1 = "00"
       @upperHour2 = "12"
-      if(@event.startTime >= 12)
-        @upperHour1 = "12"
-      end
+      if(@event.startTime >= 12) then  @upperHour1 = "12" end
 
 
       @snowfallURL = "https://www.nohrsc.noaa.gov/interactive/html/map.html?ql=station&zoom=&loc=42.174+N%2C+84.863+W&var=snowfall_"+@hourDuration.to_s+"_h&dy="+@event.endDate.year.to_s+"&dm="+@month2+"&dd="+@day2+"&dh=12&snap=1&o11=1&o10=1&o9=1&o12=1&o13=1&lbl=m&mode=pan&extents=us&min_x=-84.975000000002&min_y=39.758333333329&max_x=-79.200000000002&max_y=43.008333333329&coord_x=-82.087500000002&coord_y=41.383333333329&zbox_n=&zbox_s=&zbox_e=&zbox_w=&metric=0&bgvar=dem&shdvar=shading&width=800&height=450&nw=800&nh=450&h_o=0&font=0&js=1&uc=0"
@@ -277,9 +317,7 @@ class LakeEffectSnowEventsController < ApplicationController
       @upperAirAnalysisURL = "https://www.spc.noaa.gov/cgi-bin-spc/getuadata.pl?MyDate1="+@truncatedYear1+@month+@day1+"&Time1="+@upperHour1+"&MyDate2="+@truncatedYear2+@month2+@day2+"&Time2="+@upperHour2+"&align=V&Levels=925&Levels=850&Levels=700&Levels=500"
 
 
-      if @day2 < @day1
-        @day1 = "01"
-      end
+      if @day2 < @day1 then @day1 = "01" end
 
       @buffaloURL = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.endDate.year.to_s+"&MONTH="+@month2+"&FROM="+@day1+"00&TO="+@day2+"00&STNM=72528"
       @detroitURL = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.endDate.year.to_s+"&MONTH="+@month2+"&FROM="+@day1+"00&TO="+@day2+"00&STNM=72632"
@@ -409,5 +447,42 @@ class LakeEffectSnowEventsController < ApplicationController
     # Only allow a list of trusted parameters through.
     def lake_effect_snow_event_params
       params.require(:lake_effect_snow_event).permit(:eventName, :startDate, :endDate, :peakStartDate, :peakEndDate, :startTime, :endTime, :peakStartTime, :peakEndTime, :averageLakeSurfaceTemperature)
+    end
+
+    def get_bufkits(event)
+      @month1 = event.peakStartDate.month.to_s
+      @month2 = event.peakEndDate.month.to_s
+      @day1 = event.peakStartDate.day.to_s
+      @day2 = event.peakEndDate.day.to_s
+
+
+      @newStartHour = event.peakStartTime.to_s
+      if (event.peakStartTime<10)
+        @newStartHour = "0"+@newStartHour
+      end
+
+      @newEndHour = event.peakEndTime.to_s
+      if (event.peakEndTime<10)
+        @newEndHour = "0"+@newEndHour
+      end
+
+      @psTime = event.peakStartDate.to_s+" "+@newStartHour
+      @peTime = event.peakEndDate.to_s+" "+@newEndHour
+
+      puts(@psTime)
+      puts(@peTime)
+      puts("2021-01-18 09">= @psTime)
+      puts("2021-01-18 09"<=@peTime)
+      
+      if(@site == "kgkj")
+        @bufkits = Bufkit.where(lake_effect_snow_event: event.id).where(modelType: @model)
+        @bufkits = @bufkits.where(station: "kgkj").or(@bufkits.where(station:"kgkl"))
+        @bufkits = @bufkits.where("date <= ?", @peTime).where("date >= ?", @psTime)
+        return @bufkits
+      else 
+        @bufkits = Bufkit.where(lake_effect_snow_event: event.id).where(modelType: @model).where(station: @site).where("date <= ?", @peTime).where("date >= ?", @psTime)
+        return @bufkits
+      end
+
     end
 end

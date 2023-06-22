@@ -1,0 +1,42 @@
+<p style="color: green"><%= notice %></p>
+
+<h1 class="text-center">Search Results</h1>
+
+<div id="lake_effect_snow_events">
+  <table id="sortTable" class="table table-striped table-hover table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">Event ID</th>
+      <th scope="col">Event Name</th>
+      <th scope="col">Score</th>
+    </tr>
+  </thead>
+  <tbody class="table-group-divider">
+   <% @eventResults.each do |event| %>
+    <tr>
+      <td><%= event[0]%></td>
+      <td><%= link_to event[1], lake_effect_snow_event_path(event[0]) %></td>
+      <td><%= event[2]%></td>
+    </tr>
+  <% end %>
+  </tbody>
+    
+</table>
+  
+</div>
+
+<%= link_to "Advanced Search Events", advancedSearch_lake_effect_snow_events_path, class:"btn btn-dark text-center" %>
+<%= link_to "Back to all events", lake_effect_snow_events_path, class:"btn btn-dark" %>
+
+
+<script>
+  $(document).ready(function () {
+    if(document.getElementById('sortTable_wrapper')==null){
+      $('#sortTable').dataTable({
+        paging: false,
+        searching: false,
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+  });
+</script>

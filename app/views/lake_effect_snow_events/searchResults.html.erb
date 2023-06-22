@@ -34,6 +34,7 @@
 </div>
 
 <%= link_to "Search Events", search_lake_effect_snow_events_path, class:"btn btn-dark mb-2" %>
+<%= link_to "Back to all events", lake_effect_snow_events_path, class:"btn btn-dark" %>
 
 
 <div class = "border mt-2 mb-2">
@@ -60,12 +61,6 @@
 <div class = "border mt-2 mb-2">
   <%= column_chart @eqlGraph, xtitle: "Average Peak Event Time - Lake Induced EQL", ytitle: "Event Names" %>
 </div>
-
-
-
- @capeGraph.append([@lakeEvent, dataArray[5]])
-        @ncapeGraph.append([@lakeEvent, dataArray[6]])
-        @eqlGraph.append([@lakeEvent, dataArray[7]])
 
 <script>
   $(document).ready(function () {
