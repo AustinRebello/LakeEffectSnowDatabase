@@ -90,7 +90,7 @@ class processBufkit:
     def compileRow(self, station, modelType, year, month, day, hour, cross):
         rowBuild = []
         newHour = str(hour)
-        if(hour<10):
+        if(int(hour)<10):
             newHour = "0"+newHour
         rowBuild.extend([modelType, station, (str(year)+"-"+str(month)+"-"+str(day)+" "+newHour)])
         rowBuild.append(self.bufkitRows[0][5])

@@ -13,7 +13,6 @@ class BufkitsController < ApplicationController
 
     @eventStartDate = Bufkit.handleDate(@event.startDate, @event.startTime)
     @eventEndDate = Bufkit.handleDate(@event.endDate, @event.endTime)
-
     @eventLake = @event.averageLakeSurfaceTemperature
     @output = `python lib/assets/getBufkit.py "#{@eventStartDate}" "#{@eventEndDate}" "#{@eventLake}"`
     Bufkit.python(@output, @eventID)
@@ -30,7 +29,28 @@ class BufkitsController < ApplicationController
 
   # GET /bufkits or /bufkits.json
   def index
-    @bufkits = Bufkit.all
+
+    @namBuf = Bufkit.where(modelType: "NAM")
+    @rapBuf = Bufkit.where(modelType: "RAP")
+
+    @namBufCLE = @namBuf.where(station: "kcle")
+    @namBufERI = @namBuf.where(station: "keri")
+    @namBufGKJ = @namBuf.where(station: "kgkl").or(@namBuf.where(station: "kgkj"))
+    @namBufLE1 = @namBuf.where(station: "le1")
+    @namBufLE2 = @namBuf.where(station: "le2")
+
+    @rapBufCLE = @rapBuf.where(station: "kcle")
+    @rapBufERI = @rapBuf.where(station: "keri")
+    @rapBufGKJ = @rapBuf.where(station: "kgkl").or(@namBuf.where(station: "kgkj"))
+    @rapBufLE1 = @rapBuf.where(station: "le1")
+    @rapBufLE2 = @rapBuf.where(station: "le2")
+
+    @tableHeaderBuf = ["ID", "Model Type", "Station", "Time", 
+      "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Humidity (Ice)","925mb Wind Direction", "925mb Wind Speed","925mb Height",
+      "850mb Temperature", "850mb Dew Point", "850mb Humidity", "850mb Humidity (Ice)","850mb Wind Direction", "850mb Wind Speed","850mb Height",                             
+      "700mb Temperature", "700mb Dew Point", "700mb Humidity", "850mb Humidity (Ice)","700mb Wind Direction", "700mb Wind Speed","700mb Height",
+      "Model Cape", "Lake Induced Cape", "Lake Induced NCape", "Lake Induced EQL", "10M Wind Direction", "10M Wind Speed", "Bulk Shear  Surface-700mb", 
+      "Bulk Shear U", "Bulk Shear V", "Lake Surface to 850mb Temperature Difference", "Lake Surface to 700mb Temperature Difference", "Max Omega?"]
   end
 
   # GET /bufkits/1 or /bufkits/1.json

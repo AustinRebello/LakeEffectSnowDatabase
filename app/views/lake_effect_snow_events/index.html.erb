@@ -1,5 +1,13 @@
 <h1 class="text-center">Lake effect snow events</h1>
 
+
+
+<div>
+  <%= link_to "Simple Search Events", search_lake_effect_snow_events_path, class:"btn btn-dark" %>
+  <%= link_to "Advanced Search Events", advancedSearch_lake_effect_snow_events_path, class:"btn btn-dark" %>
+  <%= link_to "New Event", new_lake_effect_snow_event_path, class:"btn btn-dark" %>
+</div>
+
 <div id="lake_effect_snow_events">
   <table id="sortTable" class="table table-striped table-hover table-bordered">
   <thead class="thead-dark">
@@ -30,10 +38,6 @@
 </table>
   
 </div>
-
-<%= link_to "Simple Search Events", search_lake_effect_snow_events_path, class:"btn btn-dark" %>
-<%= link_to "Advanced Search Events", advancedSearch_lake_effect_snow_events_path, class:"btn btn-dark" %>
-<%= link_to "New Event", new_lake_effect_snow_event_path, class:"btn btn-dark" %>
 
 
 <script>
