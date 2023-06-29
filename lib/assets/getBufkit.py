@@ -89,10 +89,9 @@ class processBufkit:
     
     def compileRow(self, station, modelType, year, month, day, hour, cross):
         rowBuild = []
-        newHour = str(hour)
-        if(int(hour)<10):
-            newHour = "0"+newHour
-        rowBuild.extend([modelType, station, (str(year)+"-"+str(month)+"-"+str(day)+" "+newHour)])
+        if(len(hour)<2):
+            hour = "0"+hour
+        rowBuild.extend([modelType, station, (str(year)+"-"+str(month)+"-"+str(day)+" "+hour)])
         rowBuild.append(self.bufkitRows[0][5])
         rowBuild.append(self.bufkitRows[0][6])
         for i in range(3):
@@ -191,7 +190,7 @@ class processBufkit:
                             self.crosshair = True
                         
                         
-                        self.compileRow(station, "NAM", self.year, self.month, self.day, int(hour)+int(stim), self.crosshair)
+                        self.compileRow(station, "NAM", self.year, self.month, self.day, str(int(hour)+int(stim)), self.crosshair)
                         break
                     else:
                         prevD = d

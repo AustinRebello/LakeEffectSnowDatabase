@@ -157,7 +157,7 @@ class LakeEffectSnowEventsController < ApplicationController
       windDirections = [0.0, 0.0, 0.0, 0.0]
 
       @score = 0
-      @scoreArray = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+      @scoreArray = [4, 5, 4, 2, 0.25, 0.5, 0.5, 0.25, 3, 2, 3, 0.1, 0.01]
 
       for bufkit in @bufkits do
         windArray[0][0] = windArray[0][0] + Math.sin(bufkit.tenMeterWindDirection*Math::PI/180)
@@ -344,8 +344,6 @@ class LakeEffectSnowEventsController < ApplicationController
       @rapBufLE1 = @rapBuf.where(station: "le1")
       @rapBufLE2 = @rapBuf.where(station: "le2")
 
-      @rapIDs = ["rkcle", "rkeri", "rkgkj", "rle1", "rle2", "rall"]
-      @rapData = [@rapBufCLE, @rapBufERI, @rapBufGKJ, @rapBufLE1, @rapBufLE2, @rapBuf]
 
       @tableHeaderMet = ["Site", "Observation Time", "Temperature", "Dew Point", "Humidity", "Wind Direction", "Wind Speed", "Mean Sea Level Pressure", 
         "Visibility", "Wind Gust", "Present Weather", "Peak Wind Gust", "Peak Wind Direction", "Peak Wind Time"]
@@ -354,8 +352,8 @@ class LakeEffectSnowEventsController < ApplicationController
         "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Humidity (Ice)","925mb Wind Direction", "925mb Wind Speed","925mb Height",
         "850mb Temperature", "850mb Dew Point", "850mb Humidity", "850mb Humidity (Ice)","850mb Wind Direction", "850mb Wind Speed","850mb Height",                             
         "700mb Temperature", "700mb Dew Point", "700mb Humidity", "850mb Humidity (Ice)","700mb Wind Direction", "700mb Wind Speed","700mb Height",
-        "Model Cape", "Lake Induced Cape", "Lake Induced NCape", "Lake Induced EQL", "10M Wind Direction", "10M Wind Speed", "Bulk Shear  Surface-700mb", 
-        "Bulk Shear U", "Bulk Shear V", "Lake Surface to 850mb Temperature Difference", "Lake Surface to 700mb Temperature Difference", "Max Omega?"]
+        "Model Cape", "Lake Induced Cape", "Lake Induced NCape", "Lake Induced EQL", "10M Wind Direction", "10M Wind Speed", "Bulk Shear Surface-700mb", 
+        "Bulk Shear U", "Bulk Shear V", "Lake Surface-850mb ΔT", "Lake Surface-700mb ΔT", "Max Omega?"]
       rescue ActiveRecord::RecordNotFound => e
         redirect_to home_record_not_found_url
       end

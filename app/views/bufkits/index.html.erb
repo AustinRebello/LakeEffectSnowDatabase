@@ -101,7 +101,7 @@
       <thead class="thead-dark">
         <tr>
           <% @tableHeaderBuf.each do |head| %>
-            <th scope="col"><%= head %></th>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
           <% end %>
         </tr>
       </thead>
@@ -110,7 +110,9 @@
           <tr>
             <% value = 1 %>
             <% bufkit.attributes.each do |attr_value| %>
-              <% if (value < 38) %>
+              <% if value == 1 %>
+                  <td><%= link_to attr_value[1], bufkit %></td>
+              <% elsif (value < 38) %>
                 <td><%= attr_value[1] %></td>
               <% end %>
               <% value = value + 1%>
@@ -124,7 +126,7 @@
       <thead class="thead-dark">
         <tr>
           <% @tableHeaderBuf.each do |head| %>
-            <th scope="col"><%= head %></th>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
           <% end %>
         </tr>
       </thead>
@@ -133,7 +135,9 @@
             <tr>
               <% value = 1 %>
               <% bufkit.attributes.each do |attr_value| %>
-                <% if (value < 38) %>
+                <% if value == 1 %>
+                  <td><%= link_to attr_value[1], bufkit %></td>
+                <% elsif (value < 38) %>
                   <td><%= attr_value[1] %></td>
                 <% end %>
                 <% value = value + 1%>
@@ -147,7 +151,7 @@
       <thead class="thead-dark">
         <tr>
           <% @tableHeaderBuf.each do |head| %>
-            <th scope="col"><%= head %></th>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
           <% end %>
         </tr>
       </thead>
@@ -156,7 +160,9 @@
             <tr>
               <% value = 1 %>
               <% bufkit.attributes.each do |attr_value| %>
-                <% if (value < 38) %>
+                <% if value == 1 %>
+                  <td><%= link_to attr_value[1], bufkit %></td>
+                <% elsif (value < 38) %>
                   <td><%= attr_value[1] %></td>
                 <% end %>
                 <% value = value + 1%>
@@ -170,7 +176,7 @@
       <thead class="thead-dark">
         <tr>
           <% @tableHeaderBuf.each do |head| %>
-            <th scope="col"><%= head %></th>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
           <% end %>
         </tr>
       </thead>
@@ -179,7 +185,9 @@
           <tr>
             <% value = 1 %>
             <% bufkit.attributes.each do |attr_value| %>
-              <% if (value < 38) %>
+              <% if value == 1 %>
+                <td><%= link_to attr_value[1], bufkit %></td>
+              <% elsif (value < 38) %>
                 <td><%= attr_value[1] %></td>
               <% end %>
               <% value = value + 1%>
@@ -193,7 +201,7 @@
       <thead class="thead-dark">
         <tr>
           <% @tableHeaderBuf.each do |head| %>
-            <th scope="col"><%= head %></th>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
           <% end %>
         </tr>
       </thead>
@@ -202,7 +210,9 @@
           <tr>
             <% value = 1 %>
             <% bufkit.attributes.each do |attr_value| %>
-              <% if (value < 38) %>
+              <% if value == 1 %>
+                <td><%= link_to attr_value[1], bufkit %></td>
+              <% elsif (value < 38) %>
                 <td><%= attr_value[1] %></td>
               <% end %>
               <% value = value + 1%>
@@ -238,7 +248,7 @@
       <thead class="thead-dark">
         <tr>
           <% @tableHeaderBuf.each do |head| %>
-            <th scope="col"><%= head %></th>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
           <% end %>
         </tr>
       </thead>
@@ -247,7 +257,9 @@
           <tr>
             <% value = 1 %>
             <% bufkit.attributes.each do |attr_value| %>
-              <% if (value < 38) %>
+              <% if value == 1 %>
+                <td><%= link_to attr_value[1], bufkit %></td>
+              <% elsif (value < 38) %>
                 <td><%= attr_value[1] %></td>
               <% end %>
               <% value = value + 1%>
@@ -261,7 +273,7 @@
       <thead class="thead-dark">
         <tr>
           <% @tableHeaderBuf.each do |head| %>
-            <th scope="col"><%= head %></th>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
           <% end %>
         </tr>
       </thead>
@@ -270,7 +282,9 @@
             <tr>
               <% value = 1 %>
               <% bufkit.attributes.each do |attr_value| %>
-                <% if (value < 38) %>
+                <% if value == 1 %>
+                  <td><%= link_to attr_value[1], bufkit %></td>
+                <% elsif (value < 38) %>
                   <td><%= attr_value[1] %></td>
                 <% end %>
                 <% value = value + 1%>
@@ -284,7 +298,7 @@
       <thead class="thead-dark">
         <tr>
           <% @tableHeaderBuf.each do |head| %>
-            <th scope="col"><%= head %></th>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
           <% end %>
         </tr>
       </thead>
@@ -293,7 +307,9 @@
             <tr>
               <% value = 1 %>
               <% bufkit.attributes.each do |attr_value| %>
-                <% if (value < 38) %>
+                <% if value == 1 %>
+                  <td><%= link_to attr_value[1], bufkit %></td>
+                <% elsif (value < 38) %>
                   <td><%= attr_value[1] %></td>
                 <% end %>
                 <% value = value + 1%>
@@ -307,7 +323,7 @@
       <thead class="thead-dark">
         <tr>
           <% @tableHeaderBuf.each do |head| %>
-            <th scope="col"><%= head %></th>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
           <% end %>
         </tr>
       </thead>
@@ -316,7 +332,9 @@
           <tr>
             <% value = 1 %>
             <% bufkit.attributes.each do |attr_value| %>
-              <% if (value < 38) %>
+              <% if value == 1 %>
+                <td><%= link_to attr_value[1], bufkit %></td>
+              <% elsif (value < 38) %>
                 <td><%= attr_value[1] %></td>
               <% end %>
               <% value = value + 1%>
@@ -330,7 +348,7 @@
       <thead class="thead-dark">
         <tr>
           <% @tableHeaderBuf.each do |head| %>
-            <th scope="col"><%= head %></th>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
           <% end %>
         </tr>
       </thead>
@@ -339,7 +357,9 @@
           <tr>
             <% value = 1 %>
             <% bufkit.attributes.each do |attr_value| %>
-              <% if (value < 38) %>
+              <% if value == 1 %>
+                  <td><%= link_to attr_value[1], bufkit %></td>
+              <% elsif (value < 38) %>
                 <td><%= attr_value[1] %></td>
               <% end %>
               <% value = value + 1%>
