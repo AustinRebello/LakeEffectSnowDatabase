@@ -348,12 +348,12 @@ class LakeEffectSnowEventsController < ApplicationController
       @tableHeaderMet = ["Site", "Observation Time", "Temperature", "Dew Point", "Humidity", "Wind Direction", "Wind Speed", "Mean Sea Level Pressure", 
         "Visibility", "Wind Gust", "Present Weather", "Peak Wind Gust", "Peak Wind Direction", "Peak Wind Time"]
 
-      @tableHeaderBuf = ["Model Type", "Station", "Time", 
+      @tableHeaderBuf = ["Model Type", "Station", "Time (Z)", 
         "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Humidity (Ice)","925mb Wind Direction", "925mb Wind Speed","925mb Height",
         "850mb Temperature", "850mb Dew Point", "850mb Humidity", "850mb Humidity (Ice)","850mb Wind Direction", "850mb Wind Speed","850mb Height",                             
         "700mb Temperature", "700mb Dew Point", "700mb Humidity", "850mb Humidity (Ice)","700mb Wind Direction", "700mb Wind Speed","700mb Height",
         "Model Cape", "Lake Induced Cape", "Lake Induced NCape", "Lake Induced EQL", "10M Wind Direction", "10M Wind Speed", "Bulk Shear Surface-700mb", 
-        "Bulk Shear U", "Bulk Shear V", "Lake Surface-850mb ΔT", "Lake Surface-700mb ΔT", "Max Omega?"]
+        "Bulk Shear U", "Bulk Shear V", "Lake Surface-850mb ΔT", "Lake Surface-700mb ΔT", "Max Omega?", "Time (Z)"]
       rescue ActiveRecord::RecordNotFound => e
         redirect_to home_record_not_found_url
       end
