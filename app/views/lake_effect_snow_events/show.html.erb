@@ -36,11 +36,29 @@
     var cle = document.getElementById("mcle");
     var eri = document.getElementById("meri");
     var gkj = document.getElementById("mgkj");
+    var bkl = document.getElementById("mbkl");
+    var cgf = document.getElementById("mcgf");
+    var lnn = document.getElementById("mlnn");
+    var hzy = document.getElementById("mhzy");
+    var yng = document.getElementById("myng");
+    var pov = document.getElementById("mpov");
+    var akr = document.getElementById("makr");
+    var cak = document.getElementById("mcak");
+    var lpr = document.getElementById("mlpr");
     var all = document.getElementById("mall")
 
     cle.style.display = 'none';
     eri.style.display = 'none';
     gkj.style.display = 'none';
+    bkl.style.display = 'none';
+    cgf.style.display = 'none';
+    lnn.style.display = 'none';
+    hzy.style.display = 'none';
+    yng.style.display = 'none';
+    pov.style.display = 'none';
+    akr.style.display = 'none';
+    cak.style.display = 'none';
+    lpr.style.display = 'none';
     all.style.display = 'none';
 
     if(dataToShow == 1) {
@@ -49,6 +67,24 @@
       eri.style.display = null;
     } else if (dataToShow == 3){
       gkj.style.display = null;
+    } else if (dataToShow == 4){
+      bkl.style.display = null;
+    } else if (dataToShow == 5){
+      cgf.style.display = null;
+    } else if (dataToShow == 6){
+      lnn.style.display = null;
+    } else if (dataToShow == 7){
+      hzy.style.display = null;
+    } else if (dataToShow == 8){
+      yng.style.display = null;
+    } else if (dataToShow == 9){
+      pov.style.display = null;
+    } else if (dataToShow == 10){
+      akr.style.display = null;
+    } else if (dataToShow == 11){
+      cak.style.display = null;
+    } else if (dataToShow == 12){
+      lpr.style.display = null;
     } else {
       all.style.display = null;
     }
@@ -120,6 +156,21 @@
   <%= link_to "Upper Air Analysis for Event Start and End", @upperAirAnalysisURL, :target => '_blank', class:"btn btn-primary" %>
 </div>
 
+<div class = "p-1 text-center">
+  <% if @event.tecOne.length > 1 %>
+    <%= link_to @event.tecOne, @vtecURL1, :target => '_blank', class:"btn btn-primary" %>
+  <% end %>
+  <% if @event.tecTwo.length > 1 %>
+    <%= link_to @event.tecTwo, @vtecURL2, :target => '_blank', class:"btn btn-primary" %>
+  <% end %>
+  <% if @event.tecThree.length > 1 %>
+    <%= link_to @event.tecThree, @vtecURL3, :target => '_blank', class:"btn btn-primary" %>
+  <% end %>
+  <% if @event.tecFour.length > 1 %>
+    <%= link_to @event.tecFour, @vtecURL4, :target => '_blank', class:"btn btn-primary" %>
+  <% end %>
+</div>
+
 <div id="dFields" class="pb-4 pt-4">
   <ul class="nav nav-tabs nav-fill">
     <li class="nav-item">
@@ -151,7 +202,34 @@
           <%= button_tag  'GKJ', class:"nav-link link-dark", :onclick => "showMetData(3)" %>
         </li>
         <li class="nav-item">
-          <%= button_tag  'ALL', class:"nav-link link-dark", :onclick => "showMetData(4)" %>
+          <%= button_tag  'BKL', class:"nav-link link-dark", :onclick => "showMetData(4)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'CGF', class:"nav-link link-dark", :onclick => "showMetData(5)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'LNN', class:"nav-link link-dark", :onclick => "showMetData(6)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'HZY', class:"nav-link link-dark", :onclick => "showMetData(7)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'YNG', class:"nav-link link-dark", :onclick => "showMetData(8)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'POV', class:"nav-link link-dark", :onclick => "showMetData(9)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'AKR', class:"nav-link link-dark", :onclick => "showMetData(10)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'CAK', class:"nav-link link-dark", :onclick => "showMetData(11)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'LPR', class:"nav-link link-dark", :onclick => "showMetData(12)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'ALL', class:"nav-link link-dark", :onclick => "showMetData(13)" %>
         </li>
       </ul>
     </div>
@@ -216,6 +294,213 @@
       </thead>
       <tbody class="table-group-divider">
         <% @metarGKJ.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "mbkl" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @metarBKL.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "mcgf" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @metarCGF.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "mlnn" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @metarLNN.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "mhzy" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @metarHZY.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "myng" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @metarYNG.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "mpov" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @metarPOV.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "makr" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @metarAKR.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "mcak" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @metarCAK.each do |met| %>
+          <tr>
+              <% value = 1%>
+              <% met.attributes.each do |attr_value| %>
+                <% if (value != 1) && (value < 16) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "mlpr" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderMet.each do |head| %>
+            <th scope="col"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @metarLPR.each do |met| %>
           <tr>
               <% value = 1%>
               <% met.attributes.each do |attr_value| %>
@@ -749,6 +1034,78 @@
     }
     if(document.getElementById('mgkj_wrapper')==null){
       $('#mgkj').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('mbkl_wrapper')==null){
+      $('#mbkl').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('mcgf_wrapper')==null){
+      $('#mcgf').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('mlnn_wrapper')==null){
+      $('#mlnn').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('mhzy_wrapper')==null){
+      $('#mhzy').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('myng_wrapper')==null){
+      $('#myng').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('mpov_wrapper')==null){
+      $('#mpov').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('makr_wrapper')==null){
+      $('#makr').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('mcak_wrapper')==null){
+      $('#mcak').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('mlpr_wrapper')==null){
+      $('#mlpr').dataTable({
         paging: false,
         searching: false,
         "bInfo": false

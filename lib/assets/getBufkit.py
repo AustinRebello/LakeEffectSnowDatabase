@@ -199,8 +199,7 @@ class processBufkit:
                         omegaData[0] = float(d[7])
                         omegaData[1] = float(d[1])
                         omegaData[2] = float(self.calculateRelativeHumidity(float(d[1]), float(d[2])))
-                        #print("NEW OMEGA PEAK AT: "+str(d[0])+" with values of "+str(omegaData[0])+" "+str(omegaData[1])+" "+str(omegaData[2]))  
-                    
+                        
                 elif line == stimFound+3:
                     capeLine = data[line].decode('ascii')
                     splitLine = capeLine.split(" ")

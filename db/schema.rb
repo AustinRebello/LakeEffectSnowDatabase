@@ -64,6 +64,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_05_31_181557) do
     t.integer "peakStartTime"
     t.integer "peakEndTime"
     t.integer "averageLakeSurfaceTemperature"
+    t.string "eventType"
+    t.string "tecOne"
+    t.string "tecTwo"
+    t.string "tecThree"
+    t.string "tecFour"
+    t.integer "tecYearOne"
+    t.integer "tecYearTwo"
+    t.integer "tecYearThree"
+    t.integer "tecYearFour"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

@@ -35,7 +35,7 @@ class processMetar:
         self.month2 = 0
         self.day2 = 0
         self.hour2 = 0
-        self.stations = ["CLE","ERI","GKJ"]
+        self.stations = ["CLE","ERI","GKJ", "BKL", "CGF", "LNN", "HZY", "YNG", "POV", "AKR", "CAK", "LPR"]
         self.cape = 0
         self.times=[]
         self.bulkShearValues = []

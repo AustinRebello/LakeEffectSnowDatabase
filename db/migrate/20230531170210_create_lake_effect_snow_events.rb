@@ -11,6 +11,16 @@ class CreateLakeEffectSnowEvents < ActiveRecord::Migration[7.0]
       t.integer :peakStartTime
       t.integer :peakEndTime
       t.integer :averageLakeSurfaceTemperature
+      t.string :eventType
+      t.string :tecOne
+      t.string :tecTwo
+      t.string :tecThree
+      t.string :tecFour
+      t.integer :tecYearOne
+      t.integer :tecYearTwo
+      t.integer :tecYearThree
+      t.integer :tecYearFour
+
 
       t.timestamps
     end

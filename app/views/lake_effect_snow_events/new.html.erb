@@ -1,11 +1,6 @@
-<h1 class = 'text-center'>New Lake Effect Snow Event</h1>
-<h2 class = 'text-center'>Please follow the naming convention described below when entering the event name:</h2>
-<h3 class = 'text-center'>MM/DD/YY - MM/DD/YY - TYPE</h3>
-<h4 class = 'text-center'>TYPE is one of three:   <b>LES</b> - Lake Effect Snow // <b>FA</b> - False Alarm // <b>HY</b> - Hybrid</h4>
+<h2 class = 'text-center'>New Lake Effect Snow Event</h2>
+<h3 class = 'text-center'>Please follow the naming convention described below when entering the event name:</h3>
+<h4 class = 'text-center'>MM/DD/YY - MM/DD/YY (if it is one day, only enter that date once)</h4>
+<p class = 'text-center'>TYPE is one of three:   <b>LES</b> - Lake Effect Snow // <b>FA</b> - False Alarm // <b>HY</b> - Hybrid</p>
+<p class = 'text-center'>VTECH is one of four: <b>WS-W-####</b> // <b>WS-A-####</b> // <b>WW-Y-####</b> // <b>LE-W-####</b></p>
 <%= render "form", lake_effect_snow_event: @lake_effect_snow_event %>
-
-<br>
-
-<div>
-  <%= link_to "Back to lake effect snow events", lake_effect_snow_events_path %>
-</div>

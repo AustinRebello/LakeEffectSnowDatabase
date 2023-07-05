@@ -147,6 +147,9 @@ class LakeEffectSnowEventsController < ApplicationController
     
     for event in @allEvents do
 
+      @surfaceClose = true
+      @nineClose = true
+
       @bufkits = get_bufkits(event)
  
       puts(event.eventName)
@@ -190,11 +193,20 @@ class LakeEffectSnowEventsController < ApplicationController
         end
         
         if (@surfaceWindDirection != -1)
-          @score = @score + (windDirections[0]-@surfaceWindDirection).abs*@scoreArray[0]
+          if((windDirections[0]-@surfaceWindDirection.abs)>=15)
+            @surfaceClose = false
+          else
+            @score = @score + (windDirections[0]-@surfaceWindDirection).abs*@scoreArray[0]
+          end
         end
         
         if (@nineWindDirection != -1)
-          @score = @score + (windDirections[1]-@nineWindDirection).abs*@scoreArray[1]
+          if((windDirections[1]-@nineWindDirection.abs)>=15)
+            @nineClose = false
+          else
+            @score = @score + (windDirections[1]-@nineWindDirection).abs*@scoreArray[1]
+          end
+          
         end
 
         if (@eightWindDirection != -1)
@@ -241,8 +253,9 @@ class LakeEffectSnowEventsController < ApplicationController
           @score = @score + (dataArray[8]-@eql).abs*@scoreArray[12]
         end
       end
-
-      @eventResults.append([event.id,event.eventName,@score.round(1)])
+      if(@surfaceClose && @nineClose)
+        @eventResults.append([event.id,event.eventName,@score.round(1)])
+      end
     end
   end
 
@@ -294,7 +307,7 @@ class LakeEffectSnowEventsController < ApplicationController
       if(@event.endDate.day < 10) then @day2 = "0"+@day2 end
 
       @hour1 = (@event.startTime - @event.startTime%3).to_s
-      if(@event.startTime < 10) then @hour1 = "0"+@hour1 end
+      if(@hour1.length() < 2) then @hour1 = "0"+@hour1 end
 
       @durationDay = (@event.endDate - @event.startDate).to_i
       
@@ -323,6 +336,37 @@ class LakeEffectSnowEventsController < ApplicationController
       @detroitURL = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.endDate.year.to_s+"&MONTH="+@month2+"&FROM="+@day1+"00&TO="+@day2+"00&STNM=72632"
       @radarURL = `python lib/assets/getRadar.py "#{@radarStart}" "#{@radarEnd}"`
 
+
+
+      @vtecURL1 = ""
+      @vtecURL2 = ""
+      @vtecURL3 = ""
+      @vtecURL4 = ""
+
+      puts("ONE")
+      puts(@event.tecOne)
+      puts("ONE")
+      puts(@event.tecTwo.length)
+      puts("ONE")
+      puts(@event.tecThree)
+      puts("ONE")
+      puts(@event.tecFour)
+
+      if @event.tecOne != nil
+        @vtecURL1 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearOne.to_s+"-O-NEW-KCLE-"+@event.tecOne
+      end
+
+      if @event.tecTwo != nil
+        @vtecURL2 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearTwo.to_s+"-O-NEW-KCLE-"+@event.tecTwo
+      end
+
+      if @event.tecThree != nil
+        @vtecURL3 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearThree.to_s+"-O-NEW-KCLE-"+@event.tecThree
+      end
+
+      if @event.tecFour != nil
+        @vtecURL4 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearFour.to_s+"-O-NEW-KCLE-"+@event.tecFour
+      end
      
       @snow_reports = SnowReport.where(lake_effect_snow_event_id: @event.id)
       @namBuf = Bufkit.where(lake_effect_snow_event_id: @event.id, modelType: "NAM")
@@ -331,6 +375,15 @@ class LakeEffectSnowEventsController < ApplicationController
       @metarCLE = Metar.where(lake_effect_snow_event_id: @event.id, site: "CLE")
       @metarERI = Metar.where(lake_effect_snow_event_id: @event.id, site: "ERI")
       @metarGKJ = Metar.where(lake_effect_snow_event_id: @event.id, site: "GKJ")
+      @metarBKL = Metar.where(lake_effect_snow_event_id: @event.id, site: "BKL")
+      @metarCGF = Metar.where(lake_effect_snow_event_id: @event.id, site: "CGF")
+      @metarLNN = Metar.where(lake_effect_snow_event_id: @event.id, site: "LNN")
+      @metarHZY = Metar.where(lake_effect_snow_event_id: @event.id, site: "HZY")
+      @metarYNG = Metar.where(lake_effect_snow_event_id: @event.id, site: "YNG")
+      @metarPOV = Metar.where(lake_effect_snow_event_id: @event.id, site: "POV")
+      @metarAKR = Metar.where(lake_effect_snow_event_id: @event.id, site: "AKR")
+      @metarCAK = Metar.where(lake_effect_snow_event_id: @event.id, site: "CAK")
+      @metarLPR = Metar.where(lake_effect_snow_event_id: @event.id, site: "LPR")
 
       @namBufCLE = @namBuf.where(station: "kcle")
       @namBufERI = @namBuf.where(station: "keri")
@@ -444,7 +497,7 @@ class LakeEffectSnowEventsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def lake_effect_snow_event_params
-      params.require(:lake_effect_snow_event).permit(:eventName, :startDate, :endDate, :peakStartDate, :peakEndDate, :startTime, :endTime, :peakStartTime, :peakEndTime, :averageLakeSurfaceTemperature)
+      params.require(:lake_effect_snow_event).permit(:eventName, :startDate, :endDate, :peakStartDate, :peakEndDate, :startTime, :endTime, :peakStartTime, :peakEndTime, :averageLakeSurfaceTemperature, :eventType, :tecOne, :tecTwo, :tecThree, :tecFour, :tecYearOne, :tecYearTwo, :tecYearThree, :tecYearFour)
     end
 
     def get_bufkits(event)

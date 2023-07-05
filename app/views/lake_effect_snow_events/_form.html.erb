@@ -11,62 +11,131 @@
     </div>
   <% end %>
 
-  <div class="p-2 text-capitalize">
-    <%= form.label "Event Name", style: "display: block" %>
-    <%= form.text_field :eventName, :required => true%>
-  </div>
 
-  <div class = "row p-3 text-capitalize">
-    <div class = "col-2">
-      <%= form.label "Start Date", style: "display: block" %>
-      <%= form.date_field :startDate, :required => true %>
+  <div class = "row">
+    <div class="p-3 text-capitalize col-6">
+      <%= form.label "Event Name", style: "display: block" %>
+      <%= form.text_field :eventName, :required => true%>
     </div>
 
-    <div class = "col-10">
-      <%= form.label "Start Time (Zulu)", style: "display: block" %>
-      <%= form.number_field :startTime, placeholder: "0z", :required => true  %>
+    <div class="p-3 text-capitalize col-6">
+      <%= form.label "Event Type", style: "display: block" %>
+      <%= form.text_field :eventType, :required => true%>
     </div>
   </div>
 
-  <div class = "row p-3 text-capitalize">
-      <div class="col-2">
-        <%= form.label "End Date", style: "display: block" %>
-        <%= form.date_field :endDate, :required => true %>
+  <div class = "row">
+    <div class = "col-6">
+      <div class = "row p-3 text-capitalize">
+        <div class = "col-4">
+          <%= form.label "Start Date", style: "display: block" %>
+          <%= form.date_field :startDate, :required => true %>
+        </div>
+
+        <div class = "col-8">
+          <%= form.label "Start Time (Zulu)", style: "display: block" %>
+          <%= form.number_field :startTime, placeholder: "0z", :required => true  %>
+        </div>
       </div>
-      <div class = "col-10">
-        <%= form.label "End Time (Zulu)", style: "display: block" %>
-        <%= form.number_field :endTime, placeholder: "0z", :required => true  %>
+
+      <div class = "row p-3 text-capitalize">
+          <div class="col-4">
+            <%= form.label "End Date", style: "display: block" %>
+            <%= form.date_field :endDate, :required => true %>
+          </div>
+          <div class = "col-8">
+            <%= form.label "End Time (Zulu)", style: "display: block" %>
+            <%= form.number_field :endTime, placeholder: "0z", :required => true  %>
+          </div>
       </div>
+
+      <div class = "row p-3 text-capitalize">
+          <div class="col-4">
+            <%= form.label "Peak Start Date", style: "display: block" %>
+            <%= form.date_field :peakStartDate, :required => true %>
+          </div>
+          <div class = "col-8">
+            <%= form.label "Peak Start Time (Zulu)", style: "display: block" %>
+            <%= form.number_field :peakStartTime, placeholder: "0z", :required => true  %>
+          </div>
+      </div>
+
+      <div class = "row p-3 text-capitalize">
+          <div class="col-4">
+            <%= form.label "Peak End Date", style: "display: block" %>
+            <%= form.date_field :peakEndDate, :required => true %>
+          </div>
+          <div class = "col-8">
+            <%= form.label "Peak End Time (Zulu)", style: "display: block" %>
+            <%= form.number_field :peakEndTime, placeholder: "0z", :required => true %>
+          </div>
+      </div>
+
+      
+    </div>
+
+
+    <div class = "col-6 p-3">
+      <div class = "row">
+        <div class = "col-6 p-3 text-capitalize">
+          <%= form.label "VTEC Link One" %>
+          <%= form.text_field :tecOne, placeholder: "XX-X-0000" %>
+        </div>
+        <div class = "col-6 p-3 text-capitalize">
+          <%= form.label "VTEC Year One" %>
+          <%= form.number_field :tecYearOne, placeholder: "0000" %>
+        </div>
+      </div>
+
+      <div class = "row">
+        <div class = "col-6 p-3 text-capitalize">
+          <%= form.label "VTEC Link Two" %>
+          <%= form.text_field :tecTwo, placeholder: "XX-X-0000" %>
+        </div>
+        <div class = "col-6 p-3 text-capitalize">
+          <%= form.label "VTEC Year Two" %>
+          <%= form.number_field :tecYearTwo, placeholder: "0000" %>
+        </div>
+      </div>
+
+      <div class = "row">
+        <div class = "col-6 p-3 text-capitalize">
+          <%= form.label "VTEC Link Three" %>
+          <%= form.text_field :tecThree, placeholder: "XX-X-0000" %>
+        </div>
+        <div class = "col-6 p-3 text-capitalize">
+          <%= form.label "VTEC Year Three" %>
+          <%= form.number_field :tecYearThree, placeholder: "0000" %>
+        </div>
+      </div>
+
+      <div class = "row">
+        <div class = "col-6 p-3 text-capitalize">
+          <%= form.label "VTEC Link Four" %>
+          <%= form.text_field :tecFour, placeholder: "XX-X-0000" %>
+        </div>
+        <div class = "col-6 p-3 text-capitalize">
+          <%= form.label "VTEC Year Four" %>
+          <%= form.number_field :tecYearFour, placeholder: "0000" %>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class = "row p-3 text-capitalize">
-      <div class="col-2">
-        <%= form.label "Peak Start Date", style: "display: block" %>
-        <%= form.date_field :peakStartDate, :required => true %>
-      </div>
-      <div class = "col-10">
-        <%= form.label "Peak Start Time (Zulu)", style: "display: block" %>
-        <%= form.number_field :peakStartTime, placeholder: "0z", :required => true  %>
-      </div>
+  <div class = "row">
+    <div class = "p-2 col-4 text-capitalize">
+      <%= form.label "Average Lake Surface Temperature", style: "display: block" %>
+      <%= form.number_field :averageLakeSurfaceTemperature, placeholder: "0", :required => true %>
+    </div>
+    <div class = "col-4">
+      <%= form.submit %>
+    </div>
+
+    <div class = "col-4">
+      <%= link_to "Back to lake effect snow events", lake_effect_snow_events_path %>
+    </div>
   </div>
 
-  <div class = "row p-3 text-capitalize">
-      <div class="col-2">
-        <%= form.label "Peak End Date", style: "display: block" %>
-        <%= form.date_field :peakEndDate, :required => true %>
-      </div>
-      <div class = "col-10">
-        <%= form.label "Peak End Time (Zulu)", style: "display: block" %>
-        <%= form.number_field :peakEndTime, placeholder: "0z", :required => true %>
-      </div>
-  </div>
-
-  <div class = "p-2 text-capitalize">
-    <%= form.label "Average Lake Surface Temperature", style: "display: block" %>
-    <%= form.number_field :averageLakeSurfaceTemperature, placeholder: "0", :required => true %>
-  </div>
-
-  <div>
-    <%= form.submit %>
-  </div>
+  
+  
 <% end %>
