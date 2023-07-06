@@ -15,7 +15,6 @@ from time import mktime
 urlFront = 'https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?'
 urlMiddle = '&data=tmpc&data=dwpc&data=relh&data=drct&data=sknt&data=mslp&data=vsby&data=gust&data=wxcodes&data=peak_wind_gust&data=peak_wind_drct&data=peak_wind_time&'
 urlEnd = '&tz=Etc%2FUTC&format=onlycomma&latlon=no&elev=no&missing=M&trace=T&direct=no&report_type=3&report_type=4'
-"station=CLE"
 
 
 class processMetar:

@@ -11,24 +11,43 @@
     var nam = document.getElementById("NAM");
     var rap = document.getElementById("RAP");
     var met = document.getElementById("METARS");
+    var sur = document.getElementById("SurfaceObservations")
     var sno = document.getElementById("SnowReports");
 
     nam.style.display = 'none';
     rap.style.display = 'none';
     met.style.display = 'none';
     sno.style.display = 'none';
+    sur.style.display = 'none';
 
     if(dataToShow == 1) {
         nam.style.display = 'block';
-        showBufData(6, true)
+        showBufData(6, true);
     } else if (dataToShow == 2){
         rap.style.display = 'block';
-        showBufData(6, false)
+        showBufData(6, false);
     } else if (dataToShow == 3){
         met.style.display = 'block';
-        showMetData(4)
+        showMetData(4);
+    } else if(dataToShow == 4){
+        sur.style.display = 'block';
+        showSurData(1);
     } else {
-        sno.style.display = 'block'
+      sno.style.display = 'block';
+    }
+  }
+
+  function showSurData(dataToShow){
+    var buffalo = document.getElementById("buffaloTable");
+    var detroit = document.getElementById("detroitTable");
+
+    buffalo.style.display = 'none';
+    detroit.style.display = 'none';
+
+    if(dataToShow == 1) {
+      buffalo.style.display = null;
+    } else {
+      detroit.style.display = null;
     }
   }
 
@@ -108,8 +127,6 @@
       var all = document.getElementById("rall");
     }
     
-
-
     kcle.style.display = 'none';
     keri.style.display = 'none';
     kgkl.style.display = 'none';
@@ -183,7 +200,10 @@
       <%= button_tag  'METAR Data', id:"met", class:"nav-link link-dark", :onclick => "showData(3)" %>
     </li>
     <li class="nav-item">
-      <%= button_tag  'Snow Report', id:"sno", class:"nav-link link-dark", :onclick => "showData(4)" %>
+      <%= button_tag  'Surface Observation Data', id:"sur", class:"nav-link link-dark", :onclick => "showData(4)" %>
+    </li>
+    <li class="nav-item">
+      <%= button_tag  'Snow Report', id:"sno", class:"nav-link link-dark", :onclick => "showData(5)" %>
     </li>
   </ul>
 </div>
@@ -545,26 +565,93 @@
     <table id = "snowTable"class="table table-striped table-hover table-bordered">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">Last Name</th>
-        <th scope="col">Town/City</th>
-        <th scope="col">Latitude</th>
-        <th scope="col">Longitude</th>
-        <th scope="col">Storm Total</th>
-      </tr>
+          <th scope="col">Last Name</th>
+          <th scope="col">Town/City</th>
+          <th scope="col">Latitude</th>
+          <th scope="col">Longitude</th>
+          <th scope="col">Storm Total</th>
+        </tr>
     </thead>
     <tbody class="table-group-divider">
       <% @snow_reports.each do |report| %>
-        <tr>
-          <td><%=link_to report.lastName, report %></td>
-          <td><%= report.city %></td>
-          <td><%= report.latitude %></td>
-          <td><%= report.longitude %></td>
-          <td><%= report.stormTotal %></td>
-       </tr>
+          <tr>
+            <td><%=link_to report.lastName, report %></td>
+            <td><%= report.city %></td>
+            <td><%= report.latitude %></td>
+            <td><%= report.longitude %></td>
+            <td><%= report.stormTotal %></td>
+        </tr>
       <% end %>
     </tbody>
     </table>
   </div>
+
+  <div id="SurfaceObservations" class="text-center container">
+    <%= link_to 'Generate Surface Observations', python_observations_url(:event_id => @lake_effect_snow_event.id), class:"btn btn-success", data: { turbo_method: :get, turbo_confirm: 'This will delete all snow reports for this event. Are you sure you wish to continue?'} %>
+    <%= link_to 'Delete Surface Observations', surface_lake_effect_snow_events_url(:id => @lake_effect_snow_event.id), class:"btn btn-danger", data: { turbo_method: :get, turbo_confirm: 'This will delete all snow reports for this event. Are you sure you wish to continue?'} %>
+    <%= link_to "Export Surface Observations", downloadCSV_observations_url(format: 'csv', event_id: @event.id),  class:"btn btn-primary" %>
+    
+    <div id="tFields" class="pb-4">
+      <ul class="nav nav-tabs nav-fill">
+        <li class="nav-item">
+          <%= button_tag  'Detroit', class:"nav-link link-dark", :onclick => "showSurData(2)" %>
+        </li>
+        <li class="nav-item">
+          <%= button_tag  'Buffalo', class:"nav-link link-dark", :onclick => "showSurData(1)" %>
+        </li>
+      </ul>
+    </div>
+    
+    <table id = "detroitTable"class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderSur.each do |head| %>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @detroitObs.each do |sur| %>
+          <tr>
+              <td><%=link_to sur.site, sur %></td>
+              <% value = 1%>
+              <% sur.attributes.each do |attr_value| %>
+                <% if (value > 2) && (value < 32) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <table id = "buffaloTable" class="table table-striped table-hover table-bordered">
+      <thead class="thead-dark">
+        <tr>
+          <% @tableHeaderSur.each do |head| %>
+            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% @buffaloObs.each do |sur| %>
+          <tr>
+              <td><%=link_to "Buffalo", sur %></td>
+              <% value = 1 %>
+              <% sur.attributes.each do |attr_value| %>
+                <% if (value > 2) && (value < 32) %>
+                  <td><%= attr_value[1] %></td>
+                <% end %>
+                <% value = value + 1%>
+              <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  
 
   <div id="NAM" class="text-center container">
     <div id="tFields" class="pb-4">
@@ -1122,6 +1209,22 @@
     }
     if(document.getElementById('snowTable_wrapper')==null){
       $('#snowTable').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('detroitTable_wrapper')==null){
+      $('#detroitTable').dataTable({
+        paging: false,
+        searching: false,
+        "bInfo": false
+      });
+      $('.dataTables_length').addClass('bs-select');
+    }
+    if(document.getElementById('buffaloTable_wrapper')==null){
+      $('#buffaloTable').dataTable({
         paging: false,
         searching: false,
         "bInfo": false

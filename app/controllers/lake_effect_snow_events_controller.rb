@@ -259,7 +259,8 @@ class LakeEffectSnowEventsController < ApplicationController
     end
   end
 
-
+  def pythonObservation
+  end
 
   def bufkit
     @bufkits = Bufkit.where(lake_effect_snow_event_id: params[:id])
@@ -276,6 +277,16 @@ class LakeEffectSnowEventsController < ApplicationController
     @metars = Metar.where(lake_effect_snow_event_id: params[:id])
     @metars.each do |met|
         met.destroy
+    end
+    @event = LakeEffectSnowEvent.find(params[:id])
+    redirect_to lake_effect_snow_event_url(@event)
+  end
+
+  def surface
+
+    @surfaceObs = SurfaceObservations.where(lake_effect_snow_event_id: params[:id])
+    @surfaceObs.each do |sur|
+        sur.destroy
     end
     @event = LakeEffectSnowEvent.find(params[:id])
     redirect_to lake_effect_snow_event_url(@event)
@@ -343,15 +354,6 @@ class LakeEffectSnowEventsController < ApplicationController
       @vtecURL3 = ""
       @vtecURL4 = ""
 
-      puts("ONE")
-      puts(@event.tecOne)
-      puts("ONE")
-      puts(@event.tecTwo.length)
-      puts("ONE")
-      puts(@event.tecThree)
-      puts("ONE")
-      puts(@event.tecFour)
-
       if @event.tecOne != nil
         @vtecURL1 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearOne.to_s+"-O-NEW-KCLE-"+@event.tecOne
       end
@@ -369,8 +371,13 @@ class LakeEffectSnowEventsController < ApplicationController
       end
      
       @snow_reports = SnowReport.where(lake_effect_snow_event_id: @event.id)
+
       @namBuf = Bufkit.where(lake_effect_snow_event_id: @event.id, modelType: "NAM")
       @rapBuf = Bufkit.where(lake_effect_snow_event_id: @event.id, modelType: "RAP")
+
+      @detroitObs = Observation.where(lake_effect_snow_event_id: @event.id, site: "Detroit")
+      @buffaloObs = Observation.where(lake_effect_snow_event_id: @event.id, site: "Buffalo")
+
       @metars = Metar.where(lake_effect_snow_event_id: @event.id)
       @metarCLE = Metar.where(lake_effect_snow_event_id: @event.id, site: "CLE")
       @metarERI = Metar.where(lake_effect_snow_event_id: @event.id, site: "ERI")
@@ -397,6 +404,10 @@ class LakeEffectSnowEventsController < ApplicationController
       @rapBufLE1 = @rapBuf.where(station: "le1")
       @rapBufLE2 = @rapBuf.where(station: "le2")
 
+      @tableHeaderSur = ["Site","Date", "Surface Pressure", "Surface Temperature", "Surface Dew Point", "Surface Humidity", "Surface Wind Direction", "Surface Wind Speed", "Surface Height",
+        "925mb Pressure", "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Wind Direction", "925mb Wind Speed", "925mb Height",
+        "850mb Pressure", "850mb Temperature", "850mb Dew Point", "850mb Humidity", "850mb Wind Direction", "850mb Wind Speed", "850mb Height",
+        "700mb Pressure", "700mb Temperature", "700mb Dew Point", "700mb Humidity", "700mb Wind Direction", "700mb Wind Speed", "700mb Height"]
 
       @tableHeaderMet = ["Site", "Observation Time", "Temperature", "Dew Point", "Humidity", "Wind Direction", "Wind Speed", "Mean Sea Level Pressure", 
         "Visibility", "Wind Gust", "Present Weather", "Peak Wind Gust", "Peak Wind Direction", "Peak Wind Time"]
@@ -475,6 +486,11 @@ class LakeEffectSnowEventsController < ApplicationController
     @metars = Metar.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
     @metars.each do |met|
         met.destroy
+    end
+
+    @surfaceObs = SurfaceObservations.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
+    @surfaceObs.each do |sur|
+      sur.destroy
     end
 
     @lake_effect_snow_event.destroy

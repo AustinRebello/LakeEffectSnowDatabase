@@ -12,7 +12,7 @@ from datetime import datetime
 
 ####################################################
 #Original Code Author: nickl
-#Repurposed code for grabbing BUFKIT and METARs data for a Lake Effect Snow Event Database for NWS CLEVELAND
+#Repurposed code for grabbing BUFKIT data for a Lake Effect Snow Event Database for NWS CLEVELAND
 #Lets get the data from iastate, thanks iastate!
 #
 url='https://mtarchive.geol.iastate.edu'

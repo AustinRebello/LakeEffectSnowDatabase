@@ -1,0 +1,67 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  site: MyString
+  date: MyString
+  surPressure: MyString
+  surTemperature: MyString
+  surDewPoint: MyString
+  surHumidity: MyString
+  surWindDirection: MyString
+  surWindSpeed: MyString
+  surHeight: MyString
+  ninePressure: MyString
+  nineTemperature: MyString
+  nineDewPoint: MyString
+  nineHumidity: MyString
+  nineWindDirection: MyString
+  nineWindSpeed: MyString
+  nineHeight: MyString
+  eightPressure: MyString
+  eightTemperature: MyString
+  eightDewPoint: MyString
+  eightHumidity: MyString
+  eightWindDirection: MyString
+  eightWindSpeed: MyString
+  eightHeight: MyString
+  sevenPressure: MyString
+  sevenTemperature: MyString
+  sevenDewPoint: MyString
+  sevenHumidity: MyString
+  sevenWindDirection: MyString
+  sevenWindSpeed: MyString
+  sevenHeight: MyString
+  lake_effect_snow_event_id: 1
+
+two:
+  site: MyString
+  date: MyString
+  surPressure: MyString
+  surTemperature: MyString
+  surDewPoint: MyString
+  surHumidity: MyString
+  surWindDirection: MyString
+  surWindSpeed: MyString
+  surHeight: MyString
+  ninePressure: MyString
+  nineTemperature: MyString
+  nineDewPoint: MyString
+  nineHumidity: MyString
+  nineWindDirection: MyString
+  nineWindSpeed: MyString
+  nineHeight: MyString
+  eightPressure: MyString
+  eightTemperature: MyString
+  eightDewPoint: MyString
+  eightHumidity: MyString
+  eightWindDirection: MyString
+  eightWindSpeed: MyString
+  eightHeight: MyString
+  sevenPressure: MyString
+  sevenTemperature: MyString
+  sevenDewPoint: MyString
+  sevenHumidity: MyString
+  sevenWindDirection: MyString
+  sevenWindSpeed: MyString
+  sevenHeight: MyString
+  lake_effect_snow_event_id: 1

@@ -1,0 +1,172 @@
+<%= form_with(model: observation) do |form| %>
+  <% if observation.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(observation.errors.count, "error") %> prohibited this observation from being saved:</h2>
+
+      <ul>
+        <% observation.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :site, style: "display: block" %>
+    <%= form.text_field :site %>
+  </div>
+
+  <div>
+    <%= form.label :date, style: "display: block" %>
+    <%= form.text_field :date %>
+  </div>
+
+  <div>
+    <%= form.label :surPressure, style: "display: block" %>
+    <%= form.text_field :surPressure %>
+  </div>
+
+  <div>
+    <%= form.label :surTemperature, style: "display: block" %>
+    <%= form.text_field :surTemperature %>
+  </div>
+
+  <div>
+    <%= form.label :surDewPoint, style: "display: block" %>
+    <%= form.text_field :surDewPoint %>
+  </div>
+
+  <div>
+    <%= form.label :surHumidity, style: "display: block" %>
+    <%= form.text_field :surHumidity %>
+  </div>
+
+  <div>
+    <%= form.label :surWindDirection, style: "display: block" %>
+    <%= form.text_field :surWindDirection %>
+  </div>
+
+  <div>
+    <%= form.label :surWindSpeed, style: "display: block" %>
+    <%= form.text_field :surWindSpeed %>
+  </div>
+
+  <div>
+    <%= form.label :surHeight, style: "display: block" %>
+    <%= form.text_field :surHeight %>
+  </div>
+
+  <div>
+    <%= form.label :ninePressure, style: "display: block" %>
+    <%= form.text_field :ninePressure %>
+  </div>
+
+  <div>
+    <%= form.label :nineTemperature, style: "display: block" %>
+    <%= form.text_field :nineTemperature %>
+  </div>
+
+  <div>
+    <%= form.label :nineDewPoint, style: "display: block" %>
+    <%= form.text_field :nineDewPoint %>
+  </div>
+
+  <div>
+    <%= form.label :nineHumidity, style: "display: block" %>
+    <%= form.text_field :nineHumidity %>
+  </div>
+
+  <div>
+    <%= form.label :nineWindDirection, style: "display: block" %>
+    <%= form.text_field :nineWindDirection %>
+  </div>
+
+  <div>
+    <%= form.label :nineWindSpeed, style: "display: block" %>
+    <%= form.text_field :nineWindSpeed %>
+  </div>
+
+  <div>
+    <%= form.label :nineHeight, style: "display: block" %>
+    <%= form.text_field :nineHeight %>
+  </div>
+
+  <div>
+    <%= form.label :eightPressure, style: "display: block" %>
+    <%= form.text_field :eightPressure %>
+  </div>
+
+  <div>
+    <%= form.label :eightTemperature, style: "display: block" %>
+    <%= form.text_field :eightTemperature %>
+  </div>
+
+  <div>
+    <%= form.label :eightDewPoint, style: "display: block" %>
+    <%= form.text_field :eightDewPoint %>
+  </div>
+
+  <div>
+    <%= form.label :eightHumidity, style: "display: block" %>
+    <%= form.text_field :eightHumidity %>
+  </div>
+
+  <div>
+    <%= form.label :eightWindDirection, style: "display: block" %>
+    <%= form.text_field :eightWindDirection %>
+  </div>
+
+  <div>
+    <%= form.label :eightWindSpeed, style: "display: block" %>
+    <%= form.text_field :eightWindSpeed %>
+  </div>
+
+  <div>
+    <%= form.label :eightHeight, style: "display: block" %>
+    <%= form.text_field :eightHeight %>
+  </div>
+
+  <div>
+    <%= form.label :sevenPressure, style: "display: block" %>
+    <%= form.text_field :sevenPressure %>
+  </div>
+
+  <div>
+    <%= form.label :sevenTemperature, style: "display: block" %>
+    <%= form.text_field :sevenTemperature %>
+  </div>
+
+  <div>
+    <%= form.label :sevenDewPoint, style: "display: block" %>
+    <%= form.text_field :sevenDewPoint %>
+  </div>
+
+  <div>
+    <%= form.label :sevenHumidity, style: "display: block" %>
+    <%= form.text_field :sevenHumidity %>
+  </div>
+
+  <div>
+    <%= form.label :sevenWindDirection, style: "display: block" %>
+    <%= form.text_field :sevenWindDirection %>
+  </div>
+
+  <div>
+    <%= form.label :sevenWindSpeed, style: "display: block" %>
+    <%= form.text_field :sevenWindSpeed %>
+  </div>
+
+  <div>
+    <%= form.label :sevenHeight, style: "display: block" %>
+    <%= form.text_field :sevenHeight %>
+  </div>
+
+  <div>
+    <%= form.label :lake_effect_snow_event_id, style: "display: block" %>
+    <%= form.number_field :lake_effect_snow_event_id %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>

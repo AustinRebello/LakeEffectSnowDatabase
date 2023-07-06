@@ -1,0 +1,14 @@
+<p style="color: green"><%= notice %></p>
+
+<h1>Observations</h1>
+
+<div id="observations">
+  <% @observations.each do |observation| %>
+    <%= render observation %>
+    <p>
+      <%= link_to "Show this observation", observation %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New observation", new_observation_path %>

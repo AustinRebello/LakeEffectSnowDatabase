@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :observations do
+    collection{
+      get :python
+      get :downloadCSV
+    }
+  end
   resources :metars do
     collection{
       get :python
@@ -24,6 +30,7 @@ Rails.application.routes.draw do
       get :report
       get :bufkit
       get :metar
+      get :surface
       get :search
       get :advancedSearch
       get :searchResults
