@@ -12,7 +12,8 @@
       <th scope="col">End Time</th>
       <th scope="col">Peak Start Time</th>
       <th scope="col">Peak End Time</th>
-      <th scope="col">Average Lake Surface Temperature</th>
+      <th scope="col">Avg Lake Surface Temperature</th>
+      <th scope="col">LES Event Type</th>
     </tr>
   </thead>
   <tbody class="table-group-divider">
@@ -24,6 +25,7 @@
       <td><%= lake_effect_snow_event.peakStartDate %> at <%= lake_effect_snow_event.peakStartTime %>Z</td>
       <td><%= lake_effect_snow_event.peakEndDate %> at <%= lake_effect_snow_event.peakEndTime %>Z</td>
       <td><%= lake_effect_snow_event.averageLakeSurfaceTemperature %></td>
+      <td><%= lake_effect_snow_event.eventType %></td>
     </tr>
   </tbody>
     

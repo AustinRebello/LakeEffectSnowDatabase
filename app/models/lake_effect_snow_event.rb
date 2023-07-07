@@ -2,6 +2,7 @@ class LakeEffectSnowEvent < ActiveRecord::Base
     has_many :bufkits#, dependent: :destroy
     has_many :metars#, dependent: :destroy
     has_many :snow_reports#, dependent: :destroy
+    has_many :observastions#, dependent: :destroy
     validates :startDate, presence: true
     validates :endDate, presence: true
     validates :startTime, presence: true

@@ -409,7 +409,7 @@ class LakeEffectSnowEventsController < ApplicationController
         "850mb Pressure", "850mb Temperature", "850mb Dew Point", "850mb Humidity", "850mb Wind Direction", "850mb Wind Speed", "850mb Height",
         "700mb Pressure", "700mb Temperature", "700mb Dew Point", "700mb Humidity", "700mb Wind Direction", "700mb Wind Speed", "700mb Height"]
 
-      @tableHeaderMet = ["Site", "Observation Time", "Temperature", "Dew Point", "Humidity", "Wind Direction", "Wind Speed", "Mean Sea Level Pressure", 
+      @tableHeaderMet = ["Site", "Observation Time", "Temperature", "Dew Point", "Humidity", "Wind Direction", "Wind Speed", "MSLP", 
         "Visibility", "Wind Gust", "Present Weather", "Peak Wind Gust", "Peak Wind Direction", "Peak Wind Time"]
 
       @tableHeaderBuf = ["Model Type", "Station", "Time (Z)", 
@@ -439,6 +439,11 @@ class LakeEffectSnowEventsController < ApplicationController
     @metars = Metar.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
     @metars.each do |met|
         met.destroy
+    end
+    
+    @surObs = Observation.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
+    @surObs.each do |ob|
+        ob.destroy
     end
 
   end
@@ -488,7 +493,7 @@ class LakeEffectSnowEventsController < ApplicationController
         met.destroy
     end
 
-    @surfaceObs = SurfaceObservations.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
+    @surfaceObs = Observation.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
     @surfaceObs.each do |sur|
       sur.destroy
     end

@@ -11,13 +11,14 @@ from datetime import datetime
 from datetime import date, timedelta
 from time import mktime
 
-
+#Three variables that store large chunks of the standardized URL that do not change
 urlFront = 'https://mesonet.agron.iastate.edu/cgi-bin/request/asos.py?'
 urlMiddle = '&data=tmpc&data=dwpc&data=relh&data=drct&data=sknt&data=mslp&data=vsby&data=gust&data=wxcodes&data=peak_wind_gust&data=peak_wind_drct&data=peak_wind_time&'
 urlEnd = '&tz=Etc%2FUTC&format=onlycomma&latlon=no&elev=no&missing=M&trace=T&direct=no&report_type=3&report_type=4'
 
 
 class processMetar:
+    #Initializes the class Object when the class is called at the bottom of the file
     def __init__(self,startTime,endTime):
         self.urlFront = urlFront
         self.urlMiddle = urlMiddle
@@ -34,6 +35,7 @@ class processMetar:
         self.month2 = 0
         self.day2 = 0
         self.hour2 = 0
+        #All METAR Station Codes to iterate through
         self.stations = ["CLE","ERI","GKJ", "BKL", "CGF", "LNN", "HZY", "YNG", "POV", "AKR", "CAK", "LPR"]
         self.cape = 0
         self.times=[]
@@ -43,9 +45,9 @@ class processMetar:
         self.startHour = 0
         self.endDate = date.fromisoformat("2000-01-01")
         self.endHour = 0
-        
+    
+    #Runs the collection of METARs, calls the required commands, formats the response into JSON, and prints it for response collection
     def run(self):
-        """Run it!"""
         self.setUpTimeRange()
         for station in self.stations:
             self.setStartDate()
@@ -53,6 +55,7 @@ class processMetar:
         jsonOutput = json.dumps(self.compiledRows)
         print(jsonOutput)
         
+    #Formats the date into a YYYY-MM-DD for ISO Date handling
     def formatISO(self, y, m, d):
         month = str(m)
         day = str(d)
@@ -62,9 +65,8 @@ class processMetar:
             day = "0"+day
         return str(y)+"-"+month+"-"+day
         
-        
+    #Get a list of all the hours w/i the provided time range 
     def setUpTimeRange(self):
-        """Get a list of all the hours w/i the provided time range"""
         st = time.strptime(self.startTime,"%Y/%m/%d/%H")
         et = time.strptime(self.endTime,"%Y/%m/%d/%H")
         newStart = datetime.fromtimestamp(mktime(st)) - timedelta(hours = 1)
@@ -81,12 +83,13 @@ class processMetar:
         self.endDate = date.fromisoformat(self.formatISO(et.tm_year,et.tm_mon,et.tm_mday))
         self.endHour = et.tm_hour
         
-        
+    #ISO Formats the date for METAR iteration
     def setStartDate(self):
         st = time.strptime(self.startTime,"%Y/%m/%d/%H")
         self.startDate = date.fromisoformat(self.formatISO(st.tm_year,st.tm_mon, st.tm_mday))
         self.startHour = st.tm_hour    
-        
+    
+    #Checks for a valid date to append to the final list to be exported
     def checkDate(self,dateToCheck):
         isoDate = dateToCheck.split(" ")[0]
         hour = dateToCheck.split(" ")[1][0:2]
@@ -98,10 +101,12 @@ class processMetar:
                 self.startDate = self.startDate + timedelta(days =1)
             return True
         return False     
-        
+    
+    #Uses the URL to scrape the METAR data, decodes it and exports it   
     def getMetarData(self,station):
         request_url = self.urlFront + "station={}".format(station) + self.urlMiddle + "year1={}&month1={}&day1={}&year2={}&month2={}&day2={}".format(self.year1,self.month1,self.day1,self.year2,self.month2,self.day2)+self.urlEnd
         response = request.urlopen(request_url)
+        #
         data = response.read().splitlines()
         prevD = [14]
         for line in range(1, len(data)):

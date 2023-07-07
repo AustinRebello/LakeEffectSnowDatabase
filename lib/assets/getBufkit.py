@@ -28,7 +28,6 @@ class processBufkit:
         self.year = ""
         self.month = ""
         self.day = ""
-        #self.stations = ["kcle"]
         self.stations = ["kcle","keri","kgkl","le1","le2"]
         self.cape = 0
         self.crosshair = False
@@ -308,8 +307,7 @@ class processBufkit:
                             self.crosshair = False
                         else:
                             self.crosshair = True
-                            #print("Stored Pressure: "+str(omegaData[3])+" Omega: "+str(omegaData[0])+" RelHum: "+str(omegaData[2])+" Tmp: "+str(omegaData[1])+" Current Omega "+d[7])
-                        
+                            
                         found700 = True
                         self.bufkitRows.append(truePressureData)
                         self.collectBulkShear(Ps, Us, Vs)
@@ -324,7 +322,6 @@ class processBufkit:
                         omegaData[1] = float(d[1])
                         omegaData[2] = float(self.calculateRelativeHumidity(float(d[1]), float(d[2])))
                         omegaData[3] = float(d[0])
-                        #print("NEW OMEGA PEAK AT: "+str(d[0])+" with values of "+str(omegaData[0])+" "+str(omegaData[1])+" "+str(omegaData[2]))
                         
                 elif line == 9:
                     capeLine = data[line].decode('ascii')
@@ -333,4 +330,3 @@ class processBufkit:
 
 args = sys.argv
 processBufkit(args[1], args[2], args[3]).run()
-#processBufkit("2021/01/17/21","2021/01/19/02", 14).run()
