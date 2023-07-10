@@ -29,7 +29,7 @@ class SnowReport < ApplicationRecord
     return 0
   end
 
-  def self.downloadBUF(event_id)
+  def self.download(event_id)
     reports = SnowReport.where(lake_effect_snow_event_id: event_id)
     CSV.generate do |csv|
        csv << column_names

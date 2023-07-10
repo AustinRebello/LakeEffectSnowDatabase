@@ -118,6 +118,7 @@ class processMetar:
                 break
             prevD = data[line].decode().split(',')
             
-     
+#Args are in the format of DATE 1 and DATE 2 where DATE is formatted as 
+#YYYY/MM/DD/HH   
 args = sys.argv
 processMetar(args[1], args[2]).run()

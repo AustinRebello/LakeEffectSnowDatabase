@@ -716,21 +716,19 @@
           <% end %>
         </tr>
       </thead>
-        <tbody class="table-group-divider">
-          <% @namBufERI.each do |bufkit| %>
-            <tr>
-              <% value = 1 %>
-              <% bufkit.attributes.each do |attr_value| %>
-                <% if (value >1) && (value < 38) %>
-                  <td><%= attr_value[1] %></td>
-                <% end %>
-                <% value = value + 1%>
+      <tbody class="table-group-divider">
+        <% @namBufERI.each do |bufkit| %>
+          <tr>
+            <% value = 1 %>
+            <% bufkit.attributes.each do |attr_value| %>
+              <% if (value >1) && (value < 38) %>
+                <td><%= attr_value[1] %></td>
               <% end %>
-              <td><%= bufkit.date %></td>
-            </tr>
-            <tr>
-              
-          <% end %>
+              <% value = value + 1%>
+            <% end %>
+            <td><%= bufkit.date %></td>
+          </tr>
+        <% end %>
       </tbody>
     </table>
 
