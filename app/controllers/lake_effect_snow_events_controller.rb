@@ -403,6 +403,15 @@ class LakeEffectSnowEventsController < ApplicationController
       @rapBufGKJ = @rapBuf.where(station: "kgkl").or(@namBuf.where(station: "kgkj"))
       @rapBufLE1 = @rapBuf.where(station: "le1")
       @rapBufLE2 = @rapBuf.where(station: "le2")
+      
+      @tableSurIDs = ['buffalo', 'detroit']
+      @tableBufIDs = ['kcle', 'keri', 'kgkl', 'le1', 'le2', 'all']
+      @tableMetIDs = ['cle', 'eri', 'gkj', 'bkl', 'cgf', 'lnn', 'hzy', 'yng', 'pov', 'akr', 'cak', 'lpr', 'all']
+      @tableNAM = [@namBufCLE, @namBufERI, @namBufGKJ, @namBufLE1, @namBufLE2, @namBuf]
+      @tableRAP = [@rapBufCLE, @rapBufERI, @rapBufGKJ, @rapBufLE1, @rapBufLE2, @rapBuf]
+      @tableMET = [@metarCLE, @metarERI, @metarGKJ, @metarBKL, @metarCGF, @metarLNN, @metarHZY, @metarYNG, @metarPOV, @metarAKR, @metarCAK, @metarLPR, @metars]
+      @tableSUR = [@buffaloObs, @detroitObs]
+
 
       @tableHeaderSur = ["Site","Date", "Surface Pressure", "Surface Temperature", "Surface Dew Point", "Surface Humidity", "Surface Wind Direction", "Surface Wind Speed", "Surface Height",
         "925mb Pressure", "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Wind Direction", "925mb Wind Speed", "925mb Height",

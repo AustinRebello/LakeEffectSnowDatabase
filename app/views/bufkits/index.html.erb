@@ -1,67 +1,27 @@
-
-<style>
-  .verticaltext{
-           width:1px;
-           word-wrap: break-word;
-           white-space:pre-wrap; 
-        }
-</style>
-
-
 <script>
-
   function showBBufData(dataToShow, flag){
-
+    var arrayOfSites = ["kcle", "keri", "kgkl", "le1", "le2"]
+    var documentArray = []
     var nam = document.getElementById("BNAM");
     var rap = document.getElementById("BRAP");
-    
+
     nam.style.display = 'none'
     rap.style.display  = 'none'
 
     if(flag){
-      var kcle = document.getElementById("bnkcle");
-      var keri = document.getElementById("bnkeri");
-      var kgkl = document.getElementById("bnkgkl");
-      var le1 = document.getElementById("bnle1");
-      var le2 = document.getElementById("bnle2");
-
+      for(let i = 0; i < arrayOfSites.length; i++){documentArray.push(document.getElementById("bn"+arrayOfSites[i]));}
       nam.style.display = 'block';
     } else {
-      var kcle = document.getElementById("brkcle");
-      var keri = document.getElementById("brkeri");
-      var kgkl = document.getElementById("brkgkl");
-      var le1 = document.getElementById("brle1");
-      var le2 = document.getElementById("brle2");
-
+      for(let i = 0; i < arrayOfSites.length; i++){documentArray.push(document.getElementById("br"+arrayOfSites[i]));}
       rap.style.display = 'block';
     }
     
-
-
-    kcle.style.display = 'none';
-    keri.style.display = 'none';
-    kgkl.style.display = 'none';
-    le1.style.display = 'none';
-    le2.style.display = 'none';
-
-
-
-    if(dataToShow == 1) {
-      kcle.style.display = null;
-    } else if (dataToShow == 2){
-      keri.style.display = null;
-    } else if (dataToShow == 3){
-      kgkl.style.display = null;
-    } else if (dataToShow == 4){
-      le1.style.display = null;
-    } else if (dataToShow == 5){
-      le2.style.display = null;
-    }
+    for(let i = 0; i < documentArray.length; i++){documentArray[i].style.display = 'none';}
+    documentArray[dataToShow-1].style.display = null;
   }
 </script>
 
 <p style="color: green"><%= notice %></p>
-
 <h1 class="text-center">All BUFKIT Data</h1>
 
 <div class="pb-4 pt-4">
@@ -79,382 +39,111 @@
   <div id="BNAM" class="text-center container">
     <div id="tFields" class="pb-4">
       <ul class="nav nav-tabs nav-fill">
-        <li class="nav-item">
-          <%= button_tag  'NAM KCLE', class:"nav-link link-dark", :onclick => "showBBufData(1, true)" %>
-        </li>
-        <li class="nav-item">
-          <%= button_tag  'NAM KERI', class:"nav-link link-dark", :onclick => "showBBufData(2, true)" %>
-        </li>
-        <li class="nav-item">
-          <%= button_tag  'NAM KGKL', class:"nav-link link-dark", :onclick => "showBBufData(3, true)" %>
-        </li>
-        <li class="nav-item">
-          <%= button_tag  'NAM LE1', class:"nav-link link-dark", :onclick => "showBBufData(4, true)" %>
-        </li>
-        <li class="nav-item">
-          <%= button_tag  'NAM LE2', class:"nav-link link-dark", :onclick => "showBBufData(5, true)" %>
-        </li>
+        <% namMenu = 1 %>
+        <% @tableBufIDs.each do |id| %>
+          <li class="nav-item">
+            <%= button_tag  "NAM "+id.upcase(), class:"nav-link link-dark", :onclick => "showBBufData(#{namMenu}, true)" %>
+          </li>
+          <% namMenu = namMenu + 1%>
+        <% end %>
       </ul>
     </div>
 
-    <table id = "bnkcle" class="table table-striped table-hover table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <% @tableHeaderBuf.each do |head| %>
-            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <% @namBufCLE.each do |bufkit| %>
+    <% namVal = 0 %>
+    <% @tableNAM.each do |nams| %>
+      <table id = "bn<%= @tableBufIDs[namVal] %>" class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
           <tr>
-            <% value = 1 %>
-            <% bufkit.attributes.each do |attr_value| %>
-              <% if value == 1 %>
-                  <td><%= link_to attr_value[1], bufkit %></td>
-              <% elsif (value < 38) %>
-                <td><%= attr_value[1] %></td>
-              <% end %>
-              <% value = value + 1%>
+            <% @tableHeaderBuf.each do |head| %>
+              <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
             <% end %>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
-
-    <table id = "bnkeri" class="table table-striped table-hover table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <% @tableHeaderBuf.each do |head| %>
-            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
-          <% end %>
-        </tr>
-      </thead>
+        </thead>
         <tbody class="table-group-divider">
-          <% @namBufERI.each do |bufkit| %>
+          <% nams.each do |bufkit| %>
             <tr>
               <% value = 1 %>
               <% bufkit.attributes.each do |attr_value| %>
-                <% if value == 1 %>
-                  <td><%= link_to attr_value[1], bufkit %></td>
-                <% elsif (value < 38) %>
+                <% if (value == 1) %>
+                  <td><%= link_to attr_value[1], lake_effect_snow_event_url(bufkit.lake_effect_snow_event_id) %></td>
+                <% end %>
+                <% if (value > 1) && (value < 38) %>
                   <td><%= attr_value[1] %></td>
                 <% end %>
                 <% value = value + 1%>
               <% end %>
             </tr>
           <% end %>
-      </tbody>
-    </table>
-
-    <table id = "bnkgkl" class="table table-striped table-hover table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <% @tableHeaderBuf.each do |head| %>
-            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
-          <% end %>
-        </tr>
-      </thead>
-        <tbody class="table-group-divider">
-          <% @namBufGKJ.each do |bufkit| %>
-            <tr>
-              <% value = 1 %>
-              <% bufkit.attributes.each do |attr_value| %>
-                <% if value == 1 %>
-                  <td><%= link_to attr_value[1], bufkit %></td>
-                <% elsif (value < 38) %>
-                  <td><%= attr_value[1] %></td>
-                <% end %>
-                <% value = value + 1%>
-              <% end %>
-            </tr>
-          <% end %>
-      </tbody>
-    </table>
-
-    <table id = "bnle1" class="table table-striped table-hover table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <% @tableHeaderBuf.each do |head| %>
-            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <% @namBufLE1.each do |bufkit| %>
-          <tr>
-            <% value = 1 %>
-            <% bufkit.attributes.each do |attr_value| %>
-              <% if value == 1 %>
-                <td><%= link_to attr_value[1], bufkit %></td>
-              <% elsif (value < 38) %>
-                <td><%= attr_value[1] %></td>
-              <% end %>
-              <% value = value + 1%>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-
-    <table id = "bnle2" class="table table-striped table-hover table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <% @tableHeaderBuf.each do |head| %>
-            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <% @namBufLE2.each do |bufkit| %>
-          <tr>
-            <% value = 1 %>
-            <% bufkit.attributes.each do |attr_value| %>
-              <% if value == 1 %>
-                <td><%= link_to attr_value[1], bufkit %></td>
-              <% elsif (value < 38) %>
-                <td><%= attr_value[1] %></td>
-              <% end %>
-              <% value = value + 1%>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
+        </tbody>
+      </table>
+      <% namVal = namVal + 1%>
+    <% end %>
   </div>
 
   <div id="BRAP" class="text-center container">
     <div id="tFields" class="pb-4">
       <ul class="nav nav-tabs nav-fill">
-        <li class="nav-item">
-          <%= button_tag  'RAP KCLE', class:"nav-link link-dark", :onclick => "showBBufData(1, false)" %>
-        </li>
-        <li class="nav-item">
-          <%= button_tag  'RAP KERI', class:"nav-link link-dark", :onclick => "showBBufData(2, false)" %>
-        </li>
-        <li class="nav-item">
-          <%= button_tag  'RAP KGKL', class:"nav-link link-dark", :onclick => "showBBufData(3, false)" %>
-        </li>
-        <li class="nav-item">
-          <%= button_tag  'RAP LE1', class:"nav-link link-dark", :onclick => "showBBufData(4, false)" %>
-        </li>
-        <li class="nav-item">
-          <%= button_tag  'RAP LE2', class:"nav-link link-dark", :onclick => "showBBufData(5, false)" %>
-        </li>
+        <% rapMenu = 1 %>
+        <% @tableBufIDs.each do |id| %>
+          <li class="nav-item">
+            <%= button_tag  "RAP "+id.upcase(), class:"nav-link link-dark", :onclick => "showBBufData(#{rapMenu}, false)" %>
+          </li>
+          <% rapMenu = rapMenu + 1%>
+        <% end %>
       </ul>
     </div>
 
-    <table id = "brkcle" class="table table-striped table-hover table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <% @tableHeaderBuf.each do |head| %>
-            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <% @rapBufCLE.each do |bufkit| %>
+    <% rapVal = 0 %>
+    <% @tableRAP.each do |raps| %>
+      <table id = "br<%= @tableBufIDs[rapVal] %>" class="table table-striped table-hover table-bordered">
+        <thead class="thead-dark">
           <tr>
-            <% value = 1 %>
-            <% bufkit.attributes.each do |attr_value| %>
-              <% if value == 1 %>
-                <td><%= link_to attr_value[1], bufkit %></td>
-              <% elsif (value < 38) %>
-                <td><%= attr_value[1] %></td>
-              <% end %>
-              <% value = value + 1%>
+            <% @tableHeaderBuf.each do |head| %>
+              <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
             <% end %>
           </tr>
-        <% end %>
-      </tbody>
-    </table>
-
-    <table id = "brkeri" class="table table-striped table-hover table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <% @tableHeaderBuf.each do |head| %>
-            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
-          <% end %>
-        </tr>
-      </thead>
+        </thead>
         <tbody class="table-group-divider">
-          <% @rapBufERI.each do |bufkit| %>
+          <% raps.each do |bufkit| %>
             <tr>
               <% value = 1 %>
               <% bufkit.attributes.each do |attr_value| %>
-                <% if value == 1 %>
-                  <td><%= link_to attr_value[1], bufkit %></td>
-                <% elsif (value < 38) %>
+                <% if (value == 1) %>
+                  <td><%= link_to attr_value[1], lake_effect_snow_event_url(bufkit.lake_effect_snow_event_id) %></td>
+                <% end %>
+                <% if (value > 1) && (value < 38) %>
                   <td><%= attr_value[1] %></td>
                 <% end %>
                 <% value = value + 1%>
               <% end %>
             </tr>
           <% end %>
-      </tbody>
-    </table>
-
-    <table id = "brkgkl" class="table table-striped table-hover table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <% @tableHeaderBuf.each do |head| %>
-            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
-          <% end %>
-        </tr>
-      </thead>
-        <tbody class="table-group-divider">
-          <% @rapBufGKJ.each do |bufkit| %>
-            <tr>
-              <% value = 1 %>
-              <% bufkit.attributes.each do |attr_value| %>
-                <% if value == 1 %>
-                  <td><%= link_to attr_value[1], bufkit %></td>
-                <% elsif (value < 38) %>
-                  <td><%= attr_value[1] %></td>
-                <% end %>
-                <% value = value + 1%>
-              <% end %>
-            </tr>
-          <% end %>
-      </tbody>
-    </table>
-
-    <table id = "brle1" class="table table-striped table-hover table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <% @tableHeaderBuf.each do |head| %>
-            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <% @rapBufLE1.each do |bufkit| %>
-          <tr>
-            <% value = 1 %>
-            <% bufkit.attributes.each do |attr_value| %>
-              <% if value == 1 %>
-                <td><%= link_to attr_value[1], bufkit %></td>
-              <% elsif (value < 38) %>
-                <td><%= attr_value[1] %></td>
-              <% end %>
-              <% value = value + 1%>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-
-    <table id = "brle2" class="table table-striped table-hover table-bordered">
-      <thead class="thead-dark">
-        <tr>
-          <% @tableHeaderBuf.each do |head| %>
-            <th scope="col" style="writing-mode: vertical-rl;transform: scale(-1,-1)"><%= head %></th>
-          <% end %>
-        </tr>
-      </thead>
-      <tbody class="table-group-divider">
-        <% @rapBufLE2.each do |bufkit| %>
-          <tr>
-            <% value = 1 %>
-            <% bufkit.attributes.each do |attr_value| %>
-              <% if value == 1 %>
-                  <td><%= link_to attr_value[1], bufkit %></td>
-              <% elsif (value < 38) %>
-                <td><%= attr_value[1] %></td>
-              <% end %>
-              <% value = value + 1%>
-            <% end %>
-          </tr>
-        <% end %>
-      </tbody>
-    </table>
-
+        </tbody>
+      </table>
+      <% rapVal = rapVal + 1%>
+    <% end %>
   </div>
 </div>
 
-
-<script>
-  $(document).ready(function () {
-    showBBufData(1, true)
-    if(document.getElementById('brkcle_wrapper')==null){
-      $('#brkcle').dataTable({
-        paging: false,
-        searching: false,
-        "bInfo": false
-      });
-      $('.dataTables_length').addClass('bs-select');
-    }
-    if(document.getElementById('brkeri_wrapper')==null){
-      $('#brkeri').dataTable({
-        paging: false,
-        searching: false,
-        "bInfo": false
-      });
-      $('.dataTables_length').addClass('bs-select');
-    }
-    if(document.getElementById('brkgkl_wrapper')==null){
-      $('#brkgkl').dataTable({
-        paging: false,
-        searching: false,
-        "bInfo": false
-      });
-      $('.dataTables_length').addClass('bs-select');
-    }
-    if(document.getElementById('brle1_wrapper')==null){
-      $('#brle1').dataTable({
-        paging: false,
-        searching: false,
-        "bInfo": false
-      });
-      $('.dataTables_length').addClass('bs-select');
-    }
-    if(document.getElementById('brle2_wrapper')==null){
-      $('#brle2').dataTable({
-        paging: false,
-        searching: false,
-        "bInfo": false
-      });
-      $('.dataTables_length').addClass('bs-select');
-    }
-    if(document.getElementById('bnkcle_wrapper')==null){
-      $('#bnkcle').dataTable({
-        paging: false,
-        searching: false,
-        "bInfo": false
-      });
-      $('.dataTables_length').addClass('bs-select');
-    }
-    if(document.getElementById('bnkeri_wrapper')==null){
-      $('#bnkeri').dataTable({
-        paging: false,
-        searching: false,
-        "bInfo": false
-      });
-      $('.dataTables_length').addClass('bs-select');
-    }
-    if(document.getElementById('bnkgkl_wrapper')==null){
-      $('#bnkgkl').dataTable({
-        paging: false,
-        searching: false,
-        "bInfo": false
-      });
-      $('.dataTables_length').addClass('bs-select');
-    }
-    if(document.getElementById('bnle1_wrapper')==null){
-      $('#bnle1').dataTable({
-        paging: false,
-        searching: false,
-        "bInfo": false
-      });
-      $('.dataTables_length').addClass('bs-select');
-    }
-    if(document.getElementById('bnle2_wrapper')==null){
-      $('#bnle2').dataTable({
-        paging: false,
-        searching: false,
-        "bInfo": false
-      });
-      $('.dataTables_length').addClass('bs-select');
-    }
-  });
-</script>
+<% @tableBufIDs.each do |id| %>
+  <script>
+    $(document).ready(function () {
+      if(document.getElementById('br<%= id %>_wrapper')==null){
+        $('#br<%= id %>').dataTable({
+          paging: false,
+          searching: false,
+          "bInfo": false
+        });
+        $('.dataTables_length').addClass('bs-select');
+      }
+      if(document.getElementById('bn<%= id %>_wrapper')==null){
+        $('#bn<%= id %>').dataTable({
+          paging: false,
+          searching: false,
+          "bInfo": false
+        });
+        $('.dataTables_length').addClass('bs-select');
+      }
+    });
+  </script>
+<% end %>

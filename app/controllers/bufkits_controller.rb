@@ -45,6 +45,12 @@ class BufkitsController < ApplicationController
     @rapBufLE1 = @rapBuf.where(station: "le1")
     @rapBufLE2 = @rapBuf.where(station: "le2")
 
+    @tableBufIDs = ['kcle', 'keri', 'kgkl', 'le1', 'le2']
+
+    @tableNAM = [@namBufCLE, @namBufERI, @namBufGKJ, @namBufLE1, @namBufLE2]
+    @tableRAP = [@rapBufCLE, @rapBufERI, @rapBufGKJ, @rapBufLE1, @rapBufLE2]
+
+
     @tableHeaderBuf = ["ID", "Model Type", "Station", "Time (Z)", 
       "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Humidity (Ice)","925mb Wind Direction", "925mb Wind Speed","925mb Height",
       "850mb Temperature", "850mb Dew Point", "850mb Humidity", "850mb Humidity (Ice)","850mb Wind Direction", "850mb Wind Speed","850mb Height",                             
