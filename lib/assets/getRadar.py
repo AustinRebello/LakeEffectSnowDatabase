@@ -5,11 +5,11 @@ import sys
  
 class processRadar:
     #Initializes the class Object when the class is called at the bottom of the file
-    def __init__(self,startTime,endTime):
+    def __init__(self,startTime,endTime, station):
         self.startTime = startTime
         self.endTime = endTime
         self.hours = 0
-        self.urlStart = "https://mesonet.agron.iastate.edu/GIS/apps/rview/warnings.phtml?osite=CLE&tzoff=0&layers%5B%5D=nexrad&layers%5B%5D=warnings&layers%5B%5D=cwas&layers%5B%5D=uscounties&layers%5B%5D=blank&site=CLE&tz=UTC&archive=yes&"
+        self.urlStart = "https://mesonet.agron.iastate.edu/GIS/apps/rview/warnings.phtml?osite="+station+"&tzoff=0&layers%5B%5D=nexrad&layers%5B%5D=warnings&layers%5B%5D=cwas&layers%5B%5D=uscounties&layers%5B%5D=blank&site="+station+"&tz=UTC&archive=yes&"
         self.urlEnd = "filter=0&cu=0&sortcol=fcster&sortdir=DESC&lsrlook=%2B&lsrwindow=15"
         
     #Runs the generation of the radar archived URL
@@ -36,5 +36,5 @@ class processRadar:
         print(url)
         
 args = sys.argv
-processRadar(args[1], args[2]).run()
+processRadar(args[1], args[2], args[3]).run()
 

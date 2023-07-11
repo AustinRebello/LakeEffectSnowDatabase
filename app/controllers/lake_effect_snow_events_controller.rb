@@ -1,6 +1,21 @@
 class LakeEffectSnowEventsController < ApplicationController
   before_action :set_lake_effect_snow_event, only: %i[ show edit update destroy ]
   
+  def get_bufkit_stations
+    return ['kcle', 'keri', 'kgkl', 'le1', 'le2']
+  end
+
+  def get_metar_sites
+    return ["CLE","ERI","GKJ", "BKL", "CGF", "LNN", "HZY", "YNG", "POV", "AKR", "CAK", "LPR"]
+  end
+
+  def get_surface_obs
+    return ["72528", "72632"]
+  end
+
+  def get_wfo_code
+    return "CLE"
+  end
 
   def report
     @snowReports = SnowReport.where(lake_effect_snow_event_id: params[:id])
@@ -9,6 +24,14 @@ class LakeEffectSnowEventsController < ApplicationController
     end
     @event = LakeEffectSnowEvent.find(params[:id])
     redirect_to lake_effect_snow_event_url(@event)
+  end
+
+  def search
+    @sites = get_bufkit_stations()
+  end
+
+  def advancedSearch
+    @sites = get_bufkit_stations()
   end
 
   def searchResults
@@ -68,11 +91,9 @@ class LakeEffectSnowEventsController < ApplicationController
         dataArray[6] = dataArray[6] + bufkit.lakeEffectNCape
         dataArray[7] = dataArray[7] + bufkit.lakeEffectEQL
         dataArray[8] = dataArray[8] + bufkit.bulkShear
-
       end
 
       if @bufkits.length > 0
-
         for i in (0..windDirections.length-1) do
           windDirections[i] = ((Math.atan2(windArray[i][0], windArray[i][1])*180/Math::PI) % 360).round(1)
         end
@@ -115,12 +136,10 @@ class LakeEffectSnowEventsController < ApplicationController
         @capeGraph.append([@lakeEvent, dataArray[5]])
         @ncapeGraph.append([@lakeEvent, dataArray[6]])
         @eqlGraph.append([@lakeEvent, dataArray[7]])
-
       end
     end
     puts(@eventIDs)
     @results = LakeEffectSnowEvent.find(@eventIDs)
-
   end
 
   def advancedSearchResults
@@ -146,14 +165,10 @@ class LakeEffectSnowEventsController < ApplicationController
     @allEvents = LakeEffectSnowEvent.all
     
     for event in @allEvents do
-
       @surfaceClose = true
       @nineClose = true
 
       @bufkits = get_bufkits(event)
- 
-      puts(event.eventName)
-      puts(@bufkits)
 
       dataArray = [0, 0, 0, 0, 0, 0, 0, 0, 0]
       windArray = [[0, 0],[0, 0],[0, 0], [0, 0]]
@@ -259,9 +274,6 @@ class LakeEffectSnowEventsController < ApplicationController
     end
   end
 
-  def pythonObservation
-  end
-
   def bufkit
     @bufkits = Bufkit.where(lake_effect_snow_event_id: params[:id])
     @bufkits.each do |buf|
@@ -300,6 +312,10 @@ class LakeEffectSnowEventsController < ApplicationController
   # GET /lake_effect_snow_events/1 or /lake_effect_snow_events/1.json
   def show
     begin
+      ##EDIT THIS LINE TO EDIT ALL STATION SPECIFIC URLS EXCEPT BALLOON SOUNDING LINKS, MUST BE ALL CAPS
+      @station = get_wfo_code()
+      @urlIDs = get_surface_obs()
+
       @event = LakeEffectSnowEvent.find(params[:id])
 
       @radarStart = Bufkit.handleDate(@event.startDate, @event.startTime)
@@ -336,18 +352,19 @@ class LakeEffectSnowEventsController < ApplicationController
       if(@event.startTime >= 12) then  @upperHour1 = "12" end
 
 
-      @snowfallURL = "https://www.nohrsc.noaa.gov/interactive/html/map.html?ql=station&zoom=&loc=42.174+N%2C+84.863+W&var=snowfall_"+@hourDuration.to_s+"_h&dy="+@event.endDate.year.to_s+"&dm="+@month2+"&dd="+@day2+"&dh=12&snap=1&o11=1&o10=1&o9=1&o12=1&o13=1&lbl=m&mode=pan&extents=us&min_x=-84.975000000002&min_y=39.758333333329&max_x=-79.200000000002&max_y=43.008333333329&coord_x=-82.087500000002&coord_y=41.383333333329&zbox_n=&zbox_s=&zbox_e=&zbox_w=&metric=0&bgvar=dem&shdvar=shading&width=800&height=450&nw=800&nh=450&h_o=0&font=0&js=1&uc=0"
+      @snowfallURL = "https://www.nohrsc.noaa.gov/interactive/html/map.html?recenter=Zoom&ql=station&zoom=&loc="+@station+"&var=snowfall_"+@hourDuration.to_s+"_h&dy="+@event.endDate.year.to_s+"&dm="+@month2+"&dd="+@day2+"&dh=12&snap=1&o11=1&o10=1&o9=1&o12=1&o13=1&lbl=m&mode=pan&extents=us&min_x=-84.975000000002&min_y=39.758333333329&max_x=-79.200000000002&max_y=43.008333333329&coord_x=-82.087500000002&coord_y=41.383333333329&zbox_n=&zbox_s=&zbox_e=&zbox_w=&metric=0&bgvar=dem&shdvar=shading&width=800&height=450&nw=800&nh=450&h_o=0&font=0&js=1&uc=0"
       @surfaceAnalysisURL = "https://www.wpc.ncep.noaa.gov/archives/web_pages/sfc/sfc_archive_maps.php?arcdate="+@month+"/"+@day1+"/"+@event.endDate.year.to_s+"&selmap="+@event.endDate.year.to_s+@month+@day1+@hour1
       @upperAirAnalysisURL = "https://www.spc.noaa.gov/cgi-bin-spc/getuadata.pl?MyDate1="+@truncatedYear1+@month+@day1+"&Time1="+@upperHour1+"&MyDate2="+@truncatedYear2+@month2+@day2+"&Time2="+@upperHour2+"&align=V&Levels=925&Levels=850&Levels=700&Levels=500"
 
 
       if @day2 < @day1 then @day1 = "01" end
 
-      @buffaloURL = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.endDate.year.to_s+"&MONTH="+@month2+"&FROM="+@day1+"00&TO="+@day2+"00&STNM=72528"
-      @detroitURL = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.endDate.year.to_s+"&MONTH="+@month2+"&FROM="+@day1+"00&TO="+@day2+"00&STNM=72632"
-      @radarURL = `python lib/assets/getRadar.py "#{@radarStart}" "#{@radarEnd}"`
+      @soundingURLS = []
 
-
+      @urlIDs.each do |id|
+        @soundingURLS.append("https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=GIF%3ASKEWT&YEAR="+@event.endDate.year.to_s+"&MONTH="+@month2+"&FROM="+@day1+"00&TO="+@day2+"00&STNM="+id)
+      end
+      @radarURL = `python lib/assets/getRadar.py "#{@radarStart}" "#{@radarEnd}" "#{@station}"`
 
       @vtecURL1 = ""
       @vtecURL2 = ""
@@ -355,71 +372,40 @@ class LakeEffectSnowEventsController < ApplicationController
       @vtecURL4 = ""
 
       if @event.tecOne != nil
-        @vtecURL1 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearOne.to_s+"-O-NEW-KCLE-"+@event.tecOne
+        @vtecURL1 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearOne.to_s+"-O-NEW-K"+@station+"-"+@event.tecOne
       end
 
       if @event.tecTwo != nil
-        @vtecURL2 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearTwo.to_s+"-O-NEW-KCLE-"+@event.tecTwo
+        @vtecURL2 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearTwo.to_s+"-O-NEW-K"+@station+"-"+@event.tecTwo
       end
 
       if @event.tecThree != nil
-        @vtecURL3 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearThree.to_s+"-O-NEW-KCLE-"+@event.tecThree
+        @vtecURL3 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearThree.to_s+"-O-NEW-K"+@station+"-"+@event.tecThree
       end
 
       if @event.tecFour != nil
-        @vtecURL4 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearFour.to_s+"-O-NEW-KCLE-"+@event.tecFour
+        @vtecURL4 = "https://mesonet.agron.iastate.edu/vtec/#"+@event.tecYearFour.to_s+"-O-NEW-K"+@station+"-"+@event.tecFour
       end
      
+      #Snow Report section of data display
       @snow_reports = SnowReport.where(lake_effect_snow_event_id: @event.id)
 
+      #Bufkit section of data display
       @namBuf = Bufkit.where(lake_effect_snow_event_id: @event.id, modelType: "NAM")
       @rapBuf = Bufkit.where(lake_effect_snow_event_id: @event.id, modelType: "RAP")
 
-      @detroitObs = Observation.where(lake_effect_snow_event_id: @event.id, site: "Detroit")
-      @buffaloObs = Observation.where(lake_effect_snow_event_id: @event.id, site: "Buffalo")
+      @tableBufIDs = get_bufkit_stations()
+      @tableNAM = []
+      @tableRAP = []
 
-      @metars = Metar.where(lake_effect_snow_event_id: @event.id)
-      @metarCLE = Metar.where(lake_effect_snow_event_id: @event.id, site: "CLE")
-      @metarERI = Metar.where(lake_effect_snow_event_id: @event.id, site: "ERI")
-      @metarGKJ = Metar.where(lake_effect_snow_event_id: @event.id, site: "GKJ")
-      @metarBKL = Metar.where(lake_effect_snow_event_id: @event.id, site: "BKL")
-      @metarCGF = Metar.where(lake_effect_snow_event_id: @event.id, site: "CGF")
-      @metarLNN = Metar.where(lake_effect_snow_event_id: @event.id, site: "LNN")
-      @metarHZY = Metar.where(lake_effect_snow_event_id: @event.id, site: "HZY")
-      @metarYNG = Metar.where(lake_effect_snow_event_id: @event.id, site: "YNG")
-      @metarPOV = Metar.where(lake_effect_snow_event_id: @event.id, site: "POV")
-      @metarAKR = Metar.where(lake_effect_snow_event_id: @event.id, site: "AKR")
-      @metarCAK = Metar.where(lake_effect_snow_event_id: @event.id, site: "CAK")
-      @metarLPR = Metar.where(lake_effect_snow_event_id: @event.id, site: "LPR")
+      @tableBufIDs.each do |id|
+        @tableNAM.append(@namBuf.where(station: id))
+        @tableRAP.append(@rapBuf.where(station: id))
+      end
 
-      @namBufCLE = @namBuf.where(station: "kcle")
-      @namBufERI = @namBuf.where(station: "keri")
-      @namBufGKJ = @namBuf.where(station: "kgkl").or(@namBuf.where(station: "kgkj"))
-      @namBufLE1 = @namBuf.where(station: "le1")
-      @namBufLE2 = @namBuf.where(station: "le2")
-
-      @rapBufCLE = @rapBuf.where(station: "kcle")
-      @rapBufERI = @rapBuf.where(station: "keri")
-      @rapBufGKJ = @rapBuf.where(station: "kgkl").or(@namBuf.where(station: "kgkj"))
-      @rapBufLE1 = @rapBuf.where(station: "le1")
-      @rapBufLE2 = @rapBuf.where(station: "le2")
-      
-      @tableSurIDs = ['buffalo', 'detroit']
-      @tableBufIDs = ['kcle', 'keri', 'kgkl', 'le1', 'le2', 'all']
-      @tableMetIDs = ['cle', 'eri', 'gkj', 'bkl', 'cgf', 'lnn', 'hzy', 'yng', 'pov', 'akr', 'cak', 'lpr', 'all']
-      @tableNAM = [@namBufCLE, @namBufERI, @namBufGKJ, @namBufLE1, @namBufLE2, @namBuf]
-      @tableRAP = [@rapBufCLE, @rapBufERI, @rapBufGKJ, @rapBufLE1, @rapBufLE2, @rapBuf]
-      @tableMET = [@metarCLE, @metarERI, @metarGKJ, @metarBKL, @metarCGF, @metarLNN, @metarHZY, @metarYNG, @metarPOV, @metarAKR, @metarCAK, @metarLPR, @metars]
-      @tableSUR = [@buffaloObs, @detroitObs]
-
-
-      @tableHeaderSur = ["Site","Date", "Surface Pressure", "Surface Temperature", "Surface Dew Point", "Surface Humidity", "Surface Wind Direction", "Surface Wind Speed", "Surface Height",
-        "925mb Pressure", "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Wind Direction", "925mb Wind Speed", "925mb Height",
-        "850mb Pressure", "850mb Temperature", "850mb Dew Point", "850mb Humidity", "850mb Wind Direction", "850mb Wind Speed", "850mb Height",
-        "700mb Pressure", "700mb Temperature", "700mb Dew Point", "700mb Humidity", "700mb Wind Direction", "700mb Wind Speed", "700mb Height"]
-
-      @tableHeaderMet = ["Site", "Observation Time", "Temperature", "Dew Point", "Humidity", "Wind Direction", "Wind Speed", "MSLP", 
-        "Visibility", "Wind Gust", "Present Weather", "Peak Wind Gust", "Peak Wind Direction", "Peak Wind Time"]
+      @tableNAM.append(@namBuf)
+      @tableRAP.append(@rapBuf)
+      @tableBufIDs.append('all')
 
       @tableHeaderBuf = ["Model Type", "Station", "Time (Z)", 
         "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Humidity (Ice)","925mb Wind Direction", "925mb Wind Speed","925mb Height",
@@ -427,6 +413,36 @@ class LakeEffectSnowEventsController < ApplicationController
         "700mb Temperature", "700mb Dew Point", "700mb Humidity", "850mb Humidity (Ice)","700mb Wind Direction", "700mb Wind Speed","700mb Height",
         "Model Cape", "Lake Induced Cape", "Lake Induced NCape", "Lake Induced EQL", "10M Wind Direction", "10M Wind Speed", "Bulk Shear Surface-700mb", 
         "Bulk Shear U", "Bulk Shear V", "Lake Surface-850mb ΔT", "Lake Surface-700mb ΔT", "Max Omega?", "Time (Z)"]
+
+      #Metar section of data display
+      @metars = Metar.where(lake_effect_snow_event_id: @event.id)
+
+      @tableMetIDs = get_metar_sites()
+      @tableMET = []
+      
+      @tableMetIDs.each do |id|
+        @tableMET.append(@metars.where(site: id))
+      end
+
+      @tableMET.append(@metars)
+      @tableMetIDs.append('all')
+
+      @tableHeaderMet = ["Site", "Observation Time", "Temperature", "Dew Point", "Humidity", "Wind Direction", "Wind Speed", "MSLP", 
+        "Visibility", "Wind Gust", "Present Weather", "Peak Wind Gust", "Peak Wind Direction", "Peak Wind Time"]
+
+      #Surface Observation section of data display 
+      @tableSurIDs = ['BUF', 'DTX']
+      @tableSUR = []
+
+      @tableSurIDs.each do |id|
+        @tableSUR.append(Observation.where(lake_effect_snow_event_id: @event.id, site: id))
+      end
+
+      @tableHeaderSur = ["Site","Date", "Surface Pressure", "Surface Temperature", "Surface Dew Point", "Surface Humidity", "Surface Wind Direction", "Surface Wind Speed", "Surface Height",
+        "925mb Pressure", "925mb Temperature", "925mb Dew Point", "925mb Humidity", "925mb Wind Direction", "925mb Wind Speed", "925mb Height",
+        "850mb Pressure", "850mb Temperature", "850mb Dew Point", "850mb Humidity", "850mb Wind Direction", "850mb Wind Speed", "850mb Height",
+        "700mb Pressure", "700mb Temperature", "700mb Dew Point", "700mb Humidity", "700mb Wind Direction", "700mb Wind Speed", "700mb Height"]
+
       rescue ActiveRecord::RecordNotFound => e
         redirect_to home_record_not_found_url
       end
@@ -549,21 +565,9 @@ class LakeEffectSnowEventsController < ApplicationController
 
       @psTime = event.peakStartDate.to_s+" "+@newStartHour
       @peTime = event.peakEndDate.to_s+" "+@newEndHour
-
-      puts(@psTime)
-      puts(@peTime)
-      puts("2021-01-18 09">= @psTime)
-      puts("2021-01-18 09"<=@peTime)
       
-      if(@site == "kgkj")
-        @bufkits = Bufkit.where(lake_effect_snow_event: event.id).where(modelType: @model)
-        @bufkits = @bufkits.where(station: "kgkj").or(@bufkits.where(station:"kgkl"))
-        @bufkits = @bufkits.where("date <= ?", @peTime).where("date >= ?", @psTime)
-        return @bufkits
-      else 
-        @bufkits = Bufkit.where(lake_effect_snow_event: event.id).where(modelType: @model).where(station: @site).where("date <= ?", @peTime).where("date >= ?", @psTime)
-        return @bufkits
-      end
-
+      
+      @bufkits = Bufkit.where(lake_effect_snow_event: event.id).where(modelType: @model).where(station: @site).where("date <= ?", @peTime).where("date >= ?", @psTime)
+      return @bufkits
     end
 end

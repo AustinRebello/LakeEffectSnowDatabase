@@ -12,8 +12,8 @@ from datetime import datetime
 
 ####################################################
 #Original Code Author: nickl
+#Current Code Author: Austin Rebello
 #Repurposed code for grabbing BUFKIT data for a Lake Effect Snow Event Database for NWS CLEVELAND
-#
 #Bufkit data comes from Iowa State's archive
 url='https://mtarchive.geol.iastate.edu'
 #Format is url/YYYY/MM/DD/bufkit/HH/rap
@@ -237,11 +237,11 @@ class processBufkit:
             stimFound = stimSearch*132+6
             stim = data[stimFound].decode('ascii').split(' ')[2]
             
-            #Scrapes and processes the data
-            self.scrapeData(data, stimSearch*132+6, len(data), station, "NAM", str(int(hour)+int(stim)), stimFound+3)
+            if station == "kgkj":
+                station = "kgkl"
             
-
-                
+            #Scrapes and processes the data
+            self.scrapeData(data, stimSearch*132+6, len(data), station, "NAM", str(int(hour)+int(stim)), stimFound+3)                          
    
    #Iterates over each time to get NAM data, sets up appropriate STIM values to search between for each link
    #Also formats each link depending on a 0/12Z run or a 6/18Z run since the links are different
@@ -298,6 +298,9 @@ class processBufkit:
               
             #Splits the page into iterable lines and initializes the flags and arrays used for each hourly sounding      
             data = response.read().splitlines()
+            
+            if station == "kgkj":
+                station = "kgkl"
             
             #Scrapes and processes the data
             self.scrapeData(data, 0, len(data), station, "RAP", self.hour, 9)

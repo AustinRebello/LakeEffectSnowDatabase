@@ -38,7 +38,7 @@
   }
 
   function showSurData(dataToShow){
-    var arrayOfSites = ['buffalo', 'detroit']
+    var arrayOfSites = ['BUF', 'DTX']
     var documentArray = []
     console.log(dataToShow)
     for(let i = 0; i < arrayOfSites.length; i++){documentArray.push(document.getElementById(arrayOfSites[i]+"Table"));}
@@ -49,7 +49,8 @@
   }
 
   function showMetData(dataToShow){
-    var arrayOfSites = ["cle", "eri", "gkj", "bkl", "cgf", "lnn", "hzy", "yng", "pov", "akr", "cak", "lpr", "all"]
+    var arrayOfSites = ["CLE","ERI","GKJ", "BKL", "CGF", "LNN", "HZY", "YNG", "POV", "AKR", "CAK", "LPR"]
+    arrayOfSites.push("all")
     var documentArray = []
 
     for(let i = 0; i < arrayOfSites.length; i++){documentArray.push(document.getElementById("m"+arrayOfSites[i]));}
@@ -60,7 +61,8 @@
   }
 
   function showBufData(dataToShow, flag){
-    var arrayOfSites = ["kcle", "keri", "kgkl", "le1", "le2", "all"]
+    var arrayOfSites = ["kcle", "keri", "kgkl", "le1", "le2"]
+    arrayOfSites.push("all")
     var documentArray = []
 
     if(flag){
@@ -70,7 +72,6 @@
     }
     
     for(let i = 0; i < documentArray.length; i++){documentArray[i].style.display = 'none';}
-
     documentArray[dataToShow-1].style.display = null;
   }
 </script>
@@ -84,13 +85,11 @@
 <div class = "p-1 text-center">
   <%= link_to "Radar Loop for This Event", @radarURL, :target => '_blank', class:"btn btn-primary"%>
   <%= link_to "Snow Report Map for This Event", @snowfallURL, :target => '_blank', class:"btn btn-primary"%>
-  <%= link_to "Buffalo Atmospheric Sounding Gif", @buffaloURL, :target => '_blank', class:"btn btn-primary"%>
-  <%= link_to "Detroit Atmospheric Sounding Gif", @detroitURL, :target => '_blank', class:"btn btn-primary"%>
+  <%= link_to "Surface Analysis", @surfaceAnalysisURL, :target => '_blank', class:"btn btn-primary"%>
+  <%= link_to "Upper Air Analysis", @upperAirAnalysisURL, :target => '_blank', class:"btn btn-primary" %>
 </div>
 
 <div class = "p-1 text-center">
-  <%= link_to "Surface Analysis for Event Start", @surfaceAnalysisURL, :target => '_blank', class:"btn btn-primary"%>
-  <%= link_to "Upper Air Analysis for Event Start and End", @upperAirAnalysisURL, :target => '_blank', class:"btn btn-primary" %>
   <% if @event.tecOne.length > 1 %>
     <%= link_to @event.tecOne, @vtecURL1, :target => '_blank', class:"btn btn-primary" %>
   <% end %>
@@ -102,6 +101,14 @@
   <% end %>
   <% if @event.tecFour.length > 1 %>
     <%= link_to @event.tecFour, @vtecURL4, :target => '_blank', class:"btn btn-primary" %>
+  <% end %>
+</div>
+
+<div class = "p-1 text-center">
+  <% surLink = 0 %>
+  <% @soundingURLS.each do |url| %>
+    <%= link_to @tableSurIDs[surLink]+" Sounding Gif", url, :target => '_blank', class:"btn btn-primary"%>
+    <% surLink = surLink + 1 %>
   <% end %>
 </div>
 
@@ -210,7 +217,7 @@
         <% surMenu = 1 %>
         <% @tableSurIDs.each do |id| %>
           <li class="nav-item">
-            <%= button_tag  id.capitalize(), class:"nav-link link-dark", :onclick => "showSurData(#{surMenu})" %>
+            <%= button_tag  id.upcase(), class:"nav-link link-dark", :onclick => "showSurData(#{surMenu})" %>
           </li>
           <% surMenu = surMenu + 1%>
         <% end %>

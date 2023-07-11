@@ -32,23 +32,15 @@ class BufkitsController < ApplicationController
 
     @namBuf = Bufkit.where(modelType: "NAM")
     @rapBuf = Bufkit.where(modelType: "RAP")
-
-    @namBufCLE = @namBuf.where(station: "kcle")
-    @namBufERI = @namBuf.where(station: "keri")
-    @namBufGKJ = @namBuf.where(station: "kgkl").or(@namBuf.where(station: "kgkj"))
-    @namBufLE1 = @namBuf.where(station: "le1")
-    @namBufLE2 = @namBuf.where(station: "le2")
-
-    @rapBufCLE = @rapBuf.where(station: "kcle")
-    @rapBufERI = @rapBuf.where(station: "keri")
-    @rapBufGKJ = @rapBuf.where(station: "kgkl").or(@namBuf.where(station: "kgkj"))
-    @rapBufLE1 = @rapBuf.where(station: "le1")
-    @rapBufLE2 = @rapBuf.where(station: "le2")
-
+    
     @tableBufIDs = ['kcle', 'keri', 'kgkl', 'le1', 'le2']
+    @tableNAM = []
+    @tableRAP = []
 
-    @tableNAM = [@namBufCLE, @namBufERI, @namBufGKJ, @namBufLE1, @namBufLE2]
-    @tableRAP = [@rapBufCLE, @rapBufERI, @rapBufGKJ, @rapBufLE1, @rapBufLE2]
+    @tableBufIDs.each do |id|
+      @tableNAM.append(@namBuf.where(station: id))
+      @tableRAP.append(@rapBuf.where(station: id))
+    end
 
 
     @tableHeaderBuf = ["ID", "Model Type", "Station", "Time (Z)", 

@@ -11,14 +11,15 @@ class processRealObservations:
         self.url = "https://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST&YEAR="
         self.startDate = startDate
         self.endDate = endDate
+        self.sites = ["72528", "72632"]
         self.compiledRows = []
         self.dates = []
     
     #Runs the collection of real observations, calls the required commands, formats the response into JSON, and prints it for response collection
     def run(self):
         self.getDates()
-        self.getSurfaceObs("72632")
-        self.getSurfaceObs("72528")
+        for site in self.sites:
+            self.getSurfaceObs(site)
         
         jsonOutput = json.dumps(self.compiledRows)
         print(jsonOutput)
@@ -47,7 +48,10 @@ class processRealObservations:
             data = response.read().splitlines()
             for line in data:
                 lineData = line.decode('utf-8')
+                #print(lineData)
                 #If the HTML file contains a line with a pressure level of 1000, it is a valid link and can be collected
+                if(station in lineData):
+                    stat = lineData[10:13]
                 if(lineData[1:5]=="1000"):
                     validData = True
                 elif(validData and sur == []):
@@ -58,13 +62,7 @@ class processRealObservations:
                     eft = self.processLine(lineData)
                 elif (lineData[2:5]=="700"):
                     shd = self.processLine(lineData)
-                    break  
-            
-            #Sets the stations name based on the station ID
-            if(station == "72528"):
-                stat = "Buffalo"
-            else:
-                stat = "Detroit"
+                    break
             
             #If the data was valid, it can be appended to the list of valid data for printing
             if(validData):
@@ -109,5 +107,6 @@ class processRealObservations:
         #Pressure Height Temp DP RelHum WindDir WindSp
         return([line[0], line[2], line[3], line[4], line[6], line[7], line[1]])
 
-args = sys.argv
-processRealObservations(args[1], args[2]).run()   
+#args = sys.argv
+#processRealObservations(args[1], args[2]).run()
+processRealObservations("2023/01/02/12", "2023/01/04/12").run() 
