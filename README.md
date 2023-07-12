@@ -5,7 +5,9 @@ application up and running.
 
 Things you may want to cover:
 
-* Ruby version
+* Ruby version: ruby "3.2.2" #Gemfile
+* Rails version: rails "7.0.5" #Gemfile
+* Python version: python 3.10.11
 
 * System dependencies
 
@@ -15,14 +17,13 @@ Things you may want to cover:
 
 * Database initialization
 
-* Services (job queues, cache servers, search engines, etc.)
-
 * Deployment instructions
 
-* ...
-
 How to add/remove/edit sites for BUFKIT, METAR, Surface Observations and Archive URLs:
-Cleveland's settings will be left in as an example of how to properly format each type of data collection
+Cleveland's settings will be left in as an example of how to properly format each type of data collection.
+
+PAGE REFRESHES MENTIONED BELOW ARE ONLY REQUIRED POST WEB SERVER DEPLOYMENT
+It is strongly recommended to add all desired sites prior to running the web server.
 
 BUFKIT:
     First, collect all the desired sites, including their k prefix if they contain one, but do not add the k if it does not (Ex: le1)
@@ -67,5 +68,7 @@ Surface Observation DB + Links:
 
 Non-Surface Observation Archive Links
     Replace the existing WFO identifier in app/controllers/lake_effect_snow_events_controller.rb on line 17 with your WFO code.
+
+    Again, refreshing the page when changing the WFO code will be required for changes to take affect.
     
 

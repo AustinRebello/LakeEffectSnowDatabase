@@ -29,7 +29,7 @@ def downloadCSV
   @event = LakeEffectSnowEvent.find(params[:event_id])
   respond_to do |format|
     format.html
-    format.csv { send_data SnowReport.downloadBUF(params[:event_id]), filename: "SNOW_REPORT_EVENT_DATA-#{@event.eventName}.csv"}
+    format.csv { send_data SnowReport.download(params[:event_id]), filename: "SNOW_REPORT_EVENT_DATA-#{@event.eventName}.csv"}
   end
 end
 
