@@ -269,7 +269,7 @@ class LakeEffectSnowEventsController < ApplicationController
         end
       end
       if(@surfaceClose && @nineClose)
-        @eventResults.append([event.id,event.eventName,@score.round(1)])
+        @eventResults.append([event.id,event.eventName, event.eventType,@score.round(1)])
       end
     end
   end

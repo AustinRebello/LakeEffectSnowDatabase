@@ -107,6 +107,5 @@ class processRealObservations:
         #Pressure Height Temp DP RelHum WindDir WindSp
         return([line[0], line[2], line[3], line[4], line[6], line[7], line[1]])
 
-#args = sys.argv
-#processRealObservations(args[1], args[2]).run()
-processRealObservations("2023/01/02/12", "2023/01/04/12").run() 
+args = sys.argv
+processRealObservations(args[1], args[2]).run()

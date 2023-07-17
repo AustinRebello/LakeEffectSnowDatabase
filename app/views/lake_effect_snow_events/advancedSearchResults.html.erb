@@ -8,7 +8,9 @@
     <tr>
       <th scope="col">Event ID</th>
       <th scope="col">Event Name</th>
+      <th scope = "col">Event Type</th>
       <th scope="col">Score</th>
+      
     </tr>
   </thead>
   <tbody class="table-group-divider">
@@ -17,6 +19,7 @@
       <td><%= event[0]%></td>
       <td><%= link_to event[1], lake_effect_snow_event_path(event[0]) %></td>
       <td><%= event[2]%></td>
+      <td><%= event[3]%></td>
     </tr>
   <% end %>
   </tbody>
