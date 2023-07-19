@@ -78,7 +78,7 @@
 
 <div class="p-1 text-center">
   <%= link_to "Back to all events", lake_effect_snow_events_path, class:"btn btn-secondary" %>
-  <%= link_to "Edit", edit_lake_effect_snow_event_path(@lake_effect_snow_event), class:"btn btn-primary", data: { turbo_method: :get, turbo_confirm: 'This will delete all current BUFKIT and METARs data for this event. Are you sure you wish to edit?'} %>
+  <%= link_to "Edit", edit_lake_effect_snow_event_path(@lake_effect_snow_event), class:"btn btn-primary" %>
   <%= button_to "Delete this event", @lake_effect_snow_event, method: :delete, class:"btn btn-danger", data: {turbo_method: :get, turbo_confirm: "This will permanently delete this event and all associated data. Are you sure you wish to delete?"}, form: {style: 'display:inline-block;'} %>
 </div>
 

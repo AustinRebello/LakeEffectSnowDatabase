@@ -456,20 +456,6 @@ class LakeEffectSnowEventsController < ApplicationController
 
   # GET /lake_effect_snow_events/1/edit
   def edit
-    @bufkits = Bufkit.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
-    @bufkits.each do |buf|
-        buf.destroy
-    end
-
-    @metars = Metar.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
-    @metars.each do |met|
-        met.destroy
-    end
-    
-    @surObs = Observation.where(lake_effect_snow_event_id: @lake_effect_snow_event.id)
-    @surObs.each do |ob|
-        ob.destroy
-    end
 
   end
 
