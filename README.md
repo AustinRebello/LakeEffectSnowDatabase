@@ -56,7 +56,7 @@ If you encounter issues where the site throws an error, see Git Bash where the s
 Once you are done using the server for that instance, in Git Bash, press Ctrl+C to close the server.
 If you cannot reopen the server due to it saying its "already running," navigate to the tmp/pids folder and delete anything that is not the .keep file.
 
-Any other questions or concerns, please feel free to email me at a**ustinrebello02@gmail.com / austin.rebello@noaa.gov** and I will try to assist in any necessary installation issues or local debugging.
+Any other questions or concerns, please feel free to email me at **austinrebello02@gmail.com / austin.rebello@noaa.gov** and I will try to assist in any necessary installation issues or local debugging.
 
 
 
