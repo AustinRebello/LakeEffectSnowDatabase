@@ -4,6 +4,7 @@ import time
 import urllib.request as request
 from urllib.error import HTTPError
 import datetime
+import ssl
 
 class processRealObservations:
     #Initializes the class Object when the class is called at the bottom of the file
@@ -40,7 +41,8 @@ class processRealObservations:
             
             #Tries to scrape the data from the site, skips the date's data if the site does not respond
             try:
-                response = request.urlopen(url)
+                uContext = ssl._create_unverified_context()
+                response = request.urlopen(url, context = uContext)
             except HTTPError as err:
                 continue
             
