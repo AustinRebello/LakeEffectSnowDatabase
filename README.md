@@ -57,9 +57,9 @@ Once you are done using the server for that instance, in Git Bash, press Ctrl+C 
 If you cannot reopen the server due to it saying its "already running," navigate to the tmp/pids folder and delete anything that is not the .keep file.
 
 Any other questions or concerns, please feel free to email me at **austinrebello02@gmail.com / austin.rebello@noaa.gov** and I will try to assist in any necessary installation issues or local debugging.
-
-
-
+=
+=
+=
 **How to add/remove/edit sites for BUFKIT, METAR, Surface Observations and Archive URLs:**
 Cleveland's settings will be left in as an example of how to properly format each type of data collection.
 
