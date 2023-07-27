@@ -9,7 +9,7 @@ Things you may want to cover:
 * Rails version: rails "7.0.5" #Gemfile
 * Python version: python 3.10.11
 
-**HOW I GOT THE PROJECT UP AND RUNNING ON A CLEAN WINDOWS MACHINE**
+**HOW I GOT THE PROJECT UP AND RUNNING ON A CLEAN WINDOWS MACHINE IN A DEVELOPMENT ENVIRONMENT**
 
 Install the Ruby programming language, at least version 3.2.2 or later.
 rubyinstaller.org/downloads
@@ -53,10 +53,27 @@ You will likely need to hit F5 (or refresh) the page nearly immediately as it wi
 
 If you encounter issues where the site throws an error, see Git Bash where the server is running to identify the true error. If it is a python error where one of the imports fails, you will need to "pip install XXXX" that package.
 
-Once you are done using the server for that instance, in Git Bash, press Ctrl+C to close the server.
+**Once you are done using the server for that instance, in Git Bash, press Ctrl+C to close the server.**
 If you cannot reopen the server due to it saying its "already running," navigate to the tmp/pids folder and delete anything that is not the .keep file.
 
 Any other questions or concerns, please feel free to email me at **austinrebello02@gmail.com / austin.rebello@noaa.gov** and I will try to assist in any necessary installation issues or local debugging.
+
+If you do encounter an error of any kind and are not able to resolve it, please copy the error on the webpage down, and the one in Git Bash down, and send both of those to one of those email addersses, along with a short description of what you were doing, and what event dates you were working in so I can replicate the error and assist in resolving it.
+
+|
+|
+|
+|
+|
+
+**HOW TO USE THE DATABASE EFFECTIVELY**
+When creating a new event, please follow the naming conventions on event names and types so searching the database is easy.
+
+Generating Bufkit/Metar/Surface data is expected to take some time depending on network speed and computer hardware, more than 60 seconds per event per data generate button is not out of the ordinary. A fast network and a newer computer can likely do this in seconds.
+
+Unless you are not using SQLite3 for the database, please do not try to generate multiple things at once, as that can destabilize and break the database.
+
+For each event, you must generate the bufkit data (only once between NAM/RAP), metar data, and surface observation data. Then you will need to upload the CSV file for the snow spotter reports following the designated format of LastName, Town/City, Latitude, Longitude, StormTotal. Any other format will not be ingested into the database correctly, if at all.
 
 |
 |
