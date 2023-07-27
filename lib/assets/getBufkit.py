@@ -1,3 +1,30 @@
+
+1 of 1,567
+Pull request docs
+Inbox
+
+Austin Rebello - NOAA Affiliate
+Attachments
+12:01 PM (2 hours ago)
+to me
+
+
+2
+ Attachments
+  •  Scanned by Gmail
+
+Austin Rebello - NOAA Affiliate
+Attachments
+2:13 PM (8 minutes ago)
+to me
+
+
+
+On Thu, Jul 27, 2023 at 12:00 PM Austin Rebello - NOAA Affiliate <austin.rebello@noaa.gov> wrote:
+
+
+ One attachment
+  •  Scanned by Gmail
 import sys
 import json
 import numpy as np
@@ -79,6 +106,9 @@ class processBufkit:
 
     #Calculates relative humidity given temperature and dew point
     def calculateRelativeHumidity(self, temperature, dewPoint):
+        tempExponent = ((17.625*temperature)/(243.04+temperature))
+        if(tempExponent > 5 or tempExponent < -5):
+            return("-9999")
         tempE = 6.1094*math.e**((17.625*temperature)/(243.04+temperature))
         dewE = 6.1094*math.e**((17.625*dewPoint)/(243.04+dewPoint))
         relHum = round(100*(dewE/tempE),2)
@@ -224,7 +254,12 @@ class processBufkit:
             if station == 'kgkl':
                 station = 'kgkj'
                 request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,hour,'nam',modelType,station)
-                response = request.urlopen(request_url)
+                try:
+                    response = request.urlopen(request_url)
+                except HTTPError as err:
+                    return
+            else:
+                return
         
         #Splits the page into iterable lines        
         data = response.read().splitlines()
@@ -285,17 +320,34 @@ class processBufkit:
         #Iterates through each time since RAP is an hourly model
         for ah in self.times:
             atime = time.strftime("%Y/%m/%d/%H", time.gmtime(ah))
-            
+            model = 'rap'
             self.year,self.month,self.day,self.hour = atime.split("/")
-            request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,self.hour,'rap','rap',station)
+            request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,self.hour,model,model,station)
+            response = ''
             try:
                 response = request.urlopen(request_url)
             except HTTPError as err:
                 if station == 'kgkl':
                     station = 'kgkj'
-                    request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,self.hour,'rap','rap',station)
-                    response = request.urlopen(request_url)
-              
+                    try:
+                        request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,self.hour,model,model,station)
+                        response = request.urlopen(request_url)
+                    except HTTPError as err:
+                        model = 'ruc'
+                        request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,self.hour,model,model,station)
+                        try:
+                            response = request.urlopen(request_url)
+                        except HTTPError as err:
+                            break
+                else:
+                    model = 'ruc'
+                    request_url = self.url + "/{}/{}/{}/bufkit/{}/{}/{}_{}.buf".format(self.year,self.month,self.day,self.hour,model,model,station)
+                    try:
+                        response = request.urlopen(request_url)
+                    except HTTPError as err:
+                        break
+            if response == '':
+                break
             #Splits the page into iterable lines and initializes the flags and arrays used for each hourly sounding      
             data = response.read().splitlines()
             
