@@ -1,30 +1,3 @@
-
-1 of 1,567
-Pull request docs
-Inbox
-
-Austin Rebello - NOAA Affiliate
-Attachments
-12:01 PM (2 hours ago)
-to me
-
-
-2
- Attachments
-  •  Scanned by Gmail
-
-Austin Rebello - NOAA Affiliate
-Attachments
-2:13 PM (8 minutes ago)
-to me
-
-
-
-On Thu, Jul 27, 2023 at 12:00 PM Austin Rebello - NOAA Affiliate <austin.rebello@noaa.gov> wrote:
-
-
- One attachment
-  •  Scanned by Gmail
 import sys
 import json
 import numpy as np
